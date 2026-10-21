@@ -27,9 +27,6 @@ create table public.temporadas (
   cuota_anual numeric(10,2) generated always as (cuota_semanal * numero_semanas) stored,
   activa boolean not null default false,
   observaciones text,
-  aplicar_anio integer,
-  anulado_at timestamptz,
-  anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -44,6 +41,12 @@ create table public.combinaciones (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint combinaciones_seis_numeros check (cardinality(numeros) = 6),
+  constraint combinaciones_orden_valido check (numero_orden between 1 and 99),
+  constraint combinaciones_numeros_rango check (
+    numeros[1] between 1 and 99 and numeros[2] between 1 and 99 and
+    numeros[3] between 1 and 99 and numeros[4] between 1 and 99 and
+    numeros[5] between 1 and 99 and numeros[6] between 1 and 99
+  ),
   unique (temporada_id, numero_orden)
 );
 
@@ -70,6 +73,9 @@ create table public.movimientos_cuotas (
   tipo text not null default 'pago',
   metodo text,
   observaciones text,
+  aplicar_anio integer,
+  anulado_at timestamptz,
+  anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
