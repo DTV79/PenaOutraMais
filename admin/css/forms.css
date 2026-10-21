@@ -228,3 +228,12 @@
 .draw-stake-summary strong{font-size:14px}
 .draw-stake-summary small{font-size:10px}
 .fund-source{font-size:8px}
+
+.bet-refund{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:#fff3cf;color:#735912;font-size:10px;font-weight:900}
+.refund-group-list{display:grid;gap:9px}
+.refund-group-card{display:grid;grid-template-columns:1fr 76px;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafcfd}
+.refund-group-card>div:first-child strong,.refund-group-card>div:first-child small{display:block}
+.refund-group-card>div:first-child strong{font-size:13px}
+.refund-group-card>div:first-child small{margin-top:3px;color:var(--muted);font-size:10px}
+.refund-group-card .admin-form-field label{text-align:center}
+.refund-group-card input{text-align:center;font-size:17px;font-weight:900}
