@@ -6,9 +6,9 @@ import {
   updateMember,
   deactivateMember,
   reactivateMember
-} from './service.js';
-import { renderMembers } from './list.js';
-import { openMemberForm } from './form.js';
+} from './service.js?v=20261021-24';
+import { renderMembers } from './list.js?v=20261021-24';
+import { openMemberForm } from './form.js?v=20261021-24';
 
 let members = [];
 const container = document.querySelector('#membersAdmin');
