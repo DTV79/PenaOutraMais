@@ -228,12 +228,39 @@ begin
     raise exception 'No hay temporada activa';
   end if;
 
-  insert into public.sorteos(temporada_id,juego_codigo,fecha,nombre,estado,automatico)
-  values(v_temporada_id,p_juego_codigo,p_fecha,nullif(trim(p_nombre),''),
-    'pendiente',p_automatico)
-  on conflict (juego_codigo,fecha,(coalesce(nombre,'')))
-  do update set updated_at=now()
-  returning id into v_sorteo_id;
+  select s.id
+  into v_sorteo_id
+  from public.sorteos s
+  where s.juego_codigo=p_juego_codigo
+    and s.fecha=p_fecha
+    and coalesce(s.nombre,'')=coalesce(nullif(trim(p_nombre),''),'')
+  limit 1;
+
+  if v_sorteo_id is null then
+    begin
+      insert into public.sorteos(
+        temporada_id,juego_codigo,fecha,nombre,estado,automatico
+      )
+      values(
+        v_temporada_id,p_juego_codigo,p_fecha,nullif(trim(p_nombre),''),
+        'pendiente',p_automatico
+      )
+      returning id into v_sorteo_id;
+    exception
+      when unique_violation then
+        select s.id
+        into v_sorteo_id
+        from public.sorteos s
+        where s.juego_codigo=p_juego_codigo
+          and s.fecha=p_fecha
+          and coalesce(s.nombre,'')=coalesce(nullif(trim(p_nombre),''),'')
+        limit 1;
+    end;
+  else
+    update public.sorteos
+    set updated_at=now()
+    where id=v_sorteo_id;
+  end if;
 
   insert into public.apuestas(
     sorteo_id,origen_combinacion_id,tipo,descripcion,importe,datos
@@ -246,7 +273,9 @@ begin
   where c.temporada_id=v_temporada_id
     and c.juego_codigo=p_juego_codigo
     and c.activa=true
-  on conflict (sorteo_id,origen_combinacion_id) do update
+  on conflict (sorteo_id,origen_combinacion_id)
+    where origen_combinacion_id is not null
+  do update
     set importe=excluded.importe,
         datos=jsonb_set(public.apuestas.datos,'{reintegro}',
           coalesce(to_jsonb(p_reintegro),'null'::jsonb),true),
@@ -280,11 +309,38 @@ begin
       and t.activa=true
       and extract(isodow from p_fecha)::smallint=any(p.dias_semana)
   loop
-    insert into public.sorteos(temporada_id,juego_codigo,fecha,nombre,estado,automatico)
-    values(r.temporada_id,r.juego_codigo,p_fecha,null,'pendiente',true)
-    on conflict (juego_codigo,fecha,(coalesce(nombre,'')))
-    do update set updated_at=now()
-    returning id into v_sorteo_id;
+    select s.id
+    into v_sorteo_id
+    from public.sorteos s
+    where s.juego_codigo=r.juego_codigo
+      and s.fecha=p_fecha
+      and s.nombre is null
+    limit 1;
+
+    if v_sorteo_id is null then
+      begin
+        insert into public.sorteos(
+          temporada_id,juego_codigo,fecha,nombre,estado,automatico
+        )
+        values(
+          r.temporada_id,r.juego_codigo,p_fecha,null,'pendiente',true
+        )
+        returning id into v_sorteo_id;
+      exception
+        when unique_violation then
+          select s.id
+          into v_sorteo_id
+          from public.sorteos s
+          where s.juego_codigo=r.juego_codigo
+            and s.fecha=p_fecha
+            and s.nombre is null
+          limit 1;
+      end;
+    else
+      update public.sorteos
+      set updated_at=now()
+      where id=v_sorteo_id;
+    end if;
 
     insert into public.apuestas(
       sorteo_id,origen_combinacion_id,tipo,descripcion,importe,datos
@@ -297,7 +353,9 @@ begin
     where c.temporada_id=r.temporada_id
       and c.juego_codigo=r.juego_codigo
       and c.activa=true
-    on conflict (sorteo_id,origen_combinacion_id) do nothing;
+    on conflict (sorteo_id,origen_combinacion_id)
+      where origen_combinacion_id is not null
+    do nothing;
 
     v_count:=v_count+1;
   end loop;
