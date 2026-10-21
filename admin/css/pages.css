@@ -14,3 +14,12 @@
 .login-submit{width:100%;margin-top:17px;height:46px;border:0;border-radius:13px;background:var(--navy);color:#fff;font-weight:850}
 .login-submit:disabled{opacity:.6}
 .login-back{display:block;margin-top:14px;text-align:center;color:var(--blue);text-decoration:none;font-size:9px;font-weight:800}
+
+/* Escala de lectura global · Administración */
+.login-brand strong{font-size:20px}
+.login-brand small{font-size:11px}
+.login-card>p{font-size:12px}
+.form-field label{font-size:11px}
+.form-field input{font-size:14px}
+.login-submit{font-size:12px}
+.login-back{font-size:11px}
