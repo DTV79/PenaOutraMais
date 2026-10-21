@@ -22,3 +22,5 @@ jobs:
           echo "SIZE=$(wc -c < /tmp/selae.html)"
           head -c 500 /tmp/selae.html | tr '\n' ' '
           echo
+
+# probe enabled
