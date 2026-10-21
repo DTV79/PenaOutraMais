@@ -7,8 +7,8 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Cuotas · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261021-9" />
-  <link rel="stylesheet" href="css/forms.css?v=20261021-9" />
+  <link rel="stylesheet" href="css/styles.css?v=20261021-15" />
+  <link rel="stylesheet" href="css/forms.css?v=20261021-15" />
 </head>
 <body data-admin-page="cuotas">
   <div class="admin-fixed-shell">
@@ -27,6 +27,13 @@
     <header class="admin-page-title"><p class="eyebrow">APORTACIONES</p><h1>Cuotas y pagos</h1><p>Movimientos reales de cada socio por temporada.</p></header>
     <section id="feesSummary" class="admin-kpis"></section>
     <section class="admin-section">
+      <div class="admin-section-head">
+        <div><p class="eyebrow">FONDO DE CUOTAS</p><h2>Dinero disponible para sorteos</h2></div>
+      </div>
+      <div id="feesFund" class="admin-kpis"></div>
+      <p class="admin-form-help">El importe jugado en los sorteos habituales se descuenta de las cuotas cobradas, sin modificar cuánto ha pagado cada socio.</p>
+    </section>
+    <section class="admin-section">
       <div class="admin-section-head"><div><p class="eyebrow">PENDIENTES</p><h2>Por cobrar</h2></div></div>
       <div id="feesPending" class="admin-loading">Calculando pendientes…</div>
     </section>
@@ -44,6 +51,6 @@
       <div id="feesAdmin" class="admin-loading">Cargando movimientos…</div>
     </section>
   </main></div>
-  <script type="module" src="js/modules/cuotas/index.js?v=20261021-5"></script>
+  <script type="module" src="js/modules/cuotas/index.js?v=20261021-15"></script>
 </body>
 </html>
