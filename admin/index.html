@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#071a2d" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Administración · Peña Outra Máis</title>
+  <link rel="icon" href="../icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-admin-page="inicio">
+  <div id="adminHeader"></div>
+  <div class="admin-wrap">
+    <main class="admin-main">
+      <header class="admin-page-title">
+        <p class="eyebrow">GESTIÓN</p>
+        <h1>Panel de administración</h1>
+        <p>Control de socios, cuotas, números, premios y temporadas.</p>
+      </header>
+      <div id="dashboardError" class="admin-error"></div>
+      <section class="admin-kpis">
+        <article class="admin-kpi"><small>Socios activos</small><strong data-kpi-socios>—</strong></article>
+        <article class="admin-kpi"><small>Temporada</small><strong data-kpi-temporada>—</strong></article>
+        <article class="admin-kpi"><small>Combinaciones</small><strong data-kpi-combinaciones>—</strong></article>
+        <article class="admin-kpi"><small>Bote</small><strong data-kpi-bote>—</strong></article>
+      </section>
+      <section class="admin-grid">
+        <a class="admin-card" href="socios.html"><span class="admin-card-icon">◎</span><strong>Socios</strong><small>Datos, altas y bajas.</small></a>
+        <a class="admin-card" href="cuotas.html"><span class="admin-card-icon">€</span><strong>Cuotas</strong><small>Pagos, ajustes y saldos.</small></a>
+        <a class="admin-card" href="numeros.html"><span class="admin-card-icon">⑩</span><strong>Números</strong><small>Combinaciones de la temporada.</small></a>
+        <a class="admin-card" href="premios.html"><span class="admin-card-icon">★</span><strong>Premios y bote</strong><small>Entradas, gastos y saldo.</small></a>
+        <a class="admin-card" href="temporadas.html"><span class="admin-card-icon">▦</span><strong>Temporadas</strong><small>Cuota anual y configuración.</small></a>
+        <article class="admin-card"><span class="admin-card-icon">☆</span><strong>Jugadas especiales</strong><small>Próximo módulo.</small></article>
+      </section>
+    </main>
+  </div>
+  <div id="adminBottomNav"></div>
+  <script type="module" src="js/app/dashboard.js"></script>
+</body>
+</html>
