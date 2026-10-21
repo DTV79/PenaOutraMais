@@ -98,3 +98,59 @@
 .award-table td:nth-child(3){min-width:220px}
 .award-note{display:block;margin-top:2px;color:var(--muted);font-size:8px;font-weight:400}
 .award-row-cancelled{opacity:.48;text-decoration:line-through}
+
+.field-note{display:block;margin-top:5px;color:var(--muted);font-size:8px;line-height:1.4}
+.sorteo-help{margin:0;padding:10px 11px;border-radius:12px;background:#f5f8fa}
+.sorteo-warning{margin:0;padding:10px 11px;border-radius:12px;background:#fff8e8;color:#765b17}
+.bet-number-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bet-number-field input{text-align:center;font-size:15px;font-weight:900}
+.sorteo-create-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px}
+.draw-schedule-form{display:grid;gap:12px}
+.draw-schedule-top{display:grid;gap:10px}
+.schedule-toggle{height:100%}
+.schedule-amount{min-width:150px}
+.weekday-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.weekday-option{cursor:pointer}
+.weekday-option input{position:absolute;opacity:0;pointer-events:none}
+.weekday-option span{height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:11px;background:#f8fafb;color:var(--muted);font-size:9px;font-weight:850}
+.weekday-option.selected span{border-color:var(--navy);background:var(--navy);color:#fff}
+.schedule-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.schedule-actions>span{margin-right:auto;font-size:9px;font-weight:800}
+.schedule-ok{color:var(--green)}
+.schedule-error{color:var(--red)}
+.draw-admin-card{margin-top:10px;padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.draw-admin-card:first-child{margin-top:0}
+.draw-admin-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.draw-admin-head h3{margin:2px 0 0;font-size:15px}
+.draw-admin-head small{display:block;margin-top:3px;color:var(--muted);font-size:8px}
+.draw-status{flex:0 0 auto;padding:5px 7px;border-radius:999px;font-size:7px;font-weight:900}
+.draw-status.ok{background:var(--greensoft);color:var(--green)}
+.draw-status.pending{background:#fff5d9;color:#8b6914}
+.draw-status.review{background:#eef1ff;color:#4b54a3}
+.draw-status.error{background:var(--redsoft);color:var(--red)}
+.draw-result-balls{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.draw-result-balls span{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#f6e7ad;border:1px solid #dfc26d;color:var(--navy);font-size:10px;font-weight:900}
+.draw-result-extra{margin-top:6px;color:var(--muted);font-size:8px}
+.draw-result-extra em{font-style:normal}
+.draw-result-line{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;padding:9px 10px;border-radius:12px;background:#f6f8fa;font-size:9px}
+.draw-bets{margin-top:12px;border-top:1px solid var(--line)}
+.draw-bet-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.draw-bet-row>div:first-child{min-width:0}
+.draw-bet-row strong,.draw-bet-row small{display:block}
+.draw-bet-row>div:first-child strong{font-size:9px}
+.draw-bet-row>div:first-child small{margin-top:3px;color:var(--muted);font-size:8px;line-height:1.4}
+.bet-stars{display:inline!important;margin-left:5px!important;color:#9a771c!important}
+.draw-bet-prize{flex:0 0 auto;text-align:right}
+.draw-bet-prize small{color:var(--muted);font-size:7px}
+.draw-bet-prize strong{margin-top:2px;font-size:10px}
+.draw-message{margin:10px 0 0;padding:8px 9px;border-radius:10px;background:#f3f5f7;color:var(--muted);font-size:8px;line-height:1.45}
+.draw-message.warning{background:#fff7e2;color:#785e1d}
+.draw-total{display:flex;align-items:center;justify-content:space-between;margin:10px 0 0;padding:9px 10px;border-radius:11px;background:var(--greensoft);color:var(--green);font-size:8px;font-weight:800}
+.draw-total strong{font-size:11px}
+.draw-admin-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:11px}
+@media(min-width:640px){
+  .bet-number-grid{grid-template-columns:repeat(6,1fr)}
+  .bet-number-grid.five{grid-template-columns:repeat(5,1fr)}
+  .draw-schedule-top{grid-template-columns:1fr 190px;align-items:stretch}
+  .weekday-grid{grid-template-columns:repeat(7,1fr)}
+}
