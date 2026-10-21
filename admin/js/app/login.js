@@ -1,4 +1,4 @@
-import { signInWithPassword, verifyAdmin, clearSession, getValidSession } from '../services/auth.js';
+import { signInWithPassword, verifyAdmin, bootstrapFirstAdmin, clearSession, getValidSession } from '../services/auth.js';
 
 const form = document.querySelector('#loginForm');
 const errorBox = document.querySelector('#loginError');
@@ -36,7 +36,12 @@ form?.addEventListener('submit', async (event) => {
       String(data.get('password') || '')
     );
 
-    const admin = await verifyAdmin(session);
+    let admin = await verifyAdmin(session);
+
+    if (!admin) {
+      admin = await bootstrapFirstAdmin(session);
+    }
+
     if (!admin) {
       clearSession();
       throw new Error('El acceso es correcto, pero este usuario no está autorizado como administrador.');
