@@ -44,3 +44,37 @@ export function adminUpdate(path, payload) {
 export function adminDelete(path) {
   return request(path, { method: 'DELETE' });
 }
+
+
+export function adminRpc(functionName, payload = {}) {
+  return request(
+    `rpc/${encodeURIComponent(functionName)}`,
+    { method: 'POST', body: JSON.stringify(payload) }
+  );
+}
+
+export async function adminFunction(functionName, payload = {}) {
+  const session = await getValidSession();
+  if (!session) throw new Error('Sesión no disponible');
+
+  const response = await fetch(
+    `${SUPABASE_CONFIG.url}/functions/v1/${encodeURIComponent(functionName)}`,
+    {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_CONFIG.publishableKey,
+        Authorization: `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data?.error || data?.message || `Error ${response.status}`);
+  }
+
+  return data;
+}
