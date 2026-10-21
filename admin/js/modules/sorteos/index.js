@@ -7,10 +7,10 @@ import {
   saveProgram,
   checkDraw,
   updateDrawRefund
-} from './service.js';
-import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js';
-import { renderDraws } from './list.js';
-import { renderSchedule } from './schedule.js';
+} from './service.js?v=20261021-10';
+import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-10';
+import { renderDraws } from './list.js?v=20261021-10';
+import { renderSchedule } from './schedule.js?v=20261021-10';
 
 let snapshot=null;
 const drawsBox=document.querySelector('#drawsAdmin');
