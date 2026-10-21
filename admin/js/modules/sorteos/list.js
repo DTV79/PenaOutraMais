@@ -29,6 +29,10 @@ function statusLabel(draw) {
   return ['Pendiente','pending'];
 }
 
+function fundLabel(source) {
+  return source === 'bote' ? 'Bote' : 'Cuotas';
+}
+
 function betSummary(bet, game) {
   const data=bet.datos || {};
   if (game?.formato === 'decimo') {
@@ -65,9 +69,80 @@ function resultSummary(draw, game) {
   `;
 }
 
+function renderCard(draw, drawBets, game) {
+  const [label,statusClass]=statusLabel(draw);
+  const prize=drawBets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
+  const stake=drawBets.reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
+  const quotaStake=drawBets
+    .filter((bet)=>bet.fuente_fondos !== 'bote')
+    .reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
+  const potStake=drawBets
+    .filter((bet)=>bet.fuente_fondos === 'bote')
+    .reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
+
+  const fundingText = [
+    quotaStake > 0 ? `Cuotas ${money(quotaStake)}` : '',
+    potStake > 0 ? `Bote ${money(potStake)}` : ''
+  ].filter(Boolean).join(' · ');
+
+  return `
+    <article class="draw-admin-card">
+      <header class="draw-admin-head">
+        <div>
+          <p class="eyebrow">${esc(game?.nombre || draw.juego_codigo)}</p>
+          <h3>${esc(draw.nombre || dateEs(draw.fecha))}</h3>
+          <small>${dateEs(draw.fecha)} · ${drawBets.length} apuesta${drawBets.length===1?'':'s'}${draw.automatico?' · Automático':''}</small>
+        </div>
+        <span class="draw-status ${statusClass}">${label}</span>
+      </header>
+
+      ${resultSummary(draw,game)}
+
+      <div class="draw-stake-summary">
+        <span>Total jugado</span>
+        <strong>${money(stake)}</strong>
+        <small>${fundingText || 'Sin gasto registrado'}</small>
+      </div>
+
+      <div class="draw-bets">
+        ${drawBets.map((bet)=>`
+          <div class="draw-bet-row">
+            <div>
+              <strong>
+                ${esc(bet.descripcion || (bet.tipo==='fija'?'Combinación fija':'Apuesta especial'))}
+                <span class="fund-source ${bet.fuente_fondos === 'bote' ? 'pot' : 'fees'}">${fundLabel(bet.fuente_fondos)}</span>
+              </strong>
+              <small>${betSummary(bet,game)}</small>
+            </div>
+            <div class="draw-bet-prize">
+              ${draw.estado === 'comprobado'
+                ? `${bet.categoria_premio ? `<small>${esc(bet.categoria_premio)}</small>` : '<small>Premio</small>'}<strong>${money(bet.premio)}</strong>`
+                : `<small>Jugado</small><strong>${money(bet.importe)}</strong>`}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      ${draw.error_comprobacion ? `<p class="draw-message">${esc(draw.error_comprobacion)}</p>` : ''}
+      ${draw.resultado?.revision_manual ? '<p class="draw-message warning">Revisión manual necesaria antes de considerar definitivo el premio.</p>' : ''}
+      ${prize > 0 ? `<p class="draw-total">Premio detectado <strong>${money(prize)}</strong></p>` : ''}
+
+      <footer class="draw-admin-actions">
+        <button class="admin-action danger-soft" type="button" data-draw-delete="${draw.id}">Eliminar sorteo</button>
+        ${draw.juego_codigo === 'primitiva' && drawBets.some((bet)=>bet.tipo==='fija') ? `
+          <button class="admin-action secondary" type="button" data-draw-refund="${draw.id}">Reintegros</button>
+        ` : ''}
+        ${draw.fuente_url ? `<a class="admin-action secondary" href="${esc(draw.fuente_url)}" target="_blank" rel="noopener">Ver SELAE</a>` : ''}
+        <button class="admin-action" type="button" data-draw-check="${draw.id}">Comprobar ahora</button>
+      </footer>
+    </article>
+  `;
+}
+
 export function renderDraws({ season, games, draws, bets }) {
   const summary=document.querySelector('#drawsSummary');
-  const box=document.querySelector('#drawsAdmin');
+  const activeBox=document.querySelector('#drawsActive');
+  const historyBox=document.querySelector('#drawsHistory');
   const gameMap=new Map(games.map((game)=>[game.codigo,game]));
   const betsByDraw=new Map();
 
@@ -76,84 +151,35 @@ export function renderDraws({ season, games, draws, bets }) {
     betsByDraw.get(bet.sorteo_id).push(bet);
   });
 
-  const checked=draws.filter((draw)=>draw.estado==='comprobado').length;
-  const pending=draws.length-checked;
+  const active=draws.filter((draw)=>draw.estado!=='comprobado');
+  const history=draws.filter((draw)=>draw.estado==='comprobado');
   const totalPrize=bets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
-  const special=bets.filter((bet)=>bet.tipo==='especial').length;
+  const quotaSpend=bets
+    .filter((bet)=>bet.fuente_fondos !== 'bote')
+    .reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
 
   summary.innerHTML=`
     <article class="admin-kpi"><small>Temporada</small><strong>${season?.anio || '—'}</strong></article>
-    <article class="admin-kpi"><small>Pendientes</small><strong>${pending}</strong></article>
-    <article class="admin-kpi"><small>Comprobados</small><strong>${checked}</strong></article>
+    <article class="admin-kpi"><small>Sorteos activos</small><strong>${active.length}</strong></article>
+    <article class="admin-kpi"><small>Gastado de cuotas</small><strong>${money(quotaSpend)}</strong></article>
     <article class="admin-kpi"><small>Premios detectados</small><strong>${money(totalPrize)}</strong></article>
   `;
 
-  if (!draws.length) {
-    box.innerHTML=`
+  activeBox.innerHTML=active.length
+    ? active.map((draw)=>renderCard(draw,betsByDraw.get(draw.id)||[],gameMap.get(draw.juego_codigo))).join('')
+    : `
       <div class="admin-empty">
-        <span>◇</span><strong>Todavía no hay sorteos registrados</strong>
-        <p>Puedes registrar el próximo sorteo habitual o añadir una apuesta especial.</p>
+        <span>◇</span><strong>No hay sorteos activos</strong>
+        <p>Los próximos sorteos habituales aparecerán aquí cuando se creen.</p>
       </div>
     `;
-    return;
-  }
 
-  box.innerHTML=draws.map((draw)=>{
-    const game=gameMap.get(draw.juego_codigo);
-    const drawBets=betsByDraw.get(draw.id) || [];
-    const [label,statusClass]=statusLabel(draw);
-    const prize=drawBets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
-    const stake=drawBets.reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
-    const perBet=drawBets.length ? stake / drawBets.length : 0;
-
-    return `
-      <article class="draw-admin-card">
-        <header class="draw-admin-head">
-          <div>
-            <p class="eyebrow">${esc(game?.nombre || draw.juego_codigo)}</p>
-            <h3>${esc(draw.nombre || dateEs(draw.fecha))}</h3>
-            <small>${dateEs(draw.fecha)} · ${drawBets.length} apuesta${drawBets.length===1?'':'s'}${draw.automatico?' · Automático':''}</small>
-          </div>
-          <span class="draw-status ${statusClass}">${label}</span>
-        </header>
-
-        ${resultSummary(draw,game)}
-
-        <div class="draw-stake-summary">
-          <span>Total jugado</span>
-          <strong>${money(stake)}</strong>
-          <small>${drawBets.length} combinaciones × ${money(perBet)}</small>
-        </div>
-
-        <div class="draw-bets">
-          ${drawBets.map((bet)=>`
-            <div class="draw-bet-row">
-              <div>
-                <strong>${esc(bet.descripcion || (bet.tipo==='fija'?'Combinación fija':'Apuesta especial'))}</strong>
-                <small>${betSummary(bet,game)}</small>
-              </div>
-              <div class="draw-bet-prize">
-                ${draw.estado === 'comprobado'
-                  ? `${bet.categoria_premio ? `<small>${esc(bet.categoria_premio)}</small>` : '<small>Premio</small>'}<strong>${money(bet.premio)}</strong>`
-                  : `<small>Jugado</small><strong>${money(bet.importe)}</strong>`}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-
-        ${draw.error_comprobacion ? `<p class="draw-message">${esc(draw.error_comprobacion)}</p>` : ''}
-        ${draw.resultado?.revision_manual ? '<p class="draw-message warning">Revisión manual necesaria antes de considerar definitivo el premio.</p>' : ''}
-        ${prize > 0 ? `<p class="draw-total">Premio detectado <strong>${money(prize)}</strong></p>` : ''}
-
-        <footer class="draw-admin-actions">
-          <button class="admin-action danger-soft" type="button" data-draw-delete="${draw.id}">Eliminar sorteo</button>
-          ${draw.juego_codigo === 'primitiva' && drawBets.some((bet)=>bet.tipo==='fija') ? `
-            <button class="admin-action secondary" type="button" data-draw-refund="${draw.id}">Reintegros</button>
-          ` : ''}
-          ${draw.fuente_url ? `<a class="admin-action secondary" href="${esc(draw.fuente_url)}" target="_blank" rel="noopener">Ver SELAE</a>` : ''}
-          <button class="admin-action" type="button" data-draw-check="${draw.id}">Comprobar ahora</button>
-        </footer>
-      </article>
+  historyBox.innerHTML=history.length
+    ? history.map((draw)=>renderCard(draw,betsByDraw.get(draw.id)||[],gameMap.get(draw.juego_codigo))).join('')
+    : `
+      <div class="admin-empty">
+        <span>✓</span><strong>Todavía no hay sorteos comprobados</strong>
+        <p>Cuando se comprueben pasarán automáticamente al histórico.</p>
+      </div>
     `;
-  }).join('');
 }
