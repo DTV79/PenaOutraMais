@@ -59,9 +59,9 @@ create table public.combinaciones (
   constraint combinaciones_seis_numeros check (cardinality(numeros) = 6),
   constraint combinaciones_orden_valido check (numero_orden between 1 and 99),
   constraint combinaciones_numeros_rango check (
-    numeros[1] between 1 and 99 and numeros[2] between 1 and 99 and
-    numeros[3] between 1 and 99 and numeros[4] between 1 and 99 and
-    numeros[5] between 1 and 99 and numeros[6] between 1 and 99
+    numeros[1] between 1 and 49 and numeros[2] between 1 and 49 and
+    numeros[3] between 1 and 49 and numeros[4] between 1 and 49 and
+    numeros[5] between 1 and 49 and numeros[6] between 1 and 49
   ),
   unique (temporada_id, numero_orden)
 );
