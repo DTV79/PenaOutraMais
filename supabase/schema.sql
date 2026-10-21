@@ -173,7 +173,7 @@ create table public.apuestas (
   detalle_resultado jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  constraint apuestas_tipo_valido check (tipo in ('fija','especial')),
+  constraint apuestas_tipo_valido check (tipo in ('fija','especial','programada')),
   constraint apuestas_importe_valido check (importe >= 0),
   constraint apuestas_fuente_fondos_valida check (fuente_fondos in ('cuotas','bote')),
   constraint apuestas_premio_valido check (premio >= 0),
@@ -188,9 +188,14 @@ create table public.programacion_juegos (
   id bigint generated always as identity primary key,
   temporada_id bigint not null references public.temporadas(id) on delete cascade,
   juego_codigo text not null references public.juegos(codigo) on delete restrict,
+  nombre text not null,
   activa boolean not null default false,
   dias_semana smallint[] not null default '{}'::smallint[],
   importe_por_apuesta numeric(10,2) not null default 0,
+  importe_total numeric(10,2) not null default 0,
+  fuente_fondos text not null default 'cuotas',
+  usar_combinaciones_fijas boolean not null default false,
+  datos_apuesta jsonb not null default '{}'::jsonb,
   observaciones text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -198,8 +203,31 @@ create table public.programacion_juegos (
     dias_semana <@ array[1,2,3,4,5,6,7]::smallint[]
   ),
   constraint programacion_importe_valido check (importe_por_apuesta >= 0),
-  unique (temporada_id,juego_codigo)
+  constraint programacion_importe_total_valido check (importe_total >= 0),
+  constraint programacion_fuente_fondos_valida check (
+    fuente_fondos in ('cuotas','bote')
+  ),
+  constraint programacion_datos_objeto check (
+    jsonb_typeof(datos_apuesta)='object'
+  )
 );
+
+alter table public.sorteos
+  add column programacion_id bigint
+    references public.programacion_juegos(id) on delete set null;
+
+alter table public.apuestas
+  add column programacion_id bigint
+    references public.programacion_juegos(id) on delete set null;
+
+create unique index sorteos_programacion_fecha_unica
+  on public.sorteos(programacion_id,fecha)
+  where programacion_id is not null;
+
+create unique index apuestas_programacion_sorteo_unica
+  on public.apuestas(sorteo_id,programacion_id)
+  where programacion_id is not null
+    and origen_combinacion_id is null;
 
 -- Seguridad aplicada en Supabase:
 -- socios y movimientos_cuotas: sin lectura pública.
