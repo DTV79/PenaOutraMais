@@ -162,8 +162,13 @@ export function renderDraws({ season, games, draws, bets }) {
     betsByDraw.get(bet.sorteo_id).push(bet);
   });
 
-  const active=draws.filter((draw)=>draw.estado!=='comprobado');
-  const history=draws.filter((draw)=>draw.estado==='comprobado');
+  const active=draws
+    .filter((draw)=>draw.estado!=='comprobado')
+    .sort((a,b)=>a.fecha.localeCompare(b.fecha) || Number(a.id)-Number(b.id));
+
+  const history=draws
+    .filter((draw)=>draw.estado==='comprobado')
+    .sort((a,b)=>b.fecha.localeCompare(a.fecha) || Number(b.id)-Number(a.id));
   const totalPrize=bets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
   const quotaSpend=bets
     .filter((bet)=>bet.fuente_fondos !== 'bote')
