@@ -49,3 +49,15 @@
 .quota-pending-row div strong{font-size:11px}
 .quota-pending-row div small{margin-top:2px;color:var(--muted);font-size:8px}
 .quota-pending-row>strong{font-size:11px;color:var(--red)}
+
+.admin-form-wide{grid-column:1/-1}
+.quota-future-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0 12px;border-bottom:1px solid var(--line)}
+.quota-future-head span{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.6px}
+.quota-future-head strong{font-size:17px;color:var(--green)}
+.quota-future-row>strong{color:var(--green)}
+.quota-table td:last-child{white-space:nowrap}
+.quota-row-actions{display:flex;justify-content:flex-end;gap:5px}
+.admin-mini-action{border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--navy);padding:6px 8px;font-size:8px;font-weight:850}
+.admin-mini-action.danger{border-color:#f2cfd3;background:var(--redsoft);color:var(--red)}
+.quota-row-cancelled{opacity:.48;text-decoration:line-through}
+.quota-cancelled-tag{display:inline-block;margin-left:5px;padding:3px 5px;border-radius:999px;background:#eef2f6;color:var(--muted);font-size:7px;font-weight:800;text-decoration:none}
