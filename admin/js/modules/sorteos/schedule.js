@@ -2,7 +2,7 @@ const DAYS=[
   [1,'Lun'],[2,'Mar'],[3,'Mié'],[4,'Jue'],[5,'Vie'],[6,'Sáb'],[7,'Dom']
 ];
 
-export function renderSchedule(program, onSave) {
+export function renderSchedule(program, combinationCount, onSave) {
   const box=document.querySelector('#drawSchedule');
 
   if (!program) {
@@ -21,9 +21,10 @@ export function renderSchedule(program, onSave) {
         </label>
 
         <div class="admin-form-field schedule-amount">
-          <label>Importe por combinación</label>
+          <label>Importe total del sorteo</label>
           <input name="importe" type="number" min="0" step="0.01"
-            value="${Number(program.importe_por_apuesta || 0)}" />
+            value="${(Number(program.importe_por_apuesta || 0) * Number(combinationCount || 0)).toFixed(2)}" />
+          <small class="field-note">${combinationCount} combinaciones activas</small>
         </div>
       </div>
 
@@ -73,10 +74,14 @@ export function renderSchedule(program, onSave) {
     status.textContent='';
 
     try {
+      const totalAmount=Number(data.get('importe') || 0);
+      const count=Number(combinationCount || 0);
+      if (active && !count) throw new Error('No hay combinaciones activas.');
+
       await onSave({
         activa:active,
         dias_semana:days,
-        importe_por_apuesta:Number(data.get('importe') || 0)
+        importe_por_apuesta:count ? Number((totalAmount / count).toFixed(2)) : 0
       });
       status.textContent='Guardado ✓';
       status.className='schedule-ok';
