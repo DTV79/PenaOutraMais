@@ -8,10 +8,10 @@ import {
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261021-16';
-import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-16';
-import { renderDraws } from './list.js?v=20261021-16';
-import { renderSchedule } from './schedule.js?v=20261021-16';
+} from './service.js?v=20261021-17';
+import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-17';
+import { renderDraws } from './list.js?v=20261021-17';
+import { renderSchedule } from './schedule.js?v=20261021-17';
 
 let snapshot=null;
 const drawsArea=document.querySelector('#drawsArea');
