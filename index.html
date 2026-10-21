@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Peña Outra Máis · cuotas, apuestas, premios, bote e histórico" />
-  <title>Peña Outra Máis</title>
+  <title>Peña Outra Máis</title>\n  <link rel="manifest" href="manifest.webmanifest" />\n  <link rel="icon" href="icon.svg" type="image/svg+xml" />
       <style>:root{--bg:#f3f6f9;--surface:#fff;--ink:#0e1724;--muted:#687383;--line:#e3e9ef;--navy:#071a2d;--navy2:#102b45;--gold:#d4a52f;--goldsoft:#fff5d9;--green:#168254;--greensoft:#eaf8f0;--red:#c33f4a;--redsoft:#fff0f1;--blue:#2369a0;--bluesoft:#eef6ff;--shadow:0 12px 34px rgba(16,42,67,.08);--radius:22px}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--ink);background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit}.app-shell{min-height:100dvh;max-width:760px;margin:auto;padding-bottom:calc(90px + env(safe-area-inset-bottom));background:var(--bg)}
 .topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;background:rgba(243,246,249,.94);backdrop-filter:blur(18px);border-bottom:1px solid rgba(227,233,239,.85)}.brand{display:flex;align-items:center;gap:11px;padding:0;border:0;background:transparent;text-align:left;color:inherit}.brand-mark{width:45px;height:45px;display:grid;grid-template-columns:1fr 1fr;place-items:center;padding:5px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:900;outline:2px solid var(--gold);border:3px solid #fff;box-shadow:0 7px 20px rgba(7,26,45,.18)}.brand-mark span{display:grid;place-items:center;width:16px;height:28px;border-radius:50%;background:rgba(255,255,255,.12)}.brand-copy small,.brand-copy strong{display:block}.brand-copy small{font-size:9px;color:var(--muted);font-weight:850;letter-spacing:1.3px}.brand-copy strong{font-size:20px;letter-spacing:-.4px}.season-button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:7px 10px;box-shadow:0 4px 14px rgba(7,26,45,.05);color:var(--ink)}.season-button span,.season-button small{display:block}.season-button span{font-weight:850;font-size:13px}.season-button small{font-size:8px;color:var(--muted);margin-top:1px}
@@ -385,6 +385,11 @@ async function loadPublicDataFromSupabase(){
   }
 }
 loadPublicDataFromSupabase();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
 </script>
 </body>
 </html>
