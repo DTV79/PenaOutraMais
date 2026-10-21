@@ -29,13 +29,13 @@ export function normalizeMemberPayload(form) {
   const clean = (name) => String(data.get(name) || '').trim();
 
   return {
-    nombre: clean('nombre'),
-    apellidos: clean('apellidos'),
-    dni: clean('dni'),
+    nombre: clean('nombre') || null,
+    apellidos: clean('apellidos') || null,
+    dni: clean('dni') || null,
     alias: clean('alias'),
     telefono: clean('telefono') || null,
     email: clean('email') || null,
-    fecha_alta: clean('fecha_alta'),
+    fecha_alta: clean('fecha_alta') || null,
     fecha_baja: clean('fecha_baja') || null
   };
 }
@@ -49,16 +49,16 @@ export function openMemberForm({ member = null, onSave }) {
     content: `
       <form id="memberForm" class="admin-form">
         <div class="admin-form-grid">
-          ${field('nombre', 'Nombre', member?.nombre, 'text', true, 'given-name')}
-          ${field('apellidos', 'Apellidos', member?.apellidos, 'text', true, 'family-name')}
+          ${field('nombre', 'Nombre', member?.nombre, 'text', false, 'given-name')}
+          ${field('apellidos', 'Apellidos', member?.apellidos, 'text', false, 'family-name')}
           ${field('alias', 'Alias', member?.alias, 'text', true)}
-          ${field('dni', 'DNI / NIE', member?.dni, 'text', true)}
+          ${field('dni', 'DNI / NIE', member?.dni, 'text', false)}
           ${field('telefono', 'Teléfono', member?.telefono, 'tel', false, 'tel')}
           ${field('email', 'Correo electrónico', member?.email, 'email', false, 'email')}
-          ${field('fecha_alta', 'Fecha de alta', member?.fecha_alta, 'date', true)}
+          ${field('fecha_alta', 'Fecha de alta', member?.fecha_alta, 'date', false)}
           ${field('fecha_baja', 'Fecha de baja', member?.fecha_baja, 'date')}
         </div>
-        <p class="admin-form-help">Los datos personales solo son accesibles desde la zona de administración.</p>
+        <p class="admin-form-help">Solo el alias es obligatorio. Los datos personales pueden completarse más adelante y solo son accesibles desde administración.</p>
         <div id="memberFormError" class="admin-error"></div>
       </form>
     `,
