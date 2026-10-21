@@ -1,4 +1,4 @@
-import { adminSelect, adminInsert, adminUpdate } from '../../services/admin-api.js';
+import { adminSelect, adminInsert, adminUpdate } from '../../services/admin-api.js?v=20261021-22';
 
 export async function getNumbersSnapshot() {
   const seasons = await adminSelect(
