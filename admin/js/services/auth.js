@@ -133,3 +133,31 @@ export async function signOut() {
   clearSession();
   window.location.replace('./acceso.html');
 }
+
+
+export async function bootstrapFirstAdmin(session) {
+  const response = await fetch(
+    `${SUPABASE_CONFIG.url}/rest/v1/administradores`,
+    {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_CONFIG.publishableKey,
+        Authorization: `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation'
+      },
+      body: JSON.stringify({
+        user_id: session.user.id,
+        nombre: 'Administrador',
+        activo: true
+      })
+    }
+  );
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const rows = await response.json().catch(() => []);
+  return rows?.[0] ?? null;
+}
