@@ -175,6 +175,11 @@ export function renderDraws({ season, games, draws, bets }) {
   const history=draws
     .filter((draw)=>draw.estado==='comprobado')
     .sort((a,b)=>dateSortValue(b.fecha)-dateSortValue(a.fecha) || Number(b.id)-Number(a.id));
+  const activeBadge=document.querySelector('[data-tab-count="enjuego"]');
+  const historyBadge=document.querySelector('[data-tab-count="historico"]');
+  if (activeBadge) activeBadge.textContent=active.length;
+  if (historyBadge) historyBadge.textContent=history.length;
+
   const totalPrize=bets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
   const quotaSpend=bets
     .filter((bet)=>bet.fuente_fondos !== 'bote')
