@@ -11,13 +11,31 @@ export async function getQuotaSnapshot() {
   const season = seasons[0] || null;
 
   if (!season) {
-    return { season:null, members:[], movements:[] };
+    return { season:null, members:[], movements:[], quotaPlaySpend:0 };
+  }
+
+  const draws = await adminSelect(
+    `sorteos?select=id&temporada_id=eq.${season.id}`
+  );
+
+  let quotaPlaySpend = 0;
+  if (draws.length) {
+    const ids = draws.map((row)=>row.id).join(',');
+    const bets = await adminSelect(
+      `apuestas?select=importe,fuente_fondos&sorteo_id=in.(${ids})&fuente_fondos=eq.cuotas`
+    );
+
+    quotaPlaySpend = bets.reduce(
+      (sum,bet)=>sum+Number(bet.importe || 0),
+      0
+    );
   }
 
   return {
     season,
     members: members.filter((member) => !member.fecha_baja),
-    movements: movements.filter((movement) => movement.temporada_id === season.id)
+    movements: movements.filter((movement) => movement.temporada_id === season.id),
+    quotaPlaySpend
   };
 }
 
