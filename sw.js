@@ -1,4 +1,4 @@
-const CACHE='pena-outra-mais-v4';
+const CACHE='pena-outra-mais-v5';
 const ASSETS=[
   './',
   './index.html',
@@ -16,6 +16,7 @@ const ASSETS=[
   './js/modules/normas.js',
   './js/modules/numeros.js',
   './js/modules/premios.js',
+  './js/modules/sorteos.js',
   './js/modules/temporada.js',
   './js/services/public-data.js',
   './js/services/supabase.js',
@@ -42,7 +43,7 @@ self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET') return;
   event.respondWith(
     fetch(event.request).catch(()=>
-      caches.match(event.request).then(response=>response||caches.match('./index.html'))
+      caches.match(event.request,{ignoreSearch:true}).then(response=>response||caches.match('./index.html'))
     )
   );
 });
