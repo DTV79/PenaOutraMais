@@ -281,3 +281,22 @@
   .award-tabs{display:grid;overflow:visible}
   .award-tabs .draw-tab{flex:auto}
 }
+
+.award-filter-bar{display:grid;grid-template-columns:1.4fr repeat(3,minmax(115px,.7fr)) minmax(190px,1fr) auto;gap:8px;align-items:end;margin-bottom:9px;padding:11px;border:1px solid var(--line);border-radius:14px;background:#f8fafb}
+.award-filter-bar>div{min-width:0}
+.award-filter-bar label{display:block;margin:0 0 5px;color:#41505e;font-size:10px;font-weight:850}
+.award-filter-bar input,.award-filter-bar select{width:100%;min-height:38px;border:1px solid #dbe3ea;border-radius:10px;background:#fff;padding:7px 9px;font:inherit;font-size:11px;color:var(--ink);outline:none}
+.award-filter-bar input:focus,.award-filter-bar select:focus{border-color:#7f9bb4;box-shadow:0 0 0 3px rgba(35,105,160,.08)}
+.award-filter-reset{height:38px;align-self:end}
+.award-filter-result{display:flex;justify-content:flex-end;margin:0 1px 7px;color:var(--muted);font-size:10px;font-weight:700}
+.award-filter-empty{padding:28px 10px}
+@media(max-width:999px){
+  .award-filter-bar{grid-template-columns:repeat(2,1fr)}
+  .award-filter-search,.award-filter-order{grid-column:1/-1}
+  .award-filter-reset{width:max-content}
+}
+@media(max-width:599px){
+  .award-filter-bar{grid-template-columns:1fr}
+  .award-filter-search,.award-filter-order{grid-column:auto}
+  .award-filter-reset{width:100%}
+}
