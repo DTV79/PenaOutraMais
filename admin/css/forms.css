@@ -300,3 +300,20 @@
   .award-filter-search,.award-filter-order{grid-column:auto}
   .award-filter-reset{width:100%}
 }
+
+.season-summary-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.season-summary-strip>div{padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:#f8fafb}
+.season-summary-strip small,.season-summary-strip strong{display:block}
+.season-summary-strip small{color:var(--muted);font-size:9px}
+.season-summary-strip strong{margin-top:3px;font-size:16px}
+.season-table td:first-child strong{display:block}
+.season-provisional,.season-unknown{display:block;margin-top:3px;color:var(--muted);font-size:9px;font-weight:500}
+.season-current-row{background:#fbf7e9}
+.season-history-note{margin-top:12px}
+.season-annual-preview{display:flex;flex-direction:column;justify-content:flex-end}
+.season-annual-preview strong{min-height:44px;display:flex;align-items:center;padding:9px 11px;border:1px solid var(--line);border-radius:13px;background:#f5f8fa;font-size:14px}
+.season-action-disabled{opacity:.45}
+@media(max-width:759px){
+  .season-summary-strip{grid-template-columns:1fr}
+  .season-table{min-width:920px}
+}
