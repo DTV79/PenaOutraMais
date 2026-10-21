@@ -23,7 +23,7 @@ export function renderAwardsSummary({ season, summary, movements }) {
   box.innerHTML = `
     <article class="admin-kpi"><small>Arrastre</small><strong>${money(summary?.arrastre_inicial)}</strong></article>
     <article class="admin-kpi"><small>Premios</small><strong>${money(totalPrizes)}</strong></article>
-    <article class="admin-kpi"><small>Gastos / salidas</small><strong>${money(summary?.gastos_salidas)}</strong></article>
+    <article class="admin-kpi"><small>Gastos / salidas (Bote)</small><strong>${money(summary?.gastos_salidas)}</strong></article>
     <article class="admin-kpi"><small>Bote actual</small><strong>${money(summary?.saldo_final)}</strong></article>
   `;
 
