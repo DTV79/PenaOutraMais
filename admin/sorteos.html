@@ -35,16 +35,16 @@
       <section id="drawsSummary" class="admin-kpis"></section>
 
       <nav class="draw-tabs" aria-label="Secciones de sorteos">
-        <button class="draw-tab active" type="button" data-draw-tab="programadas">
+        <button class="draw-tab active" type="button" data-draw-tab="enjuego">
+          <span>En Juego</span>
+          <small data-tab-count="enjuego">0</small>
+        </button>
+        <button class="draw-tab" type="button" data-draw-tab="programadas">
           <span>Apuestas Programadas</span>
           <small data-tab-count="programadas">0</small>
         </button>
         <button class="draw-tab" type="button" data-draw-tab="especiales">
           <span>Apuestas Especiales</span>
-        </button>
-        <button class="draw-tab" type="button" data-draw-tab="enjuego">
-          <span>En Juego</span>
-          <small data-tab-count="enjuego">0</small>
         </button>
         <button class="draw-tab" type="button" data-draw-tab="historico">
           <span>Histórico</span>
@@ -53,7 +53,7 @@
       </nav>
 
       <div class="draw-tab-panels">
-        <section class="draw-tab-panel active" data-draw-panel="programadas">
+        <section class="draw-tab-panel" data-draw-panel="programadas">
           <section class="admin-section">
             <div class="admin-section-head">
               <div>
@@ -84,7 +84,7 @@
           </section>
         </section>
 
-        <section class="draw-tab-panel" data-draw-panel="enjuego">
+        <section class="draw-tab-panel active" data-draw-panel="enjuego">
           <section class="admin-section">
             <div class="admin-section-head">
               <div>
@@ -111,6 +111,6 @@
     </main>
   </div>
 
-  <script type="module" src="js/modules/sorteos/index.js?v=20261021-26"></script>
+  <script type="module" src="js/modules/sorteos/index.js?v=20261021-27"></script>
 </body>
 </html>
