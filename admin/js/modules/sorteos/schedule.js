@@ -38,8 +38,7 @@ export function renderSchedule(program, combinationCount, onSave) {
       </div>
 
       <p class="admin-form-help">
-        Marca exactamente los días en los que la peña juega La Primitiva.
-        Los reintegros no se programan porque cambian en cada resguardo: se añaden después en cada sorteo con el botón “Reintegros”.
+        La jugada habitual se financia con las cuotas anuales. Los reintegros no se programan porque cambian en cada resguardo: se añaden después en cada sorteo con el botón “Reintegros”.
       </p>
 
       <div class="schedule-actions">
@@ -56,12 +55,18 @@ export function renderSchedule(program, combinationCount, onSave) {
   function updateAmountHelp() {
     const total=Number(amountInput.value || 0);
     const perBet=combinationCount ? total / combinationCount : 0;
+    const selectedDays=form.querySelectorAll('input[name="dia"]:checked').length;
+    const weekly=total * selectedDays;
+
     amountHelp.textContent=combinationCount
       ? combinationCount + ' combinaciones × ' +
         perBet.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) +
         ' € = ' +
         total.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) +
-        ' € por sorteo'
+        ' € por sorteo · ' +
+        selectedDays + ' sorteos = ' +
+        weekly.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) +
+        ' € por semana'
       : 'No hay combinaciones activas.';
   }
 
@@ -71,6 +76,7 @@ export function renderSchedule(program, combinationCount, onSave) {
   form.querySelectorAll('.weekday-option input').forEach((input)=>{
     input.addEventListener('change',()=>{
       input.closest('.weekday-option')?.classList.toggle('selected',input.checked);
+      updateAmountHelp();
     });
   });
 
