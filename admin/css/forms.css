@@ -177,3 +177,54 @@
 @media(max-width:639px){#feesFund{grid-template-columns:1fr}}
 
 .draw-status.scheduled{background:#eaf1fb;color:#365b85}
+
+/* Escala de lectura global · Administración */
+.admin-modal-header h2{font-size:22px}
+.admin-confirm-text{font-size:13px}
+.admin-form-field label{font-size:11px}
+.admin-form-field input,.admin-form-field select,.admin-form-field textarea{font-size:13.5px}
+.admin-form-help{font-size:10.5px}
+.field-note{font-size:10px}
+.admin-form-subtitle{font-size:11px}
+.member-summary span{font-size:10px}
+.member-summary strong{font-size:18px}
+.member-admin-name strong{font-size:14px}
+.member-admin-name small{font-size:11px}
+.member-admin-meta small{font-size:9px}
+.member-admin-meta strong{font-size:11px}
+.member-off-note{font-size:10px}
+.quota-pending-row div strong,.quota-pending-row>strong{font-size:13px}
+.quota-pending-row div small{font-size:10px}
+.quota-future-head span{font-size:11px}
+.quota-future-head strong{font-size:19px}
+.admin-mini-action{font-size:10px;padding:7px 9px}
+.quota-cancelled-tag{font-size:9px}
+.admin-check-row strong{font-size:12px}
+.admin-check-row small{font-size:10px}
+.number-admin-head strong{font-size:14px}
+.number-admin-head small{font-size:10px}
+.number-order{font-size:13px}
+.number-ball{font-size:16px}
+.award-month-row span{font-size:11px}
+.award-month-row strong{font-size:12px}
+.award-note{font-size:10px}
+.weekday-option span{font-size:11px}
+.schedule-actions>span{font-size:11px}
+.draw-admin-head h3{font-size:17px}
+.draw-admin-head small{font-size:10px}
+.draw-status{font-size:9px;padding:6px 8px}
+.draw-result-balls span{font-size:12px}
+.draw-result-extra,.draw-result-line{font-size:10px}
+.draw-bet-row>div:first-child strong{font-size:11px}
+.draw-bet-row>div:first-child small{font-size:10px}
+.draw-bet-prize small{font-size:9px}
+.draw-bet-prize strong{font-size:12px}
+.draw-message{font-size:10px}
+.draw-total{font-size:10px}
+.draw-total strong{font-size:13px}
+.refund-bet-row strong{font-size:11px}
+.refund-bet-row small{font-size:10px}
+.draw-stake-summary span{font-size:10px}
+.draw-stake-summary strong{font-size:14px}
+.draw-stake-summary small{font-size:10px}
+.fund-source{font-size:8px}
