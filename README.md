@@ -54,7 +54,12 @@ PenaOutraMais/
 │   ├── utils/
 │   │   └── format.js
 │   └── pwa.js
-├── schema.sql
+├── docs/
+│   └── ARCHITECTURE.md
+├── supabase/
+│   ├── schema.sql
+│   └── migrations/
+│       └── 0001_baseline.md
 ├── manifest.webmanifest
 ├── icon.svg
 ├── sw.js
