@@ -5,9 +5,10 @@ import {
   createFixedDraw,
   createSpecialBet,
   saveProgram,
-  checkDraw
+  checkDraw,
+  updateDrawRefund
 } from './service.js';
-import { openFixedDrawForm, openSpecialBetForm } from './form.js';
+import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js';
 import { renderDraws } from './list.js';
 import { renderSchedule } from './schedule.js';
 
@@ -66,6 +67,22 @@ async function init() {
   });
 
   drawsBox.addEventListener('click',async(event)=>{
+    const refundButton=event.target.closest('[data-draw-refund]');
+    if (refundButton) {
+      const draw=snapshot?.draws.find((row)=>String(row.id)===String(refundButton.dataset.drawRefund));
+      if (!draw) return;
+
+      openRefundForm({
+        draw,
+        bets:snapshot.bets,
+        onSave:async(reintegro)=>{
+          await updateDrawRefund(draw.id,snapshot.bets,reintegro);
+          await refresh();
+        }
+      });
+      return;
+    }
+
     const button=event.target.closest('[data-draw-check]');
     if (!button) return;
 
