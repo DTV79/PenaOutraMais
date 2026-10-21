@@ -37,3 +37,21 @@
   .admin-grid{grid-template-columns:repeat(3,1fr)}
   .admin-kpis{grid-template-columns:repeat(4,1fr)}
 }
+
+/* Escala de lectura global · Administración */
+.admin-page-title h1{font-size:30px}
+.admin-page-title p:last-child{font-size:13px}
+.admin-card strong{font-size:16px}
+.admin-card small{font-size:11px}
+.admin-kpi{padding:16px}
+.admin-kpi small{font-size:10px;letter-spacing:.65px}
+.admin-kpi strong{font-size:24px}
+.admin-section{padding:18px}
+.admin-section-head h2{font-size:19px}
+.admin-action{font-size:11px;padding:11px 14px}
+.admin-table th,.admin-table td{font-size:12px;padding:11px 9px}
+.admin-table th{font-size:10px}
+.admin-empty strong{font-size:14px}
+.admin-empty p{font-size:11px}
+.admin-status{font-size:10px}
+.admin-error,.admin-loading{font-size:11px}
