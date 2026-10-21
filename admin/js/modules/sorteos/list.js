@@ -21,7 +21,14 @@ function dateEs(value) {
   return `${d}/${m}/${y}`;
 }
 
+function todayIso() {
+  const now=new Date();
+  const local=new Date(now.getTime()-now.getTimezoneOffset()*60000);
+  return local.toISOString().slice(0,10);
+}
+
 function statusLabel(draw) {
+  if (draw.estado === 'pendiente' && draw.fecha > todayIso()) return ['Programado','scheduled'];
   if (draw.estado === 'comprobado' && draw.resultado?.revision_manual) return ['Revisar','review'];
   if (draw.estado === 'comprobado') return ['Comprobado','ok'];
   if (draw.estado === 'sin_resultado') return ['Pendiente SELAE','pending'];
