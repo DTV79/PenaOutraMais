@@ -55,13 +55,15 @@ export function openBoteForm({ season, movements, movement=null, onSave }) {
           <div class="admin-form-field">
             <label for="bote-importe">Importe (€) *</label>
             <input id="bote-importe" name="importe" type="number" step="0.01"
-              value="${esc(movement ? Math.abs(Number(movement.importe)) : '')}" required />
+              value="${esc(movement
+                ? (movement.tipo === 'ajuste' ? Number(movement.importe) : Math.abs(Number(movement.importe)))
+                : '')}" required />
           </div>
 
           <div class="admin-form-field">
             <label for="bote-fecha">Fecha</label>
             <input id="bote-fecha" name="fecha" type="date"
-              value="${esc(movement?.fecha || todayIso())}" />
+              value="${esc(editing ? (movement?.fecha || '') : todayIso())}" />
           </div>
 
           <div class="admin-form-field">
