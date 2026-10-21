@@ -8,13 +8,13 @@ import {
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261021-14';
-import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-14';
-import { renderDraws } from './list.js?v=20261021-14';
-import { renderSchedule } from './schedule.js?v=20261021-14';
+} from './service.js?v=20261021-15';
+import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-15';
+import { renderDraws } from './list.js?v=20261021-15';
+import { renderSchedule } from './schedule.js?v=20261021-15';
 
 let snapshot=null;
-const drawsBox=document.querySelector('#drawsAdmin');
+const drawsArea=document.querySelector('#drawsArea');
 
 async function refresh() {
   try {
@@ -29,7 +29,8 @@ async function refresh() {
       renderSchedule(updated,snapshot.fixedCombinationCount,async(next)=>saveProgram(updated.id,next));
     });
   } catch(error) {
-    drawsBox.innerHTML=`<div class="admin-error visible">${error.message}</div>`;
+    document.querySelector('#drawsActive').innerHTML=
+      `<div class="admin-error visible">${error.message}</div>`;
   }
 }
 
@@ -68,7 +69,7 @@ async function init() {
     });
   });
 
-  drawsBox.addEventListener('click',async(event)=>{
+  drawsArea.addEventListener('click',async(event)=>{
     const deleteButton=event.target.closest('[data-draw-delete]');
     if (deleteButton) {
       const draw=snapshot?.draws.find((row)=>String(row.id)===String(deleteButton.dataset.drawDelete));
@@ -78,7 +79,7 @@ async function init() {
       const total=drawBets.reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
       const confirmed=await confirmModal({
         title:'Eliminar sorteo',
-        message:`¿Quieres eliminar el sorteo del ${draw.fecha.split('-').reverse().join('/')}? Se borrarán también sus apuestas. Si tiene un premio incorporado al bote, ese movimiento también se eliminará y el bote se recalculará. Total jugado: ${total.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €.`,
+        message:`¿Quieres eliminar el sorteo del ${draw.fecha.split('-').reverse().join('/')}? Se borrarán también sus apuestas y se devolverá el gasto al fondo del que salió. Total jugado: ${total.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €.`,
         confirmText:'Eliminar',
         danger:true
       });
@@ -102,8 +103,8 @@ async function init() {
       openRefundForm({
         draw,
         bets:snapshot.bets,
-        onSave:async(reintegro)=>{
-          await updateDrawRefund(draw.id,snapshot.bets,reintegro);
+        onSave:async(reintegros)=>{
+          await updateDrawRefund(draw.id,snapshot.bets,reintegros);
           await refresh();
         }
       });
