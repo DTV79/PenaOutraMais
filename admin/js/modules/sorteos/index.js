@@ -7,10 +7,10 @@ import {
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261021-19';
-import { openSpecialBetForm, openRefundForm } from './form.js?v=20261021-19';
-import { renderDraws } from './list.js?v=20261021-19';
-import { renderSchedule } from './schedule.js?v=20261021-19';
+} from './service.js?v=20261021-20';
+import { openSpecialBetForm, openRefundForm } from './form.js?v=20261021-20';
+import { renderDraws } from './list.js?v=20261021-20';
+import { renderSchedule } from './schedule.js?v=20261021-20';
 
 let snapshot=null;
 const drawsArea=document.querySelector('#drawsArea');
@@ -91,6 +91,7 @@ async function init() {
       openRefundForm({
         draw,
         bets:snapshot.bets,
+        combinations:snapshot.fixedCombinations,
         onSave:async(reintegros)=>{
           await updateDrawRefund(draw.id,snapshot.bets,reintegros);
           await refresh();
