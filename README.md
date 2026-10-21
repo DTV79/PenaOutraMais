@@ -32,3 +32,23 @@ Los datos personales de socios no se exponen a `anon` ni a la parte pública.
 ## Seguridad
 
 La web utiliza únicamente la **publishable key** de Supabase. Nunca debe incluirse una `service_role` o una secret key en el frontend.
+
+## Estructura del código
+
+```text
+PenaOutraMais/
+├── index.html
+├── css/
+│   └── styles.css
+├── js/
+│   ├── supabase.js
+│   ├── app.js
+│   └── pwa.js
+├── schema.sql
+├── manifest.webmanifest
+├── icon.svg
+├── sw.js
+└── README.md
+```
+
+El frontend está separado por responsabilidad: HTML para estructura, CSS para presentación, `supabase.js` para conexión pública al backend, `app.js` para comportamiento y renderizado, y `pwa.js` para instalación/app móvil.
