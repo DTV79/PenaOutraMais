@@ -4,11 +4,12 @@ import {
   getAwardsSnapshot,
   createBoteMovement,
   updateBoteMovement,
-  cancelBoteMovement
-} from './service.js?v=20261021-28';
-import { openBoteForm } from './form.js?v=20261021-28';
-import { renderAwardsSummary } from './summary.js?v=20261021-28';
-import { renderBoteMovements } from './list.js?v=20261021-28';
+  cancelBoteMovement,
+  deleteBoteMovement
+} from './service.js?v=20261021-29';
+import { openBoteForm } from './form.js?v=20261021-29';
+import { renderAwardsSummary } from './summary.js?v=20261021-29';
+import { renderBoteMovements } from './list.js?v=20261021-29';
 
 let snapshot=null;
 
@@ -67,6 +68,31 @@ function openEdit(id) {
   });
 }
 
+async function deleteMovement(id) {
+  const movement=snapshot?.movements.find((row) => String(row.id)===String(id));
+  if (!movement || !movement.anulado_at) return;
+
+  const confirmed=await confirmModal({
+    title:'Eliminar movimiento',
+    message:`¿Quieres eliminar definitivamente “${movement.concepto}”? Esta acción no se puede deshacer.`,
+    confirmText:'Eliminar',
+    danger:true
+  });
+
+  if (!confirmed) return;
+
+  try {
+    await deleteBoteMovement(id);
+    await refresh();
+  } catch (error) {
+    openModal({
+      title:'No se pudo eliminar',
+      content:`<div class="admin-error visible">${error.message}</div>`,
+      actions:'<button class="admin-action" type="button" data-modal-close>Cerrar</button>'
+    });
+  }
+}
+
 async function cancelMovement(id) {
   const movement=snapshot?.movements.find((row) => String(row.id)===String(id));
   if (!movement || movement.anulado_at) return;
@@ -106,7 +132,13 @@ async function init() {
     }
 
     const cancel=event.target.closest('[data-award-cancel]');
-    if (cancel) cancelMovement(cancel.dataset.awardCancel);
+    if (cancel) {
+      cancelMovement(cancel.dataset.awardCancel);
+      return;
+    }
+
+    const remove=event.target.closest('[data-award-delete]');
+    if (remove) deleteMovement(remove.dataset.awardDelete);
   });
 
   await refresh();
