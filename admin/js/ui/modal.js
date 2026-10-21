@@ -1,3 +1,12 @@
+function escapeHtml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 export function closeModal() {
   document.querySelector('.admin-modal-backdrop')?.remove();
   document.body.classList.remove('modal-open');
@@ -12,8 +21,8 @@ export function openModal({ title, subtitle = '', content = '', actions = '' }) 
     <section class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
       <header class="admin-modal-header">
         <div>
-          ${subtitle ? `<p class="eyebrow">${subtitle}</p>` : ''}
-          <h2 id="adminModalTitle">${title}</h2>
+          ${subtitle ? `<p class="eyebrow">${escapeHtml(subtitle)}</p>` : ''}
+          <h2 id="adminModalTitle">${escapeHtml(title)}</h2>
         </div>
         <button class="admin-modal-close" type="button" data-modal-close aria-label="Cerrar">×</button>
       </header>
@@ -45,7 +54,7 @@ export function confirmModal({
     const modal = openModal({
       title,
       content: `
-        <p class="admin-confirm-text">${message}</p>
+        <p class="admin-confirm-text">${escapeHtml(message)}</p>
         ${extraContent}
       `,
       actions: `
