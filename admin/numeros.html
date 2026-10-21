@@ -7,8 +7,8 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Números · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261021-4" />
-  <link rel="stylesheet" href="css/forms.css?v=20261021-4" />
+  <link rel="stylesheet" href="css/styles.css?v=20261021-6" />
+  <link rel="stylesheet" href="css/forms.css?v=20261021-6" />
 </head>
 <body data-admin-page="numeros">
   <div class="admin-fixed-shell">
@@ -24,11 +24,15 @@
 </div>
   <div class="admin-wrap"><main class="admin-main">
     <header class="admin-page-title"><p class="eyebrow">APUESTAS FIJAS</p><h1>Números</h1><p>Combinaciones asociadas a la temporada activa.</p></header>
+    <section id="numbersSummary" class="admin-kpis"></section>
     <section class="admin-section">
-      <div class="admin-section-head"><div><p class="eyebrow">COMBINACIONES</p><h2>Temporada actual</h2></div><button class="admin-action" type="button" disabled>Editar</button></div>
-      <div id="numbersAdmin" class="admin-grid admin-loading">Cargando números…</div>
+      <div class="admin-section-head">
+        <div><p class="eyebrow">COMBINACIONES</p><h2>Temporada <span data-numbers-season>actual</span></h2></div>
+        <button class="admin-action" id="newCombinationButton" type="button">+ Nueva combinación</button>
+      </div>
+      <div id="numbersAdmin" class="admin-loading">Cargando números…</div>
     </section>
   </main></div>
-  <script type="module" src="js/modules/numeros.js"></script>
+  <script type="module" src="js/modules/numeros/index.js?v=20261021-6"></script>
 </body>
 </html>
