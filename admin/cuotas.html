@@ -7,8 +7,8 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Cuotas · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261021-4" />
-  <link rel="stylesheet" href="css/forms.css?v=20261021-4" />
+  <link rel="stylesheet" href="css/styles.css?v=20261021-5" />
+  <link rel="stylesheet" href="css/forms.css?v=20261021-5" />
 </head>
 <body data-admin-page="cuotas">
   <div class="admin-fixed-shell">
@@ -30,7 +30,16 @@
       <div id="feesPending" class="admin-loading">Calculando pendientes…</div>
     </section>
     <section class="admin-section">
-      <div class="admin-section-head"><div><p class="eyebrow">MOVIMIENTOS</p><h2>Cuotas</h2></div><button class="admin-action" type="button" disabled>+ Registrar pago</button></div>
+      <div class="admin-section-head">
+        <div><p class="eyebrow">SALDOS FUTUROS</p><h2>Próximas temporadas</h2></div>
+      </div>
+      <div id="feesFuture" class="admin-loading">Calculando saldos…</div>
+    </section>
+    <section class="admin-section">
+      <div class="admin-section-head">
+        <div><p class="eyebrow">MOVIMIENTOS</p><h2>Cuotas</h2></div>
+        <button class="admin-action" id="newQuotaMovementButton" type="button">+ Registrar movimiento</button>
+      </div>
       <div id="feesAdmin" class="admin-loading">Cargando movimientos…</div>
     </section>
   </main></div>
