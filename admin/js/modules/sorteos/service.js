@@ -30,8 +30,7 @@ export async function getDrawsSnapshot() {
   if (draws.length) {
     const ids = draws.map((row) => row.id).join(',');
     bets = await adminSelect(
-      `apuestas?select=id,sorteo_id,origen_combinacion_id,tipo,descripcion,importe,datos,comprobada,categoria_premio,premio,detalle_resultado&sortero_id=in.(${ids})`
-        .replace('sortero_id','sorteo_id')
+      `apuestas?select=id,sorteo_id,origen_combinacion_id,tipo,descripcion,importe,datos,comprobada,categoria_premio,premio,detalle_resultado&sorteo_id=in.(${ids})&order=id.asc`
     );
   }
 
@@ -96,4 +95,35 @@ export function saveProgram(programId, payload) {
 
 export function checkDraw(drawId) {
   return adminFunction('comprobar-sorteos-selae', { sorteo_id: Number(drawId) });
+}
+
+
+export async function updateDrawRefund(drawId, bets, reintegro) {
+  const fixedBets = bets.filter(
+    (bet) => Number(bet.sorteo_id) === Number(drawId) && bet.tipo === 'fija'
+  );
+
+  if (!fixedBets.length) {
+    throw new Error('Este sorteo no tiene combinaciones fijas.');
+  }
+
+  await Promise.all(
+    fixedBets.map((bet) =>
+      adminUpdate(
+        `apuestas?id=eq.${encodeURIComponent(bet.id)}`,
+        {
+          datos: {
+            ...(bet.datos || {}),
+            reintegro: Number(reintegro)
+          },
+          comprobada: false,
+          categoria_premio: null,
+          premio: 0,
+          detalle_resultado: null
+        }
+      )
+    )
+  );
+
+  return fixedBets.length;
 }
