@@ -37,13 +37,13 @@ export async function getDrawsSnapshot() {
   return { season, games, draws, bets, programs };
 }
 
-export async function createFixedDraw({ date, amount, reintegro }) {
+export async function createFixedDraw({ date, amount }) {
   return adminRpc('crear_sorteo_fijas', {
     p_fecha: date,
     p_juego_codigo: 'primitiva',
     p_nombre: null,
     p_importe_por_apuesta: Number(amount || 0),
-    p_reintegro: reintegro === '' || reintegro === null ? null : Number(reintegro),
+    p_reintegro: null,
     p_automatico: false
   });
 }
@@ -98,7 +98,7 @@ export function checkDraw(drawId) {
 }
 
 
-export async function updateDrawRefund(drawId, bets, reintegro) {
+export async function updateDrawRefund(drawId, bets, refunds) {
   const fixedBets = bets.filter(
     (bet) => Number(bet.sorteo_id) === Number(drawId) && bet.tipo === 'fija'
   );
@@ -108,21 +108,22 @@ export async function updateDrawRefund(drawId, bets, reintegro) {
   }
 
   await Promise.all(
-    fixedBets.map((bet) =>
-      adminUpdate(
+    fixedBets.map((bet) => {
+      const value = refunds[String(bet.id)];
+      return adminUpdate(
         `apuestas?id=eq.${encodeURIComponent(bet.id)}`,
         {
           datos: {
             ...(bet.datos || {}),
-            reintegro: Number(reintegro)
+            reintegro: value === '' || value === null ? null : Number(value)
           },
           comprobada: false,
           categoria_premio: null,
           premio: 0,
           detalle_resultado: null
         }
-      )
-    )
+      );
+    })
   );
 
   return fixedBets.length;
