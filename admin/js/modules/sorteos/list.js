@@ -103,6 +103,8 @@ export function renderDraws({ season, games, draws, bets }) {
     const drawBets=betsByDraw.get(draw.id) || [];
     const [label,statusClass]=statusLabel(draw);
     const prize=drawBets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
+    const stake=drawBets.reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
+    const perBet=drawBets.length ? stake / drawBets.length : 0;
 
     return `
       <article class="draw-admin-card">
@@ -117,6 +119,12 @@ export function renderDraws({ season, games, draws, bets }) {
 
         ${resultSummary(draw,game)}
 
+        <div class="draw-stake-summary">
+          <span>Total jugado</span>
+          <strong>${money(stake)}</strong>
+          <small>${drawBets.length} combinaciones × ${money(perBet)}</small>
+        </div>
+
         <div class="draw-bets">
           ${drawBets.map((bet)=>`
             <div class="draw-bet-row">
@@ -125,8 +133,9 @@ export function renderDraws({ season, games, draws, bets }) {
                 <small>${betSummary(bet,game)}</small>
               </div>
               <div class="draw-bet-prize">
-                ${bet.categoria_premio ? `<small>${esc(bet.categoria_premio)}</small>` : ''}
-                <strong>${money(bet.premio)}</strong>
+                ${draw.estado === 'comprobado'
+                  ? `${bet.categoria_premio ? `<small>${esc(bet.categoria_premio)}</small>` : '<small>Premio</small>'}<strong>${money(bet.premio)}</strong>`
+                  : `<small>Jugado</small><strong>${money(bet.importe)}</strong>`}
               </div>
             </div>
           `).join('')}
@@ -137,8 +146,9 @@ export function renderDraws({ season, games, draws, bets }) {
         ${prize > 0 ? `<p class="draw-total">Premio detectado <strong>${money(prize)}</strong></p>` : ''}
 
         <footer class="draw-admin-actions">
+          <button class="admin-action danger-soft" type="button" data-draw-delete="${draw.id}">Eliminar sorteo</button>
           ${draw.juego_codigo === 'primitiva' && drawBets.some((bet)=>bet.tipo==='fija') ? `
-            <button class="admin-action secondary" type="button" data-draw-refund="${draw.id}">Reintegro</button>
+            <button class="admin-action secondary" type="button" data-draw-refund="${draw.id}">Reintegros</button>
           ` : ''}
           ${draw.fuente_url ? `<a class="admin-action secondary" href="${esc(draw.fuente_url)}" target="_blank" rel="noopener">Ver SELAE</a>` : ''}
           <button class="admin-action" type="button" data-draw-check="${draw.id}">Comprobar ahora</button>
