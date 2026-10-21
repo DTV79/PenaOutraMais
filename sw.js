@@ -1,10 +1,26 @@
-const CACHE='pena-outra-mais-v2';
+const CACHE='pena-outra-mais-v3';
 const ASSETS=[
   './',
   './index.html',
   './css/styles.css',
-  './js/supabase.js',
-  './js/app.js',
+  './css/base.css',
+  './css/layout.css',
+  './css/components.css',
+  './css/pages.css',
+  './css/theme.css',
+  './js/app/main.js',
+  './js/config/supabase-config.js',
+  './js/data/fallback.js',
+  './js/modules/cuotas.js',
+  './js/modules/historico.js',
+  './js/modules/normas.js',
+  './js/modules/numeros.js',
+  './js/modules/premios.js',
+  './js/modules/temporada.js',
+  './js/services/public-data.js',
+  './js/services/supabase.js',
+  './js/ui/navigation.js',
+  './js/utils/format.js',
   './js/pwa.js',
   './manifest.webmanifest',
   './icon.svg'
@@ -16,13 +32,17 @@ self.addEventListener('install',event=>{
 
 self.addEventListener('activate',event=>{
   event.waitUntil(
-    caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
+    caches.keys().then(keys=>Promise.all(
+      keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))
+    ))
   );
 });
 
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET') return;
   event.respondWith(
-    fetch(event.request).catch(()=>caches.match(event.request).then(response=>response||caches.match('./index.html')))
+    fetch(event.request).catch(()=>
+      caches.match(event.request).then(response=>response||caches.match('./index.html'))
+    )
   );
 });
