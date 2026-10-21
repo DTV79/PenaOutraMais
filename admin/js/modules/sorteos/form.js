@@ -294,33 +294,66 @@ export function openSpecialBetForm({ season, games, onSave }) {
 }
 
 
-export function openRefundForm({ draw, bets, onSave }) {
-  const fixedBets = bets.filter(
-    (bet) => Number(bet.sorteo_id) === Number(draw.id) && bet.tipo === 'fija'
+export function openRefundForm({ draw, bets, combinations, onSave }) {
+  const orderById=new Map(
+    (combinations || []).map((combo)=>[String(combo.id),Number(combo.numero_orden)])
   );
+
+  const fixedBets = bets
+    .filter((bet) => Number(bet.sorteo_id) === Number(draw.id) && bet.tipo === 'fija')
+    .map((bet)=>({
+      ...bet,
+      numero_orden:orderById.get(String(bet.origen_combinacion_id)) || 999
+    }))
+    .sort((a,b)=>a.numero_orden-b.numero_orden);
+
+  const groups=[
+    {
+      id:'grupo1',
+      title:'Resguardo 1',
+      subtitle:'Combinaciones I–V',
+      bets:fixedBets.filter((bet)=>bet.numero_orden>=1 && bet.numero_orden<=5)
+    },
+    {
+      id:'grupo2',
+      title:'Resguardo 2',
+      subtitle:'Combinaciones VI–X',
+      bets:fixedBets.filter((bet)=>bet.numero_orden>=6 && bet.numero_orden<=10)
+    }
+  ];
+
+  function commonRefund(group) {
+    const values=[...new Set(
+      group.bets
+        .map((bet)=>bet.datos?.reintegro)
+        .filter((value)=>value !== null && value !== undefined && value !== '')
+        .map(Number)
+    )];
+    return values.length===1 ? values[0] : '';
+  }
 
   const modal = openModal({
     title:'Reintegros',
     subtitle:`LA PRIMITIVA · ${draw.fecha.split('-').reverse().join('/')}`,
     content:`
       <form id="refundForm" class="admin-form">
-        <div class="refund-bet-list">
-          ${fixedBets.map((bet)=>`
-            <div class="refund-bet-row">
+        <div class="refund-group-list">
+          ${groups.map((group)=>`
+            <div class="refund-group-card">
               <div>
-                <strong>${esc(bet.descripcion || 'Combinación')}</strong>
-                <small>${(bet.datos?.numeros || []).join(' · ')}</small>
+                <strong>${group.title}</strong>
+                <small>${group.subtitle} · mismo reintegro para las 5</small>
               </div>
               <div class="admin-form-field">
-                <label>R</label>
-                <input name="refund_${bet.id}" type="number" min="0" max="9" step="1"
-                  value="${bet.datos?.reintegro ?? ''}" />
+                <label for="refund-${group.id}">R</label>
+                <input id="refund-${group.id}" name="${group.id}" type="number"
+                  min="0" max="9" step="1" value="${commonRefund(group)}" />
               </div>
             </div>
           `).join('')}
         </div>
         <p class="admin-form-help">
-          Pon el reintegro que figure para cada apuesta/resguardo. Puedes dejar una combinación vacía si todavía no lo sabes.
+          Cada sorteo tiene dos resguardos: un reintegro para las combinaciones I–V y otro para VI–X.
         </p>
         <div id="refundError" class="admin-error"></div>
       </form>
@@ -340,18 +373,24 @@ export function openRefundForm({ draw, bets, onSave }) {
     const data=new FormData(formEl);
     const refunds={};
 
-    for (const bet of fixedBets) {
-      const raw=String(data.get(`refund_${bet.id}`) ?? '').trim();
+    for (const group of groups) {
+      const raw=String(data.get(group.id) ?? '').trim();
+
       if (raw !== '') {
         const value=Number(raw);
         if (!Number.isInteger(value) || value < 0 || value > 9) {
-          errorBox.textContent='Todos los reintegros deben estar entre 0 y 9.';
+          errorBox.textContent='Los reintegros deben estar entre 0 y 9.';
           errorBox.classList.add('visible');
           return;
         }
-        refunds[String(bet.id)]=value;
+
+        group.bets.forEach((bet)=>{
+          refunds[String(bet.id)]=value;
+        });
       } else {
-        refunds[String(bet.id)]='';
+        group.bets.forEach((bet)=>{
+          refunds[String(bet.id)]='';
+        });
       }
     }
 
