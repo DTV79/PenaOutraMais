@@ -41,3 +41,11 @@
   .admin-form-grid{grid-template-columns:repeat(2,1fr)}
   .member-admin-list{grid-template-columns:repeat(2,1fr)}
 }
+
+.quota-pending-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.quota-pending-row:last-child{border-bottom:0}
+.quota-pending-row div{min-width:0}
+.quota-pending-row div strong,.quota-pending-row div small{display:block}
+.quota-pending-row div strong{font-size:11px}
+.quota-pending-row div small{margin-top:2px;color:var(--muted);font-size:8px}
+.quota-pending-row>strong{font-size:11px;color:var(--red)}
