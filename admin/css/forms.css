@@ -61,3 +61,29 @@
 .admin-mini-action.danger{border-color:#f2cfd3;background:var(--redsoft);color:var(--red)}
 .quota-row-cancelled{opacity:.48;text-decoration:line-through}
 .quota-cancelled-tag{display:inline-block;margin-left:5px;padding:3px 5px;border-radius:999px;background:#eef2f6;color:var(--muted);font-size:7px;font-weight:800;text-decoration:none}
+
+.admin-form-subtitle{margin:0 0 7px;color:#41505e;font-size:9px;font-weight:850}
+.number-input-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.number-field input{text-align:center;font-size:16px;font-weight:900}
+.admin-check-row{display:flex!important;align-items:flex-start;gap:9px;margin:0!important;padding:11px;border:1px solid var(--line);border-radius:13px;background:#f9fbfc;cursor:pointer}
+.admin-check-row input{width:17px!important;min-height:17px!important;height:17px;margin:1px 0 0;padding:0}
+.admin-check-row span{min-width:0}
+.admin-check-row strong,.admin-check-row small{display:block}
+.admin-check-row strong{font-size:10px}
+.admin-check-row small{margin-top:2px;color:var(--muted);font-size:8px;line-height:1.4}
+.number-admin-list{display:grid;gap:9px}
+.number-admin-card{padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.number-admin-card.inactive{background:#f8fafb;opacity:.72}
+.number-admin-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
+.number-order{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:var(--navy);color:#fff;font-size:11px;font-weight:900}
+.number-admin-head>div{min-width:0}
+.number-admin-head strong,.number-admin-head small{display:block}
+.number-admin-head strong{font-size:12px}
+.number-admin-head small{margin-top:2px;color:var(--muted);font-size:8px}
+.number-ball-row{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:13px}
+.number-ball{aspect-ratio:1;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 34% 27%,#fff 0 15%,#f9f3df 18%,#edce78 58%,#d5aa37 100%);border:1px solid #ddbd61;color:#13273b;box-shadow:inset -3px -5px 9px rgba(117,80,0,.11),0 3px 8px rgba(7,26,45,.07);font-size:14px;font-weight:900}
+.number-admin-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:12px}
+@media(min-width:640px){
+  .number-input-grid{grid-template-columns:repeat(6,1fr)}
+  .number-admin-list{grid-template-columns:repeat(2,1fr)}
+}
