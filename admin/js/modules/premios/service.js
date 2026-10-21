@@ -1,4 +1,4 @@
-import { adminSelect, adminInsert, adminUpdate } from '../../services/admin-api.js?v=20261021-22';
+import { adminSelect, adminInsert, adminUpdate, adminRpc } from '../../services/admin-api.js?v=20261021-22';
 import { getValidSession } from '../../services/auth.js';
 
 export async function getAwardsSnapshot() {
@@ -39,5 +39,11 @@ export async function cancelBoteMovement(id) {
   return updateBoteMovement(id, {
     anulado_at: new Date().toISOString(),
     anulado_por: session.user.id
+  });
+}
+
+export function deleteBoteMovement(id) {
+  return adminRpc('eliminar_movimiento_bote', {
+    p_movimiento_id: Number(id)
   });
 }
