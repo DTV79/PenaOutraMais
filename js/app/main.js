@@ -1,17 +1,17 @@
-import { getPublicSnapshot } from '../services/public-data.js';
-import { initNavigation } from '../ui/navigation.js';
-import { renderCombinations } from '../modules/numeros.js';
-import { renderMembers, initQuotaFilters, applyQuotaSummary } from '../modules/cuotas.js';
+import { getPublicSnapshot } from '../services/public-data.js?v=20261021-7';
+import { initNavigation } from '../ui/navigation.js?v=20261021-7';
+import { renderCombinations } from '../modules/numeros.js?v=20261021-7';
+import { renderMembers, initQuotaFilters, applyQuotaSummary } from '../modules/cuotas.js?v=20261021-7';
 import {
   renderMonthlyAwards,
   monthlyAwardsFromMovements,
   applyBalanceSummary,
   renderPublicMovements
-} from '../modules/premios.js';
-import { renderPublicPrograms, renderPublicDraws } from '../modules/sorteos.js';
-import { renderHistory } from '../modules/historico.js';
-import { renderRules } from '../modules/normas.js';
-import { applySeason } from '../modules/temporada.js';
+} from '../modules/premios.js?v=20261021-7';
+import { renderPublicPrograms, renderPublicDraws } from '../modules/sorteos.js?v=20261021-7';
+import { renderHistory } from '../modules/historico.js?v=20261021-7';
+import { renderRules } from '../modules/normas.js?v=20261021-7';
+import { applySeason } from '../modules/temporada.js?v=20261021-7';
 
 function renderFallbacks() {
   renderCombinations();
