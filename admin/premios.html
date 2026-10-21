@@ -7,8 +7,8 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Premios y bote · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261021-18" />
-  <link rel="stylesheet" href="css/forms.css?v=20261021-18" />
+  <link rel="stylesheet" href="css/styles.css?v=20261021-28" />
+  <link rel="stylesheet" href="css/forms.css?v=20261021-28" />
 </head>
 <body data-admin-page="premios">
   <div class="admin-fixed-shell">
@@ -27,21 +27,36 @@
     <header class="admin-page-title"><p class="eyebrow">ECONOMÍA</p><h1>Premios y bote</h1><p>Resumen y movimientos económicos de la temporada activa.</p></header>
     <section id="awardsSummary" class="admin-kpis"></section>
 
-    <section class="admin-section">
-      <div class="admin-section-head">
-        <div><p class="eyebrow">PREMIOS ORDINARIOS</p><h2>Por meses</h2></div>
-      </div>
-      <div id="awardsMonthly" class="award-month-list"></div>
-    </section>
+    <nav class="draw-tabs award-tabs" aria-label="Secciones de premios">
+      <button class="draw-tab active" type="button" data-award-tab="premios">
+        <span>Premios</span>
+      </button>
+      <button class="draw-tab" type="button" data-award-tab="bote">
+        <span>Bote</span>
+      </button>
+    </nav>
 
-    <section class="admin-section">
-      <div class="admin-section-head">
-        <div><p class="eyebrow">MOVIMIENTOS</p><h2>Bote</h2></div>
-        <button class="admin-action" id="newBoteMovementButton" type="button">+ Movimiento</button>
-      </div>
-      <div id="awardsMovements" class="admin-loading">Cargando movimientos…</div>
-    </section>
+    <div class="award-tab-panels">
+      <section class="draw-tab-panel active" data-award-panel="premios">
+        <section class="admin-section">
+          <div class="admin-section-head">
+            <div><p class="eyebrow">PREMIOS</p><h2>Por meses</h2></div>
+          </div>
+          <div id="awardsMonthly" class="award-month-list"></div>
+        </section>
+      </section>
+
+      <section class="draw-tab-panel" data-award-panel="bote">
+        <section class="admin-section">
+          <div class="admin-section-head">
+            <div><p class="eyebrow">MOVIMIENTOS</p><h2>Bote</h2></div>
+            <button class="admin-action" id="newBoteMovementButton" type="button">+ Movimiento</button>
+          </div>
+          <div id="awardsMovements" class="admin-loading">Cargando movimientos…</div>
+        </section>
+      </section>
+    </div>
   </main></div>
-  <script type="module" src="js/modules/premios/index.js?v=20261021-22"></script>
+  <script type="module" src="js/modules/premios/index.js?v=20261021-28"></script>
 </body>
 </html>
