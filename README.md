@@ -8,6 +8,59 @@ Web mobile-first y futura zona de administración de la Peña Outra Máis.
 - **Vercel**: previews y despliegues web.
 - **Supabase**: PostgreSQL, seguridad RLS y backend.
 
+## Principio de organización
+
+El proyecto se divide por responsabilidades. Ningún fichero funcional debe crecer hasta convertirse en un bloque monolítico.
+
+- `config/` contiene configuración pública.
+- `services/` contiene acceso a datos.
+- `modules/` contiene cada área funcional.
+- `ui/` contiene comportamiento común de interfaz.
+- `utils/` contiene utilidades reutilizables.
+- `data/` contiene únicamente datos de respaldo temporal.
+- `app/main.js` coordina el arranque, pero no contiene lógica específica de cada módulo.
+
+## Estructura
+
+```text
+PenaOutraMais/
+├── index.html
+├── css/
+│   ├── styles.css
+│   ├── base.css
+│   ├── layout.css
+│   ├── components.css
+│   ├── pages.css
+│   └── theme.css
+├── js/
+│   ├── app/
+│   │   └── main.js
+│   ├── config/
+│   │   └── supabase-config.js
+│   ├── data/
+│   │   └── fallback.js
+│   ├── modules/
+│   │   ├── cuotas.js
+│   │   ├── historico.js
+│   │   ├── normas.js
+│   │   ├── numeros.js
+│   │   ├── premios.js
+│   │   └── temporada.js
+│   ├── services/
+│   │   ├── public-data.js
+│   │   └── supabase.js
+│   ├── ui/
+│   │   └── navigation.js
+│   ├── utils/
+│   │   └── format.js
+│   └── pwa.js
+├── schema.sql
+├── manifest.webmanifest
+├── icon.svg
+├── sw.js
+└── README.md
+```
+
 ## Supabase
 
 Proyecto: `djrmbdbtfsgzwwcsatll`
@@ -33,22 +86,6 @@ Los datos personales de socios no se exponen a `anon` ni a la parte pública.
 
 La web utiliza únicamente la **publishable key** de Supabase. Nunca debe incluirse una `service_role` o una secret key en el frontend.
 
-## Estructura del código
+## Regla para futuros cambios
 
-```text
-PenaOutraMais/
-├── index.html
-├── css/
-│   └── styles.css
-├── js/
-│   ├── supabase.js
-│   ├── app.js
-│   └── pwa.js
-├── schema.sql
-├── manifest.webmanifest
-├── icon.svg
-├── sw.js
-└── README.md
-```
-
-El frontend está separado por responsabilidad: HTML para estructura, CSS para presentación, `supabase.js` para conexión pública al backend, `app.js` para comportamiento y renderizado, y `pwa.js` para instalación/app móvil.
+Cuando se añada una nueva función, debe ir en su módulo correspondiente o en un módulo nuevo. No se añadirá lógica extensa directamente a `index.html` ni a `main.js`.
