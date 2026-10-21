@@ -229,6 +229,23 @@ create unique index apuestas_programacion_sorteo_unica
   where programacion_id is not null
     and origen_combinacion_id is null;
 
+
+create table public.resumen_cuotas_publico (
+  temporada_id bigint primary key references public.temporadas(id) on delete cascade,
+  socios_activos integer not null default 0,
+  socios_al_corriente integer not null default 0,
+  socios_pendientes integer not null default 0,
+  previsto numeric(12,2) not null default 0,
+  cobrado numeric(12,2) not null default 0,
+  pendiente numeric(12,2) not null default 0,
+  adelantado_futuro numeric(12,2) not null default 0,
+  jugado_con_cuotas numeric(12,2) not null default 0,
+  disponible numeric(12,2) not null default 0,
+  actualizado_at timestamptz not null default now()
+);
+
+alter table public.resumen_cuotas_publico enable row level security;
+
 -- Seguridad aplicada en Supabase:
 -- socios y movimientos_cuotas: sin lectura pública.
 -- temporadas, juegos, combinaciones, resumen_anual, movimientos_bote y sorteos comprobados:
