@@ -14,12 +14,19 @@ export async function getDrawsSnapshot() {
 
   const season = seasons[0] || null;
   if (!season) {
-    return { season:null, games, draws:[], bets:[], programs:[] };
+    return {
+      season:null,
+      games,
+      draws:[],
+      bets:[],
+      programs:[],
+      fixedCombinationCount:0
+    };
   }
 
   const [draws, programs, fixedCombinations] = await Promise.all([
     adminSelect(
-      `sorteos?select=id,temporada_id,juego_codigo,fecha,nombre,estado,resultado,fuente_url,comprobado_at,error_comprobacion,automatico,movimiento_bote_id&temporada_id=eq.${season.id}&order=fecha.desc,id.desc`
+      `sorteos?select=id,temporada_id,juego_codigo,fecha,nombre,estado,resultado,fuente_url,comprobado_at,error_comprobacion,automatico,movimiento_bote_id,movimiento_gasto_bote_id&temporada_id=eq.${season.id}&order=fecha.desc,id.desc`
     ),
     adminSelect(
       `programacion_juegos?select=id,temporada_id,juego_codigo,activa,dias_semana,importe_por_apuesta,observaciones&temporada_id=eq.${season.id}&order=id.asc`
@@ -33,7 +40,7 @@ export async function getDrawsSnapshot() {
   if (draws.length) {
     const ids = draws.map((row) => row.id).join(',');
     bets = await adminSelect(
-      `apuestas?select=id,sorteo_id,origen_combinacion_id,tipo,descripcion,importe,datos,comprobada,categoria_premio,premio,detalle_resultado&sorteo_id=in.(${ids})&order=id.asc`
+      `apuestas?select=id,sorteo_id,origen_combinacion_id,tipo,descripcion,importe,fuente_fondos,datos,comprobada,categoria_premio,premio,detalle_resultado&sorteo_id=in.(${ids})&order=id.asc`
     );
   }
 
@@ -82,7 +89,16 @@ async function findDraw(gameCode, date, name, seasonId) {
   return rows[0] || null;
 }
 
-export async function createSpecialBet({ season, gameCode, date, drawName, description, amount, data }) {
+export async function createSpecialBet({
+  season,
+  gameCode,
+  date,
+  drawName,
+  description,
+  amount,
+  fundingSource,
+  data
+}) {
   let draw = await findDraw(gameCode, date, drawName, season.id);
 
   if (!draw) {
@@ -102,6 +118,7 @@ export async function createSpecialBet({ season, gameCode, date, drawName, descr
     tipo: 'especial',
     descripcion: description || null,
     importe: Number(amount || 0),
+    fuente_fondos: fundingSource || 'bote',
     datos: data
   });
 }
@@ -116,7 +133,6 @@ export function saveProgram(programId, payload) {
 export function checkDraw(drawId) {
   return adminFunction('comprobar-sorteos-selae', { sorteo_id: Number(drawId) });
 }
-
 
 export async function updateDrawRefund(drawId, bets, refunds) {
   const fixedBets = bets.filter(
@@ -148,7 +164,6 @@ export async function updateDrawRefund(drawId, bets, refunds) {
 
   return fixedBets.length;
 }
-
 
 export function deleteDraw(drawId) {
   return adminRpc('eliminar_sorteo', {
