@@ -18,7 +18,7 @@
     <h1>Acceso privado</h1>
     <p>Introduce tu correo y contraseña de administrador. La sesión se valida contra Supabase Auth y los permisos RLS.</p>
     <div id="loginError" class="admin-error" role="alert"></div>
-    <form id="loginForm">
+    <form id="loginForm" action="#" method="post" onsubmit="return false;">
       <div class="form-field">
         <label for="email">Correo electrónico</label>
         <input id="email" name="email" type="email" autocomplete="username" required />
@@ -31,6 +31,6 @@
     </form>
     <a class="login-back" href="../index.html">← Volver a la web pública</a>
   </section>
-  <script type="module" src="js/app/login.js"></script>
+  <script src="js/app/login.js" defer></script>
 </body>
 </html>
