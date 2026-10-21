@@ -77,6 +77,12 @@ create table public.movimientos_cuotas (
   anulado_at timestamptz,
   anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint movimientos_bote_signo_tipo check (
+    (tipo in ('arrastre','premio','premio_extra') and importe > 0)
+    or (tipo in ('gasto','reparto') and importe < 0)
+    or (tipo='ajuste' and importe <> 0)
+  )
   updated_at timestamptz not null default now()
 );
 
@@ -93,8 +99,11 @@ create table public.movimientos_bote (
   anulado_at timestamptz,
   anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
 );
+
+create unique index movimientos_bote_arrastre_activo_unico
+  on public.movimientos_bote(anio)
+  where tipo='arrastre' and anulado_at is null;
 
 -- Seguridad aplicada en Supabase:
 -- socios y movimientos_cuotas: sin lectura pública.
