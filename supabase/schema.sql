@@ -90,6 +90,8 @@ create table public.movimientos_bote (
   concepto text not null,
   importe numeric(12,2) not null,
   observaciones text,
+  anulado_at timestamptz,
+  anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
