@@ -237,3 +237,40 @@
 .refund-group-card>div:first-child small{margin-top:3px;color:var(--muted);font-size:10px}
 .refund-group-card .admin-form-field label{text-align:center}
 .refund-group-card input{text-align:center;font-size:17px;font-weight:900}
+
+.draw-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}
+.draw-tab{min-width:0;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--muted);padding:12px 10px;font:inherit;font-size:11px;font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
+.draw-tab:hover{border-color:#c8d4de;color:var(--navy)}
+.draw-tab.active{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 7px 18px rgba(7,26,45,.12)}
+.draw-tab small{min-width:22px;height:22px;display:grid;place-items:center;border-radius:999px;background:#edf2f6;color:var(--navy);font-size:9px;font-weight:900}
+.draw-tab.active small{background:rgba(255,255,255,.18);color:#fff}
+.draw-tab-panel{display:none}
+.draw-tab-panel.active{display:block}
+.draw-tab-panel>.admin-section{margin-top:0}
+.program-intro{margin-bottom:13px}
+.program-card-list{display:grid;gap:11px}
+.program-card{padding:15px;border:1px solid var(--line);border-radius:17px;background:#fff}
+.program-card.inactive{background:#f8fafb;opacity:.72}
+.program-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.program-card-head h3{margin:2px 0 0;font-size:17px}
+.program-card-head small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.program-card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:12px;border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--line)}
+.program-card-grid>div{padding:10px 11px;background:#fafcfd}
+.program-card-grid small,.program-card-grid strong{display:block}
+.program-card-grid small{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.45px}
+.program-card-grid strong{margin-top:3px;font-size:12px}
+.program-card-grid .program-template{grid-column:1/-1}
+.program-card-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:11px}
+.program-fixed-note{padding:12px;border:1px solid var(--line);border-radius:13px;background:#f5f8fa}
+.program-fixed-note strong,.program-fixed-note small{display:block}
+.program-fixed-note strong{font-size:12px}
+.program-fixed-note small{margin-top:4px;color:var(--muted);font-size:10px;line-height:1.45}
+.program-weekdays{margin-top:2px}
+@media(max-width:759px){
+  .draw-tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .draw-tabs::-webkit-scrollbar{display:none}
+  .draw-tab{flex:0 0 160px}
+}
+@media(min-width:760px){
+  .program-card-list{grid-template-columns:repeat(2,1fr)}
+}
