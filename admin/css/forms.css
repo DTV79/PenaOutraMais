@@ -274,3 +274,10 @@
 @media(min-width:760px){
   .program-card-list{grid-template-columns:repeat(2,1fr)}
 }
+
+.award-tabs{grid-template-columns:repeat(2,1fr)}
+.award-tab-panels .draw-tab-panel>.admin-section{margin-top:0}
+@media(max-width:759px){
+  .award-tabs{display:grid;overflow:visible}
+  .award-tabs .draw-tab{flex:auto}
+}
