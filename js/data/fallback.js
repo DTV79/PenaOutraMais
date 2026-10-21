@@ -14,29 +14,6 @@ export const fallbackCombinations = [
   [1,7,21,22,23,44]
 ];
 
-export const fallbackMembers = [
-  {name:'ANA',status:'ok',note:'52 € pagados · Cuenta'},
-  {name:'CAPÓN',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'CLARITA',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'CRIS',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'DIEGO',status:'ok',note:'52 € pagados · Cuenta'},
-  {name:'IÑAKI',status:'ok',note:'52 € pagados · +3 € para 2027'},
-  {name:'JAIME',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'JORGE',status:'ok',note:'52 € pagados · Cuenta'},
-  {name:'MERCE',status:'ok',note:'52 € pagados · Cuenta'},
-  {name:'MERI',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'MIRIAM',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'OVI',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'PABLETE',status:'ok',note:'52 € pagados · Cuenta'},
-  {name:'PATRI',status:'ok',note:'52 € pagados · Cuenta'},
-  {name:'PELÓN',status:'ok',note:'52 € pagados · Bizum'},
-  {name:'QUINTANA',status:'ok',note:'52 € pagados · +1 € para 2027'},
-  {name:'RAMI',status:'ok',note:'52 € pagados · Cuenta'},
-  {name:'ROSA',status:'ok',note:'52 € pagados · Efectivo'},
-  {name:'SERA',status:'pending',note:'0 € pagados · 52 € pendientes'},
-  {name:'YOLI',status:'ok',note:'52 € pagados · Cuenta'}
-];
-
 export const fallbackMonthlyAwards = [
   21,21,0,0,0,0,0,0,0,0,0,0
 ];
