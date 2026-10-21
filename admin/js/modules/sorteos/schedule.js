@@ -24,7 +24,7 @@ export function renderSchedule(program, combinationCount, onSave) {
           <label>Importe total del sorteo</label>
           <input name="importe" type="number" min="0" step="0.01"
             value="${(Number(program.importe_por_apuesta || 0) * Number(combinationCount || 0)).toFixed(2)}" />
-          <small class="field-note">${combinationCount} combinaciones activas</small>
+          <small id="scheduleAmountHelp" class="field-note"></small>
         </div>
       </div>
 
@@ -38,7 +38,8 @@ export function renderSchedule(program, combinationCount, onSave) {
       </div>
 
       <p class="admin-form-help">
-        No está activado por defecto: marca exactamente los días en los que la peña juega La Primitiva.
+        Marca exactamente los días en los que la peña juega La Primitiva.
+        Los reintegros no se programan porque cambian en cada resguardo: se añaden después en cada sorteo con el botón “Reintegros”.
       </p>
 
       <div class="schedule-actions">
@@ -49,6 +50,24 @@ export function renderSchedule(program, combinationCount, onSave) {
   `;
 
   const form=box.querySelector('#drawScheduleForm');
+  const amountInput=form.querySelector('input[name="importe"]');
+  const amountHelp=form.querySelector('#scheduleAmountHelp');
+
+  function updateAmountHelp() {
+    const total=Number(amountInput.value || 0);
+    const perBet=combinationCount ? total / combinationCount : 0;
+    amountHelp.textContent=combinationCount
+      ? combinationCount + ' combinaciones × ' +
+        perBet.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) +
+        ' € = ' +
+        total.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) +
+        ' € por sorteo'
+      : 'No hay combinaciones activas.';
+  }
+
+  amountInput.addEventListener('input',updateAmountHelp);
+  updateAmountHelp();
+
   form.querySelectorAll('.weekday-option input').forEach((input)=>{
     input.addEventListener('change',()=>{
       input.closest('.weekday-option')?.classList.toggle('selected',input.checked);
