@@ -39,3 +39,17 @@ body{min-height:100dvh;background:#f3f6f9}
   .admin-top-nav a{min-width:0;height:39px}
   .admin-wrap{padding:26px 24px 40px}
 }
+
+/* Escala de lectura global · Administración */
+.admin-header-inner,.admin-top-nav-static,.admin-wrap{max-width:1180px}
+.admin-brand-copy strong{font-size:17px}
+.admin-brand-copy small{font-size:10px}
+.admin-user strong{font-size:12px}
+.admin-user small{font-size:10px}
+.admin-logout{font-size:11px;padding:10px 13px}
+.admin-top-nav-static a{height:44px;font-size:11px}
+.admin-top-nav-static a span{width:27px;height:27px;font-size:13px}
+@media(max-width:759px){
+  .admin-top-nav-static a{flex-basis:88px;font-size:10px}
+  .admin-top-nav-static a span{width:26px;height:26px;font-size:12px}
+}
