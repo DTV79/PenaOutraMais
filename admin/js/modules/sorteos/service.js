@@ -4,7 +4,7 @@ import {
   adminUpdate,
   adminRpc,
   adminFunction
-} from '../../services/admin-api.js?v=20261021-10';
+} from '../../services/admin-api.js?v=20261021-22';
 
 export async function getDrawsSnapshot() {
   const [games, seasons] = await Promise.all([
