@@ -15,11 +15,11 @@ export const fallbackCombinations = [
 ];
 
 export const fallbackMonthlyAwards = [
-  21,21,0,0,0,0,0,0,0,0,0,0
+  21,21,29,23,29,5,36,16,18,62.27,0,0
 ];
 
 export const fallbackHistory = [
-  {year:2026,start:213.57,awards:42,spent:0,extra:0,end:255.57,note:'Temporada en curso'},
+  {year:2026,start:213.57,awards:260.27,spent:0,extra:0,end:473.84,note:'Temporada en curso'},
   {year:2025,start:2147,awards:331.43,spent:2264.86,extra:0,end:213.57,note:'Salida importante del bote'},
   {year:2024,start:1760,awards:387.23,spent:0,extra:0,end:2147.23,note:''},
   {year:2023,start:1568,awards:252,spent:120,extra:60,end:1760,note:'Juego extraordinario: 120 € gastados / 60 € premiados'},
