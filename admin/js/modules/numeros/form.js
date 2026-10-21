@@ -18,7 +18,7 @@ function numberFields(values = []) {
         name="numero_${index + 1}"
         type="number"
         min="1"
-        max="99"
+        max="49"
         step="1"
         inputmode="numeric"
         value="${escapeAttr(values[index] ?? '')}"
@@ -34,8 +34,8 @@ function readNumbers(form) {
     Number(data.get(`numero_${index + 1}`))
   );
 
-  if (numbers.some((number) => !Number.isInteger(number) || number < 1 || number > 99)) {
-    throw new Error('Los seis números deben ser enteros entre 1 y 99.');
+  if (numbers.some((number) => !Number.isInteger(number) || number < 1 || number > 49)) {
+    throw new Error('Los seis números deben ser enteros entre 1 y 49.');
   }
 
   if (new Set(numbers).size !== 6) {
@@ -64,7 +64,7 @@ export function openCombinationForm({
         <div class="admin-form-grid">
           <div class="admin-form-field">
             <label for="comb-order">Orden *</label>
-            <input id="comb-order" name="numero_orden" type="number" min="1" max="99"
+            <input id="comb-order" name="numero_orden" type="number" min="1" max="49"
               value="${escapeAttr(combination?.numero_orden ?? nextOrder)}" required />
           </div>
 
@@ -123,7 +123,7 @@ export function openCombinationForm({
       const order = Number(data.get('numero_orden'));
 
       if (!Number.isInteger(order) || order < 1 || order > 99) {
-        throw new Error('El orden debe ser un número entre 1 y 99.');
+        throw new Error('El orden debe ser un número entre 1 y 49.');
       }
 
       const duplicateOrder = combinations.some(
