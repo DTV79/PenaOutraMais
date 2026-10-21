@@ -1,0 +1,16 @@
+{
+  "name": "Peña Outra Máis",
+  "short_name": "Outra Máis",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f6f9",
+  "theme_color": "#071a2d",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
