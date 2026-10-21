@@ -1,4 +1,4 @@
-import { adminSelect, adminInsert, adminUpdate } from '../../services/admin-api.js';
+import { adminSelect, adminInsert, adminUpdate } from '../../services/admin-api.js?v=20261021-22';
 import { getValidSession } from '../../services/auth.js';
 
 export async function getQuotaSnapshot() {
