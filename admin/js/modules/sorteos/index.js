@@ -7,10 +7,10 @@ import {
   saveProgram,
   checkDraw,
   updateDrawRefund
-} from './service.js?v=20261021-12';
-import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-12';
-import { renderDraws } from './list.js?v=20261021-12';
-import { renderSchedule } from './schedule.js?v=20261021-12';
+} from './service.js?v=20261021-13';
+import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-13';
+import { renderDraws } from './list.js?v=20261021-13';
+import { renderSchedule } from './schedule.js?v=20261021-13';
 
 let snapshot=null;
 const drawsBox=document.querySelector('#drawsAdmin');
@@ -21,11 +21,11 @@ async function refresh() {
     renderDraws(snapshot);
 
     const program=snapshot.programs.find((row)=>row.juego_codigo==='primitiva') || null;
-    renderSchedule(program,async(payload)=>{
+    renderSchedule(program,snapshot.fixedCombinationCount,async(payload)=>{
       await saveProgram(program.id,payload);
       snapshot=await getDrawsSnapshot();
       const updated=snapshot.programs.find((row)=>row.juego_codigo==='primitiva') || null;
-      renderSchedule(updated,async(next)=>saveProgram(updated.id,next));
+      renderSchedule(updated,snapshot.fixedCombinationCount,async(next)=>saveProgram(updated.id,next));
     });
   } catch(error) {
     drawsBox.innerHTML=`<div class="admin-error visible">${error.message}</div>`;
@@ -47,6 +47,7 @@ async function init() {
     if (!snapshot?.season) return;
     openFixedDrawForm({
       season:snapshot.season,
+      combinationCount:snapshot.fixedCombinationCount,
       onSave:async(payload)=>{
         await createFixedDraw(payload);
         await refresh();
