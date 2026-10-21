@@ -31,9 +31,25 @@ create table public.temporadas (
   updated_at timestamptz not null default now()
 );
 
+create table public.juegos (
+  codigo text primary key,
+  nombre text not null,
+  selae_game_id text,
+  selae_path text,
+  formato text not null,
+  config jsonb not null default '{}'::jsonb,
+  activo boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint juegos_formato_valido check (
+    formato in ('6_numeros','5_estrellas','decimo')
+  )
+);
+
 create table public.combinaciones (
   id bigint generated always as identity primary key,
   temporada_id bigint not null references public.temporadas(id) on delete cascade,
+  juego_codigo text not null default 'primitiva' references public.juegos(codigo) on delete restrict,
   numero_orden smallint not null,
   nombre text,
   numeros smallint[] not null,
@@ -118,6 +134,72 @@ create unique index movimientos_bote_arrastre_activo_unico
   on public.movimientos_bote(anio)
   where tipo='arrastre' and anulado_at is null;
 
+create table public.sorteos (
+  id bigint generated always as identity primary key,
+  temporada_id bigint references public.temporadas(id) on delete set null,
+  juego_codigo text not null references public.juegos(codigo) on delete restrict,
+  fecha date not null,
+  nombre text,
+  estado text not null default 'pendiente',
+  resultado jsonb,
+  fuente_url text,
+  comprobado_at timestamptz,
+  error_comprobacion text,
+  automatico boolean not null default false,
+  movimiento_bote_id bigint references public.movimientos_bote(id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint sorteos_estado_valido check (
+    estado in ('pendiente','comprobado','sin_resultado','error')
+  )
+);
+
+create unique index sorteos_juego_fecha_nombre_unico
+  on public.sorteos(juego_codigo,fecha,coalesce(nombre,''));
+
+create table public.apuestas (
+  id bigint generated always as identity primary key,
+  sorteo_id bigint not null references public.sorteos(id) on delete cascade,
+  origen_combinacion_id bigint references public.combinaciones(id) on delete set null,
+  tipo text not null default 'especial',
+  descripcion text,
+  importe numeric(10,2) not null default 0,
+  datos jsonb not null,
+  comprobada boolean not null default false,
+  categoria_premio text,
+  premio numeric(12,2) not null default 0,
+  detalle_resultado jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint apuestas_tipo_valido check (tipo in ('fija','especial')),
+  constraint apuestas_importe_valido check (importe >= 0),
+  constraint apuestas_premio_valido check (premio >= 0),
+  constraint apuestas_datos_objeto check (jsonb_typeof(datos)='object')
+);
+
+create unique index apuestas_fijas_sorteo_combinacion_unico
+  on public.apuestas(sorteo_id,origen_combinacion_id)
+  where origen_combinacion_id is not null;
+
+create table public.programacion_juegos (
+  id bigint generated always as identity primary key,
+  temporada_id bigint not null references public.temporadas(id) on delete cascade,
+  juego_codigo text not null references public.juegos(codigo) on delete restrict,
+  activa boolean not null default false,
+  dias_semana smallint[] not null default '{}'::smallint[],
+  importe_por_apuesta numeric(10,2) not null default 0,
+  observaciones text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint programacion_dias_validos check (
+    dias_semana <@ array[1,2,3,4,5,6,7]::smallint[]
+  ),
+  constraint programacion_importe_valido check (importe_por_apuesta >= 0),
+  unique (temporada_id,juego_codigo)
+);
+
 -- Seguridad aplicada en Supabase:
 -- socios y movimientos_cuotas: sin lectura pública.
--- temporadas, combinaciones, resumen_anual y movimientos_bote: lectura pública controlada por RLS.
+-- temporadas, juegos, combinaciones, resumen_anual, movimientos_bote y sorteos comprobados:
+-- lectura pública controlada por RLS.
+-- apuestas y programacion_juegos: solo administradores.
