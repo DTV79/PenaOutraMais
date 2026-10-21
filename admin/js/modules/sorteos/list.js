@@ -48,7 +48,11 @@ function betSummary(bet, game) {
   if (game?.formato === '5_estrellas') {
     return `${(data.numeros || []).join(' · ')} <span class="bet-stars">★ ${(data.estrellas || []).join(' · ')}</span>`;
   }
-  return (data.numeros || []).join(' · ');
+  const numbers=(data.numeros || []).join(' · ');
+  const refund=data.reintegro !== null && data.reintegro !== undefined && data.reintegro !== ''
+    ? ` <span class="bet-refund">R ${esc(data.reintegro)}</span>`
+    : '';
+  return numbers + refund;
 }
 
 function resultSummary(draw, game) {
