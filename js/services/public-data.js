@@ -20,7 +20,7 @@ export async function getPublicSnapshot() {
       `resumen_anual?select=arrastre_inicial,premios_ordinarios,gastos_salidas,premios_extra,saldo_final&anio=eq.${season.anio}&limit=1`
     ),
     supabaseSelect(
-      `movimientos_bote?select=mes,tipo,concepto,importe&anio=eq.${season.anio}&order=mes.asc.nullsfirst,id.asc`
+      `movimientos_bote?select=mes,tipo,concepto,importe&anio=eq.${season.anio}&anulado_at=is.null&order=mes.asc.nullsfirst,id.asc`
     )
   ]);
 
