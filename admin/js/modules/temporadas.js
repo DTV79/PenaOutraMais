@@ -1,5 +1,5 @@
 import { bootstrapAdmin } from '../app/bootstrap.js';
-import { adminSelect } from '../services/admin-api.js';
+import { adminSelect } from '../services/admin-api.js?v=20261021-22';
 
 async function loadSeasons() {
   if (!await bootstrapAdmin()) return;
