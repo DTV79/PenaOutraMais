@@ -20,16 +20,17 @@ export async function getDrawsSnapshot() {
       draws:[],
       bets:[],
       programs:[],
+      fixedCombinations:[],
       fixedCombinationCount:0
     };
   }
 
   const [draws, programs, fixedCombinations] = await Promise.all([
     adminSelect(
-      `sorteos?select=id,temporada_id,juego_codigo,fecha,nombre,estado,resultado,fuente_url,comprobado_at,error_comprobacion,automatico,movimiento_bote_id,movimiento_gasto_bote_id&temporada_id=eq.${season.id}&order=fecha.desc,id.desc`
+      `sorteos?select=id,temporada_id,juego_codigo,fecha,nombre,estado,resultado,fuente_url,comprobado_at,error_comprobacion,automatico,movimiento_bote_id,movimiento_gasto_bote_id,programacion_id&temporada_id=eq.${season.id}&order=fecha.desc,id.desc`
     ),
     adminSelect(
-      `programacion_juegos?select=id,temporada_id,juego_codigo,activa,dias_semana,importe_por_apuesta,observaciones&temporada_id=eq.${season.id}&order=id.asc`
+      `programacion_juegos?select=id,temporada_id,juego_codigo,nombre,activa,dias_semana,importe_por_apuesta,importe_total,fuente_fondos,usar_combinaciones_fijas,datos_apuesta,observaciones&temporada_id=eq.${season.id}&order=id.asc`
     ),
     adminSelect(
       `combinaciones?select=id,numero_orden,nombre&temporada_id=eq.${season.id}&juego_codigo=eq.primitiva&activa=eq.true&order=numero_orden.asc`
@@ -40,7 +41,7 @@ export async function getDrawsSnapshot() {
   if (draws.length) {
     const ids = draws.map((row) => row.id).join(',');
     bets = await adminSelect(
-      `apuestas?select=id,sorteo_id,origen_combinacion_id,tipo,descripcion,importe,fuente_fondos,datos,comprobada,categoria_premio,premio,detalle_resultado&sorteo_id=in.(${ids})&order=id.asc`
+      `apuestas?select=id,sorteo_id,origen_combinacion_id,programacion_id,tipo,descripcion,importe,fuente_fondos,datos,comprobada,categoria_premio,premio,detalle_resultado&sorteo_id=in.(${ids})&order=id.asc`
     );
   }
 
@@ -53,27 +54,6 @@ export async function getDrawsSnapshot() {
     fixedCombinations,
     fixedCombinationCount: fixedCombinations.length
   };
-}
-
-export async function createFixedDraw({ date, totalAmount, combinationCount }) {
-  const count = Number(combinationCount || 0);
-  const total = Number(totalAmount || 0);
-
-  if (!count) throw new Error('No hay combinaciones activas de La Primitiva.');
-
-  const amountPerBet = total / count;
-  if (!Number.isFinite(amountPerBet) || amountPerBet < 0) {
-    throw new Error('Importe no válido.');
-  }
-
-  return adminRpc('crear_sorteo_fijas', {
-    p_fecha: date,
-    p_juego_codigo: 'primitiva',
-    p_nombre: null,
-    p_importe_por_apuesta: Number(amountPerBet.toFixed(2)),
-    p_reintegro: null,
-    p_automatico: false
-  });
 }
 
 async function findDraw(gameCode, date, name, seasonId) {
@@ -124,11 +104,54 @@ export async function createSpecialBet({
   });
 }
 
-export function saveProgram(programId, payload) {
+function normalizeProgramPayload(payload, fixedCombinationCount) {
+  const useFixed = Boolean(payload.usar_combinaciones_fijas);
+  const total = Number(payload.importe_total || 0);
+  const count = Number(fixedCombinationCount || 0);
+
+  return {
+    temporada_id: Number(payload.temporada_id),
+    juego_codigo: payload.juego_codigo,
+    nombre: payload.nombre,
+    activa: Boolean(payload.activa),
+    dias_semana: payload.dias_semana,
+    importe_total: total,
+    importe_por_apuesta: useFixed && count
+      ? Number((total / count).toFixed(2))
+      : total,
+    fuente_fondos: payload.fuente_fondos || 'cuotas',
+    usar_combinaciones_fijas: useFixed,
+    datos_apuesta: payload.datos_apuesta || {},
+    observaciones: payload.observaciones || null
+  };
+}
+
+export function createProgram(payload, fixedCombinationCount) {
+  return adminInsert(
+    'programacion_juegos',
+    normalizeProgramPayload(payload, fixedCombinationCount)
+  );
+}
+
+export function updateProgram(programId, payload, fixedCombinationCount) {
+  const normalized = normalizeProgramPayload(payload, fixedCombinationCount);
+  delete normalized.temporada_id;
+
   return adminUpdate(
     `programacion_juegos?id=eq.${encodeURIComponent(programId)}`,
-    payload
+    normalized
   );
+}
+
+export function setProgramActive(programId, active) {
+  return adminUpdate(
+    `programacion_juegos?id=eq.${encodeURIComponent(programId)}`,
+    { activa:Boolean(active) }
+  );
+}
+
+export function refreshScheduledDraws() {
+  return adminRpc('refrescar_sorteos_programados', {});
 }
 
 export function checkDraw(drawId) {
