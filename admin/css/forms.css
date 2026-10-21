@@ -87,3 +87,14 @@
   .number-input-grid{grid-template-columns:repeat(6,1fr)}
   .number-admin-list{grid-template-columns:repeat(2,1fr)}
 }
+
+.award-month-list{display:grid;gap:7px}
+.award-month-row{display:grid;grid-template-columns:38px 1fr 76px;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.award-month-row:last-child{border-bottom:0}
+.award-month-row span{font-size:9px;color:var(--muted)}
+.award-month-row strong{text-align:right;font-size:10px}
+.award-month-track{height:7px;border-radius:999px;background:#edf1f5;overflow:hidden}
+.award-month-track i{display:block;height:100%;border-radius:inherit;background:var(--gold)}
+.award-table td:nth-child(3){min-width:220px}
+.award-note{display:block;margin-top:2px;color:var(--muted);font-size:8px;font-weight:400}
+.award-row-cancelled{opacity:.48;text-decoration:line-through}
