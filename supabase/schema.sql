@@ -4,13 +4,13 @@
 
 create table public.socios (
   id uuid primary key default gen_random_uuid(),
-  nombre text not null,
-  apellidos text not null,
-  dni text not null,
+  nombre text,
+  apellidos text,
+  dni text,
   alias text not null,
   telefono text,
   email text,
-  fecha_alta date not null,
+  fecha_alta date,
   fecha_baja date,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
