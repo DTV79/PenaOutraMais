@@ -175,3 +175,5 @@
 .fund-source.pot{background:#fff3cf;color:#7c6013}
 #feesFund{grid-template-columns:repeat(3,1fr)}
 @media(max-width:639px){#feesFund{grid-template-columns:1fr}}
+
+.draw-status.scheduled{background:#eaf1fb;color:#365b85}
