@@ -1,5 +1,19 @@
 import { openModal, closeModal } from '../../ui/modal.js';
 
+function formatPhone(value = '') {
+  let compact = String(value || '').replace(/\D/g, '');
+
+  if (compact.length === 11 && compact.startsWith('34')) {
+    compact = compact.slice(2);
+  }
+
+  if (/^\d{9}$/.test(compact)) {
+    return `${compact.slice(0,3)} ${compact.slice(3,5)} ${compact.slice(5,7)} ${compact.slice(7,9)}`;
+  }
+
+  return String(value || '').trim();
+}
+
 function formatDni(value = '') {
   const compact = String(value || '')
     .toUpperCase()
@@ -45,7 +59,7 @@ export function normalizeMemberPayload(form) {
     apellidos: clean('apellidos') || null,
     dni: formatDni(clean('dni')) || null,
     alias: clean('alias'),
-    telefono: clean('telefono') || null,
+    telefono: formatPhone(clean('telefono')) || null,
     email: clean('email') || null,
     fecha_alta: clean('fecha_alta') || null,
     fecha_baja: clean('fecha_baja') || null
@@ -65,7 +79,7 @@ export function openMemberForm({ member = null, onSave }) {
           ${field('apellidos', 'Apellidos', member?.apellidos, 'text', false, 'family-name')}
           ${field('alias', 'Alias', member?.alias, 'text', true)}
           ${field('dni', 'DNI / NIE', formatDni(member?.dni), 'text', false)}
-          ${field('telefono', 'Teléfono', member?.telefono, 'tel', false, 'tel')}
+          ${field('telefono', 'Teléfono', formatPhone(member?.telefono), 'tel', false, 'tel')}
           ${field('email', 'Correo electrónico', member?.email, 'email', false, 'email')}
           ${field('fecha_alta', 'Fecha de alta', member?.fecha_alta, 'date', false)}
           ${field('fecha_baja', 'Fecha de baja', member?.fecha_baja, 'date')}
@@ -86,9 +100,14 @@ export function openMemberForm({ member = null, onSave }) {
   const saveButton = modal.querySelector('#memberSave');
   const errorBox = modal.querySelector('#memberFormError');
   const dniInput = modal.querySelector('#member-dni');
+  const phoneInput = modal.querySelector('#member-telefono');
 
   dniInput?.addEventListener('blur', () => {
     dniInput.value = formatDni(dniInput.value);
+  });
+
+  phoneInput?.addEventListener('blur', () => {
+    phoneInput.value = formatPhone(phoneInput.value);
   });
 
   form.addEventListener('submit', async (event) => {
