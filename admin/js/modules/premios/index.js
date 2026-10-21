@@ -5,12 +5,28 @@ import {
   createBoteMovement,
   updateBoteMovement,
   cancelBoteMovement
-} from './service.js?v=20261021-8';
-import { openBoteForm } from './form.js?v=20261021-8';
-import { renderAwardsSummary } from './summary.js?v=20261021-8';
-import { renderBoteMovements } from './list.js?v=20261021-8';
+} from './service.js?v=20261021-28';
+import { openBoteForm } from './form.js?v=20261021-28';
+import { renderAwardsSummary } from './summary.js?v=20261021-28';
+import { renderBoteMovements } from './list.js?v=20261021-28';
 
 let snapshot=null;
+
+function activateAwardTab(name) {
+  document.querySelectorAll('[data-award-tab]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.awardTab === name);
+  });
+
+  document.querySelectorAll('[data-award-panel]').forEach((panel) => {
+    panel.classList.toggle('active', panel.dataset.awardPanel === name);
+  });
+}
+
+function setupAwardTabs() {
+  document.querySelectorAll('[data-award-tab]').forEach((button) => {
+    button.addEventListener('click', () => activateAwardTab(button.dataset.awardTab));
+  });
+}
 
 async function refresh() {
   try {
@@ -77,6 +93,8 @@ async function cancelMovement(id) {
 
 async function init() {
   if (!await bootstrapAdmin()) return;
+
+  setupAwardTabs();
 
   document.querySelector('#newBoteMovementButton')?.addEventListener('click',openCreate);
 
