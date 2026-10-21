@@ -154,3 +154,12 @@
   .draw-schedule-top{grid-template-columns:1fr 190px;align-items:stretch}
   .weekday-grid{grid-template-columns:repeat(7,1fr)}
 }
+
+.refund-bet-list{display:grid;gap:7px}
+.refund-bet-row{display:grid;grid-template-columns:1fr 64px;align-items:center;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:#fafcfd}
+.refund-bet-row>div:first-child{min-width:0}
+.refund-bet-row strong,.refund-bet-row small{display:block}
+.refund-bet-row strong{font-size:9px}
+.refund-bet-row small{margin-top:3px;color:var(--muted);font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.refund-bet-row .admin-form-field label{text-align:center}
+.refund-bet-row input{text-align:center;font-size:15px;font-weight:900}
