@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#071a2d" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Acceso administración · Peña Outra Máis</title>
+  <link rel="icon" href="../icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="login-page">
+  <section class="login-card">
+    <div class="login-brand">
+      <span class="login-brand-mark">OM</span>
+      <div><small>PEÑA OUTRA MÁIS</small><strong>Administración</strong></div>
+    </div>
+    <h1>Acceso privado</h1>
+    <p>Introduce tu correo y contraseña de administrador. La sesión se valida contra Supabase Auth y los permisos RLS.</p>
+    <div id="loginError" class="admin-error" role="alert"></div>
+    <form id="loginForm">
+      <div class="form-field">
+        <label for="email">Correo electrónico</label>
+        <input id="email" name="email" type="email" autocomplete="username" required />
+      </div>
+      <div class="form-field">
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </div>
+      <button id="loginSubmit" class="login-submit" type="submit">Entrar</button>
+    </form>
+    <a class="login-back" href="../index.html">← Volver a la web pública</a>
+  </section>
+  <script type="module" src="js/app/login.js"></script>
+</body>
+</html>
