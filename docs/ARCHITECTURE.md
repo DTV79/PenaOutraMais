@@ -38,3 +38,14 @@ La base de datos es la fuente de verdad. El frontend no debe duplicar cálculos 
 5. No incluir claves secretas en GitHub ni en el navegador.
 6. Mantener fallback solo mientras una sección aún no esté migrada completamente a Supabase.
 7. Antes de borrar un módulo antiguo, verificar que ninguna referencia lo utiliza.
+
+
+## Gestión de temporadas
+
+La administración de años se divide en módulos:
+- `admin/js/modules/temporadas/index.js`: coordinación.
+- `service.js`: lectura y RPC de temporadas.
+- `list.js`: histórico 2012 en adelante.
+- `form.js`: preparación de nuevas temporadas.
+
+Las temporadas históricas pueden no disponer de cuota conocida. La activación de una temporada futura arrastra el bote final del año anterior y aplica los saldos adelantados destinados a ese año.
