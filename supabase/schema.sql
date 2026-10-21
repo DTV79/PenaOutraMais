@@ -78,12 +78,13 @@ create table public.movimientos_cuotas (
   anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  constraint movimientos_bote_signo_tipo check (
-    (tipo in ('arrastre','premio','premio_extra') and importe > 0)
-    or (tipo in ('gasto','reparto') and importe < 0)
-    or (tipo='ajuste' and importe <> 0)
+  constraint movimientos_cuotas_importe_no_cero check (importe <> 0),
+  constraint movimientos_cuotas_tipo_valido check (
+    tipo in ('pago','ajuste','devolucion','saldo_a_favor')
+  ),
+  constraint movimientos_cuotas_aplicar_anio_valido check (
+    aplicar_anio is null or aplicar_anio between 2012 and 2100
   )
-  updated_at timestamptz not null default now()
 );
 
 create table public.movimientos_bote (
@@ -99,6 +100,18 @@ create table public.movimientos_bote (
   anulado_at timestamptz,
   anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint movimientos_bote_anio_valido check (anio between 2000 and 2100),
+  constraint movimientos_bote_mes_valido check (mes is null or mes between 1 and 12),
+  constraint movimientos_bote_importe_no_cero check (importe <> 0),
+  constraint movimientos_bote_tipo_valido check (
+    tipo in ('arrastre','premio','gasto','premio_extra','reparto','ajuste')
+  ),
+  constraint movimientos_bote_signo_tipo check (
+    (tipo in ('arrastre','premio','premio_extra') and importe > 0)
+    or (tipo in ('gasto','reparto') and importe < 0)
+    or (tipo='ajuste' and importe <> 0)
+  )
 );
 
 create unique index movimientos_bote_arrastre_activo_unico
