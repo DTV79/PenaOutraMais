@@ -1,4 +1,5 @@
 function escapeHtml(value = '') {
+  if (value === null || value === undefined) return '';
   return String(value)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -42,7 +43,7 @@ export function renderMembers(container, rows) {
             <span class="member-admin-avatar">${escapeHtml(row.alias?.slice(0, 2).toUpperCase() || '—')}</span>
             <div class="member-admin-name">
               <strong>${escapeHtml(row.alias)}</strong>
-              <small>${escapeHtml(row.nombre)} ${escapeHtml(row.apellidos)}</small>
+              <small>${row.nombre || row.apellidos ? `${escapeHtml(row.nombre)} ${escapeHtml(row.apellidos)}`.trim() : 'Datos personales pendientes'}</small>
             </div>
             <span class="admin-status ${row.fecha_baja ? 'off' : 'ok'}">
               ${row.fecha_baja ? 'Baja' : 'Activo'}
@@ -51,7 +52,7 @@ export function renderMembers(container, rows) {
 
           <div class="member-admin-meta">
             <div><small>Alta</small><strong>${formatDate(row.fecha_alta)}</strong></div>
-            <div><small>DNI</small><strong>${escapeHtml(row.dni)}</strong></div>
+            <div><small>DNI</small><strong>${escapeHtml(row.dni) || '—'}</strong></div>
             <div><small>Teléfono</small><strong>${escapeHtml(row.telefono || '—')}</strong></div>
             <div><small>Email</small><strong class="truncate">${escapeHtml(row.email || '—')}</strong></div>
           </div>
