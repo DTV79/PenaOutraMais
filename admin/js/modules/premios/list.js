@@ -35,6 +35,20 @@ function label(type) {
   }[type] || type;
 }
 
+function actionButtons(row) {
+  if (row.anulado_at) {
+    return '<div class="quota-row-actions">' +
+      '<button class="admin-mini-action danger" type="button" data-award-delete="' +
+      row.id + '">Eliminar</button></div>';
+  }
+
+  return '<div class="quota-row-actions">' +
+    '<button class="admin-mini-action" type="button" data-award-edit="' +
+    row.id + '">Editar</button>' +
+    '<button class="admin-mini-action danger" type="button" data-award-cancel="' +
+    row.id + '">Anular</button></div>';
+}
+
 export function renderBoteMovements(movements) {
   const box = document.querySelector('#awardsMovements');
 
@@ -63,12 +77,7 @@ export function renderBoteMovements(movements) {
               </td>
               <td class="${Number(row.importe) < 0 ? 'danger-text' : 'positive-text'}"><strong>${money(row.importe)}</strong></td>
               <td>
-                ${row.anulado_at ? '' : `
-                  <div class="quota-row-actions">
-                    <button class="admin-mini-action" type="button" data-award-edit="${row.id}">Editar</button>
-                    <button class="admin-mini-action danger" type="button" data-award-cancel="${row.id}">Anular</button>
-                  </div>
-                `}
+                ${actionButtons(row)}
               </td>
             </tr>
           `).join('')}
