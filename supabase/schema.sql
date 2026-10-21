@@ -27,6 +27,9 @@ create table public.temporadas (
   cuota_anual numeric(10,2) generated always as (cuota_semanal * numero_semanas) stored,
   activa boolean not null default false,
   observaciones text,
+  aplicar_anio integer,
+  anulado_at timestamptz,
+  anulado_por uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
