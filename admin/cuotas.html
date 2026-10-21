@@ -14,12 +14,17 @@
   <div id="adminHeader"></div>
   <div class="admin-wrap"><main class="admin-main">
     <header class="admin-page-title"><p class="eyebrow">APORTACIONES</p><h1>Cuotas y pagos</h1><p>Movimientos reales de cada socio por temporada.</p></header>
+    <section id="feesSummary" class="admin-kpis"></section>
+    <section class="admin-section">
+      <div class="admin-section-head"><div><p class="eyebrow">PENDIENTES</p><h2>Por cobrar</h2></div></div>
+      <div id="feesPending" class="admin-loading">Calculando pendientes…</div>
+    </section>
     <section class="admin-section">
       <div class="admin-section-head"><div><p class="eyebrow">MOVIMIENTOS</p><h2>Cuotas</h2></div><button class="admin-action" type="button" disabled>+ Registrar pago</button></div>
       <div id="feesAdmin" class="admin-loading">Cargando movimientos…</div>
     </section>
   </main></div>
   <div id="adminBottomNav"></div>
-  <script type="module" src="js/modules/cuotas.js"></script>
+  <script type="module" src="js/modules/cuotas/index.js"></script>
 </body>
 </html>
