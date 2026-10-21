@@ -17,12 +17,15 @@ export async function getDrawsSnapshot() {
     return { season:null, games, draws:[], bets:[], programs:[] };
   }
 
-  const [draws, programs] = await Promise.all([
+  const [draws, programs, fixedCombinations] = await Promise.all([
     adminSelect(
       `sorteos?select=id,temporada_id,juego_codigo,fecha,nombre,estado,resultado,fuente_url,comprobado_at,error_comprobacion,automatico,movimiento_bote_id&temporada_id=eq.${season.id}&order=fecha.desc,id.desc`
     ),
     adminSelect(
       `programacion_juegos?select=id,temporada_id,juego_codigo,activa,dias_semana,importe_por_apuesta,observaciones&temporada_id=eq.${season.id}&order=id.asc`
+    ),
+    adminSelect(
+      `combinaciones?select=id&temporada_id=eq.${season.id}&juego_codigo=eq.primitiva&activa=eq.true`
     )
   ]);
 
@@ -34,15 +37,32 @@ export async function getDrawsSnapshot() {
     );
   }
 
-  return { season, games, draws, bets, programs };
+  return {
+    season,
+    games,
+    draws,
+    bets,
+    programs,
+    fixedCombinationCount: fixedCombinations.length
+  };
 }
 
-export async function createFixedDraw({ date, amount }) {
+export async function createFixedDraw({ date, totalAmount, combinationCount }) {
+  const count = Number(combinationCount || 0);
+  const total = Number(totalAmount || 0);
+
+  if (!count) throw new Error('No hay combinaciones activas de La Primitiva.');
+
+  const amountPerBet = total / count;
+  if (!Number.isFinite(amountPerBet) || amountPerBet < 0) {
+    throw new Error('Importe no válido.');
+  }
+
   return adminRpc('crear_sorteo_fijas', {
     p_fecha: date,
     p_juego_codigo: 'primitiva',
     p_nombre: null,
-    p_importe_por_apuesta: Number(amount || 0),
+    p_importe_por_apuesta: Number(amountPerBet.toFixed(2)),
     p_reintegro: null,
     p_automatico: false
   });
