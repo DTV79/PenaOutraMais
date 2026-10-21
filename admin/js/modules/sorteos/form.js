@@ -59,7 +59,7 @@ export function openFixedDrawForm({ season, combinationCount, onSave }) {
           </div>
           <div class="admin-form-field admin-form-wide">
             <p class="admin-form-help sorteo-help">
-              Se copiarán automáticamente las ${combinationCount} combinaciones activas de La Primitiva. Después podrás indicar el reintegro correspondiente a cada combinación/resguardo.
+              Se copiarán automáticamente las ${combinationCount} combinaciones activas de La Primitiva. Este gasto se descuenta del fondo de cuotas. Después podrás indicar los reintegros del resguardo.
             </p>
           </div>
         </div>
@@ -203,6 +203,14 @@ export function openSpecialBetForm({ season, games, onSave }) {
             <label for="special-amount">Importe jugado</label>
             <input id="special-amount" name="importe" type="number" min="0" step="0.01" value="0" />
           </div>
+          <div class="admin-form-field">
+            <label for="special-funding">Financiar con *</label>
+            <select id="special-funding" name="fuente_fondos" required>
+              <option value="bote" selected>Bote</option>
+              <option value="cuotas">Cuotas</option>
+            </select>
+            <small class="field-note">Si eliges Bote, el importe se descuenta automáticamente del bote.</small>
+          </div>
           <div id="specialGameFields" class="admin-form-wide"></div>
         </div>
         <div id="specialBetError" class="admin-error"></div>
@@ -272,6 +280,7 @@ export function openSpecialBetForm({ season, games, onSave }) {
         drawName:String(data.get('nombre_sorteo') || '').trim() || null,
         description:String(data.get('descripcion') || '').trim() || null,
         amount:Number(data.get('importe') || 0),
+        fundingSource:String(data.get('fuente_fondos') || 'bote'),
         data:betData
       });
       closeModal();
