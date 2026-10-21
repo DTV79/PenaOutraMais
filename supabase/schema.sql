@@ -147,6 +147,7 @@ create table public.sorteos (
   error_comprobacion text,
   automatico boolean not null default false,
   movimiento_bote_id bigint references public.movimientos_bote(id) on delete set null,
+  movimiento_gasto_bote_id bigint references public.movimientos_bote(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint sorteos_estado_valido check (
@@ -164,6 +165,7 @@ create table public.apuestas (
   tipo text not null default 'especial',
   descripcion text,
   importe numeric(10,2) not null default 0,
+  fuente_fondos text not null default 'cuotas',
   datos jsonb not null,
   comprobada boolean not null default false,
   categoria_premio text,
@@ -173,6 +175,7 @@ create table public.apuestas (
   updated_at timestamptz not null default now(),
   constraint apuestas_tipo_valido check (tipo in ('fija','especial')),
   constraint apuestas_importe_valido check (importe >= 0),
+  constraint apuestas_fuente_fondos_valida check (fuente_fondos in ('cuotas','bote')),
   constraint apuestas_premio_valido check (premio >= 0),
   constraint apuestas_datos_objeto check (jsonb_typeof(datos)='object')
 );
