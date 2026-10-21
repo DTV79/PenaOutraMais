@@ -148,3 +148,10 @@ export async function updateDrawRefund(drawId, bets, refunds) {
 
   return fixedBets.length;
 }
+
+
+export function deleteDraw(drawId) {
+  return adminRpc('eliminar_sorteo', {
+    p_sorteo_id: Number(drawId)
+  });
+}
