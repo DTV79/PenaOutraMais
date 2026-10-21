@@ -163,3 +163,9 @@
 .refund-bet-row small{margin-top:3px;color:var(--muted);font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .refund-bet-row .admin-form-field label{text-align:center}
 .refund-bet-row input{text-align:center;font-size:15px;font-weight:900}
+
+.draw-stake-summary{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 12px;margin-top:12px;padding:9px 10px;border-radius:12px;background:#f6f8fa}
+.draw-stake-summary span{color:var(--muted);font-size:8px;font-weight:800}
+.draw-stake-summary strong{font-size:12px;text-align:right}
+.draw-stake-summary small{grid-column:1/-1;color:var(--muted);font-size:8px}
+.draw-admin-actions{flex-wrap:wrap}
