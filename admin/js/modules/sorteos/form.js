@@ -274,3 +274,62 @@ export function openSpecialBetForm({ season, games, onSave }) {
     }
   });
 }
+
+
+export function openRefundForm({ draw, bets, onSave }) {
+  const fixedBets = bets.filter(
+    (bet) => Number(bet.sorteo_id) === Number(draw.id) && bet.tipo === 'fija'
+  );
+  const current = fixedBets
+    .map((bet) => bet.datos?.reintegro)
+    .find((value) => value !== null && value !== undefined);
+
+  const modal = openModal({
+    title:'Reintegro del resguardo',
+    subtitle:`LA PRIMITIVA · ${draw.fecha.split('-').reverse().join('/')}`,
+    content:`
+      <form id="refundForm" class="admin-form">
+        <div class="admin-form-field">
+          <label for="draw-refund">Reintegro *</label>
+          <input id="draw-refund" name="reintegro" type="number" min="0" max="9"
+            step="1" value="${current ?? ''}" required />
+        </div>
+        <p class="admin-form-help">
+          Se aplicará el mismo reintegro a las ${fixedBets.length} combinaciones fijas de este resguardo.
+        </p>
+        <div id="refundError" class="admin-error"></div>
+      </form>
+    `,
+    actions:`
+      <button class="admin-action secondary" type="button" data-modal-close>Cancelar</button>
+      <button class="admin-action" type="submit" form="refundForm" id="refundSave">Guardar</button>
+    `
+  });
+
+  const formEl=modal.querySelector('#refundForm');
+  const errorBox=modal.querySelector('#refundError');
+  const save=modal.querySelector('#refundSave');
+
+  formEl.addEventListener('submit',async(event)=>{
+    event.preventDefault();
+    const value=Number(new FormData(formEl).get('reintegro'));
+    if (!Number.isInteger(value) || value < 0 || value > 9) {
+      errorBox.textContent='El reintegro debe estar entre 0 y 9.';
+      errorBox.classList.add('visible');
+      return;
+    }
+
+    save.disabled=true;
+    save.textContent='Guardando…';
+
+    try {
+      await onSave(value);
+      closeModal();
+    } catch(error) {
+      errorBox.textContent=error?.message || 'No se pudo guardar el reintegro.';
+      errorBox.classList.add('visible');
+      save.disabled=false;
+      save.textContent='Guardar';
+    }
+  });
+}
