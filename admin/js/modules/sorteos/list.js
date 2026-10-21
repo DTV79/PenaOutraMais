@@ -137,6 +137,9 @@ export function renderDraws({ season, games, draws, bets }) {
         ${prize > 0 ? `<p class="draw-total">Premio detectado <strong>${money(prize)}</strong></p>` : ''}
 
         <footer class="draw-admin-actions">
+          ${draw.juego_codigo === 'primitiva' && drawBets.some((bet)=>bet.tipo==='fija') ? `
+            <button class="admin-action secondary" type="button" data-draw-refund="${draw.id}">Reintegro</button>
+          ` : ''}
           ${draw.fuente_url ? `<a class="admin-action secondary" href="${esc(draw.fuente_url)}" target="_blank" rel="noopener">Ver SELAE</a>` : ''}
           <button class="admin-action" type="button" data-draw-check="${draw.id}">Comprobar ahora</button>
         </footer>
