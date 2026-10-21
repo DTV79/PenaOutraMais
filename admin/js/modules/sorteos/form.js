@@ -55,13 +55,9 @@ export function openFixedDrawForm({ season, onSave }) {
             <label for="fixed-amount">Importe por combinación</label>
             <input id="fixed-amount" name="importe" type="number" min="0" step="0.01" value="0" />
           </div>
-          <div class="admin-form-field">
-            <label for="fixed-reintegro">Reintegro del resguardo</label>
-            <input id="fixed-reintegro" name="reintegro" type="number" min="0" max="9" step="1" />
-          </div>
           <div class="admin-form-field admin-form-wide">
             <p class="admin-form-help sorteo-help">
-              Se copiarán automáticamente las 10 combinaciones activas de La Primitiva. Si todavía no sabes el reintegro, puedes dejarlo vacío.
+              Se copiarán automáticamente las 10 combinaciones activas de La Primitiva. Después podrás indicar el reintegro correspondiente a cada combinación/resguardo.
             </p>
           </div>
         </div>
@@ -85,14 +81,9 @@ export function openFixedDrawForm({ season, onSave }) {
     errorBox.classList.remove('visible');
     try {
       const data=new FormData(form);
-      const reintegro=String(data.get('reintegro') || '');
-      if (reintegro && (!Number.isInteger(Number(reintegro)) || Number(reintegro)<0 || Number(reintegro)>9)) {
-        throw new Error('El reintegro debe estar entre 0 y 9.');
-      }
       await onSave({
         date:String(data.get('fecha')),
-        amount:Number(data.get('importe') || 0),
-        reintegro
+        amount:Number(data.get('importe') || 0)
       });
       closeModal();
     } catch(error) {
@@ -280,22 +271,29 @@ export function openRefundForm({ draw, bets, onSave }) {
   const fixedBets = bets.filter(
     (bet) => Number(bet.sorteo_id) === Number(draw.id) && bet.tipo === 'fija'
   );
-  const current = fixedBets
-    .map((bet) => bet.datos?.reintegro)
-    .find((value) => value !== null && value !== undefined);
 
   const modal = openModal({
-    title:'Reintegro del resguardo',
+    title:'Reintegros',
     subtitle:`LA PRIMITIVA · ${draw.fecha.split('-').reverse().join('/')}`,
     content:`
       <form id="refundForm" class="admin-form">
-        <div class="admin-form-field">
-          <label for="draw-refund">Reintegro *</label>
-          <input id="draw-refund" name="reintegro" type="number" min="0" max="9"
-            step="1" value="${current ?? ''}" required />
+        <div class="refund-bet-list">
+          ${fixedBets.map((bet)=>`
+            <div class="refund-bet-row">
+              <div>
+                <strong>${esc(bet.descripcion || 'Combinación')}</strong>
+                <small>${(bet.datos?.numeros || []).join(' · ')}</small>
+              </div>
+              <div class="admin-form-field">
+                <label>R</label>
+                <input name="refund_${bet.id}" type="number" min="0" max="9" step="1"
+                  value="${bet.datos?.reintegro ?? ''}" />
+              </div>
+            </div>
+          `).join('')}
         </div>
         <p class="admin-form-help">
-          Se aplicará el mismo reintegro a las ${fixedBets.length} combinaciones fijas de este resguardo.
+          Pon el reintegro que figure para cada apuesta/resguardo. Puedes dejar una combinación vacía si todavía no lo sabes.
         </p>
         <div id="refundError" class="admin-error"></div>
       </form>
@@ -312,21 +310,32 @@ export function openRefundForm({ draw, bets, onSave }) {
 
   formEl.addEventListener('submit',async(event)=>{
     event.preventDefault();
-    const value=Number(new FormData(formEl).get('reintegro'));
-    if (!Number.isInteger(value) || value < 0 || value > 9) {
-      errorBox.textContent='El reintegro debe estar entre 0 y 9.';
-      errorBox.classList.add('visible');
-      return;
+    const data=new FormData(formEl);
+    const refunds={};
+
+    for (const bet of fixedBets) {
+      const raw=String(data.get(`refund_${bet.id}`) ?? '').trim();
+      if (raw !== '') {
+        const value=Number(raw);
+        if (!Number.isInteger(value) || value < 0 || value > 9) {
+          errorBox.textContent='Todos los reintegros deben estar entre 0 y 9.';
+          errorBox.classList.add('visible');
+          return;
+        }
+        refunds[String(bet.id)]=value;
+      } else {
+        refunds[String(bet.id)]='';
+      }
     }
 
     save.disabled=true;
     save.textContent='Guardando…';
 
     try {
-      await onSave(value);
+      await onSave(refunds);
       closeModal();
     } catch(error) {
-      errorBox.textContent=error?.message || 'No se pudo guardar el reintegro.';
+      errorBox.textContent=error?.message || 'No se pudieron guardar los reintegros.';
       errorBox.classList.add('visible');
       save.disabled=false;
       save.textContent='Guardar';
