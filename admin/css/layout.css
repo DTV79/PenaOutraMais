@@ -1,0 +1,26 @@
+body{min-height:100dvh;background:#f3f6f9}
+.admin-header{position:sticky;top:0;z-index:50;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:rgba(247,249,251,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.admin-header-inner{max-width:1000px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.admin-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.admin-brand-mark{width:42px;height:42px;display:grid;place-items:center;border-radius:15px;background:var(--navy);color:#f1d789;font-weight:950}
+.admin-brand-copy strong,.admin-brand-copy small{display:block}
+.admin-brand-copy strong{font-size:15px}
+.admin-brand-copy small{margin-top:2px;color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.9px}
+.admin-header-actions{display:flex;align-items:center;gap:7px}
+.admin-user{display:none;text-align:right}
+.admin-user strong,.admin-user small{display:block}
+.admin-user strong{font-size:10px}
+.admin-user small{color:var(--muted);font-size:8px}
+.admin-logout{border:1px solid var(--line);background:#fff;color:var(--navy);padding:9px 11px;border-radius:12px;font-size:9px;font-weight:850}
+.admin-wrap{max-width:1000px;margin:auto;padding:18px 14px calc(88px + env(safe-area-inset-bottom))}
+.admin-main{min-width:0}
+.admin-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(5,1fr);padding:6px 5px calc(6px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid var(--line)}
+.admin-bottom-nav a{min-height:52px;display:grid;place-items:center;align-content:center;gap:2px;text-decoration:none;color:#8a97a4;font-size:8px;font-weight:800}
+.admin-bottom-nav a span{min-width:30px;height:27px;display:grid;place-items:center;border-radius:10px;font-size:13px}
+.admin-bottom-nav a.active{color:var(--navy)}
+.admin-bottom-nav a.active span{background:var(--navy);color:#fff}
+@media(min-width:760px){
+  .admin-user{display:block}
+  .admin-wrap{padding:26px 24px 40px}
+  .admin-bottom-nav{position:static;max-width:1000px;margin:0 auto 20px;padding:8px 20px;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 24px rgba(7,26,45,.05)}
+}
