@@ -5,10 +5,10 @@ import {
   createBoteMovement,
   updateBoteMovement,
   cancelBoteMovement
-} from './service.js?v=20261021-7';
-import { openBoteForm } from './form.js?v=20261021-7';
-import { renderAwardsSummary } from './summary.js?v=20261021-7';
-import { renderBoteMovements } from './list.js?v=20261021-7';
+} from './service.js?v=20261021-8';
+import { openBoteForm } from './form.js?v=20261021-8';
+import { renderAwardsSummary } from './summary.js?v=20261021-8';
+import { renderBoteMovements } from './list.js?v=20261021-8';
 
 let snapshot=null;
 
