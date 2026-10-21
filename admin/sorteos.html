@@ -7,8 +7,8 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Sorteos y apuestas · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261021-20" />
-  <link rel="stylesheet" href="css/forms.css?v=20261021-20" />
+  <link rel="stylesheet" href="css/styles.css?v=20261021-25" />
+  <link rel="stylesheet" href="css/forms.css?v=20261021-25" />
 </head>
 <body data-admin-page="sorteos">
   <div class="admin-fixed-shell">
@@ -29,60 +29,88 @@
       <header class="admin-page-title">
         <p class="eyebrow">COMPROBACIÓN AUTOMÁTICA</p>
         <h1>Sorteos y apuestas</h1>
-        <p>La Primitiva habitual, apuestas especiales y comprobación de resultados oficiales de SELAE.</p>
+        <p>Programación, jugadas especiales y comprobación de resultados oficiales de SELAE.</p>
       </header>
 
       <section id="drawsSummary" class="admin-kpis"></section>
 
-      <section class="admin-section">
-        <div class="admin-section-head">
-          <div>
-            <p class="eyebrow">LA PRIMITIVA</p>
-            <h2>Programación habitual</h2>
-          </div>
-        </div>
-        <div id="drawSchedule" class="admin-loading">Cargando programación…</div>
-      </section>
+      <nav class="draw-tabs" aria-label="Secciones de sorteos">
+        <button class="draw-tab active" type="button" data-draw-tab="programadas">
+          <span>Apuestas Programadas</span>
+          <small data-tab-count="programadas">0</small>
+        </button>
+        <button class="draw-tab" type="button" data-draw-tab="especiales">
+          <span>Apuestas Especiales</span>
+        </button>
+        <button class="draw-tab" type="button" data-draw-tab="enjuego">
+          <span>En Juego</span>
+          <small data-tab-count="enjuego">0</small>
+        </button>
+        <button class="draw-tab" type="button" data-draw-tab="historico">
+          <span>Histórico</span>
+          <small data-tab-count="historico">0</small>
+        </button>
+      </nav>
 
-      <section class="admin-section">
-        <div class="admin-section-head sorteo-actions-head">
-          <div>
-            <p class="eyebrow">JUGADAS ESPECIALES</p>
-            <h2>Registrar apuesta</h2>
-          </div>
-          <div class="sorteo-create-actions">
-            <button class="admin-action" id="newSpecialBetButton" type="button">+ Apuesta especial</button>
-          </div>
-        </div>
-        <p class="admin-form-help">
-          Para cualquier jugada fuera de la programación habitual: Primitiva, Euromillones, Bonoloto o Lotería Nacional/Navidad.
-        </p>
-      </section>
-
-      <div id="drawsArea">
-        <section class="admin-section">
-          <div class="admin-section-head">
-            <div>
-              <p class="eyebrow">EN JUEGO</p>
-              <h2>Sorteos activos</h2>
+      <div class="draw-tab-panels">
+        <section class="draw-tab-panel active" data-draw-panel="programadas">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">AUTOMÁTICAS</p>
+                <h2>Apuestas Programadas</h2>
+              </div>
+              <button class="admin-action" id="newProgramButton" type="button">+ Nueva programación</button>
             </div>
-          </div>
-          <div id="drawsActive" class="admin-loading">Cargando sorteos activos…</div>
+            <p class="admin-form-help program-intro">
+              Define apuestas recurrentes por juego, días, importe y fondo. La Primitiva habitual conserva las 10 combinaciones fijas.
+            </p>
+            <div id="programsAdmin" class="admin-loading">Cargando programaciones…</div>
+          </section>
         </section>
 
-        <section class="admin-section">
-          <div class="admin-section-head">
-            <div>
-              <p class="eyebrow">HISTÓRICO</p>
-              <h2>Sorteos comprobados</h2>
+        <section class="draw-tab-panel" data-draw-panel="especiales">
+          <section class="admin-section">
+            <div class="admin-section-head sorteo-actions-head">
+              <div>
+                <p class="eyebrow">PUNTUALES</p>
+                <h2>Apuestas Especiales</h2>
+              </div>
+              <button class="admin-action" id="newSpecialBetButton" type="button">+ Apuesta especial</button>
             </div>
-          </div>
-          <div id="drawsHistory" class="admin-loading">Cargando histórico…</div>
+            <p class="admin-form-help">
+              Para jugadas no recurrentes: Primitiva, Euromillones, Bonoloto o Lotería Nacional/Navidad. Puedes elegir si se pagan con Cuotas o con el Bote.
+            </p>
+          </section>
+        </section>
+
+        <section class="draw-tab-panel" data-draw-panel="enjuego">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">EN JUEGO</p>
+                <h2>Apuestas en juego</h2>
+              </div>
+            </div>
+            <div id="drawsActive" class="admin-loading">Cargando apuestas en juego…</div>
+          </section>
+        </section>
+
+        <section class="draw-tab-panel" data-draw-panel="historico">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">HISTÓRICO</p>
+                <h2>Sorteos finalizados</h2>
+              </div>
+            </div>
+            <div id="drawsHistory" class="admin-loading">Cargando histórico…</div>
+          </section>
         </section>
       </div>
     </main>
   </div>
 
-  <script type="module" src="js/modules/sorteos/index.js?v=20261021-24"></script>
+  <script type="module" src="js/modules/sorteos/index.js?v=20261021-25"></script>
 </body>
 </html>
