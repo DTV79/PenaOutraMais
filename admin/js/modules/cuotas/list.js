@@ -42,11 +42,12 @@ function typeLabel(row) {
   return labels[row.tipo] || row.tipo;
 }
 
-export function renderQuotaSnapshot({ season, members, movements }) {
+export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend }) {
   const summary = document.querySelector('#feesSummary');
   const container = document.querySelector('#feesAdmin');
   const pendingBox = document.querySelector('#feesPending');
   const futureBox = document.querySelector('#feesFuture');
+  const fundBox = document.querySelector('#feesFund');
 
   if (!season) {
     container.innerHTML = '<div class="admin-error visible">No hay temporada activa.</div>';
@@ -80,6 +81,15 @@ export function renderQuotaSnapshot({ season, members, movements }) {
     <article class="admin-kpi"><small>Previsto</small><strong>${formatMoney(expected)}</strong></article>
     <article class="admin-kpi"><small>Aportado</small><strong>${formatMoney(paid)}</strong></article>
     <article class="admin-kpi"><small>Pendiente</small><strong>${formatMoney(pending)}</strong></article>
+  `;
+
+  const spent = Number(quotaPlaySpend || 0);
+  const available = paid - spent;
+
+  fundBox.innerHTML = `
+    <article class="admin-kpi"><small>Cuotas cobradas</small><strong>${formatMoney(paid)}</strong></article>
+    <article class="admin-kpi"><small>Jugado con cuotas</small><strong>${formatMoney(spent)}</strong></article>
+    <article class="admin-kpi"><small>Disponible</small><strong class="${available < 0 ? 'danger-text' : ''}">${formatMoney(available)}</strong></article>
   `;
 
   const pendingMembers = members
