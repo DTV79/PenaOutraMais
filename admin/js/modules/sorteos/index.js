@@ -2,16 +2,15 @@ import { bootstrapAdmin } from '../../app/bootstrap.js';
 import { openModal, confirmModal } from '../../ui/modal.js';
 import {
   getDrawsSnapshot,
-  createFixedDraw,
   createSpecialBet,
   saveProgram,
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261021-17';
-import { openFixedDrawForm, openSpecialBetForm, openRefundForm } from './form.js?v=20261021-17';
-import { renderDraws } from './list.js?v=20261021-17';
-import { renderSchedule } from './schedule.js?v=20261021-17';
+} from './service.js?v=20261021-19';
+import { openSpecialBetForm, openRefundForm } from './form.js?v=20261021-19';
+import { renderDraws } from './list.js?v=20261021-19';
+import { renderSchedule } from './schedule.js?v=20261021-19';
 
 let snapshot=null;
 const drawsArea=document.querySelector('#drawsArea');
@@ -45,17 +44,6 @@ function showError(title,error) {
 async function init() {
   if (!await bootstrapAdmin()) return;
 
-  document.querySelector('#newFixedDrawButton')?.addEventListener('click',()=>{
-    if (!snapshot?.season) return;
-    openFixedDrawForm({
-      season:snapshot.season,
-      combinationCount:snapshot.fixedCombinationCount,
-      onSave:async(payload)=>{
-        await createFixedDraw(payload);
-        await refresh();
-      }
-    });
-  });
 
   document.querySelector('#newSpecialBetButton')?.addEventListener('click',()=>{
     if (!snapshot?.season) return;
