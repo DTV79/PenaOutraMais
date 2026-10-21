@@ -5,9 +5,9 @@ import {
   createCombination,
   updateCombination,
   setCombinationActive
-} from './service.js';
-import { renderNumbersSnapshot } from './list.js';
-import { openCombinationForm } from './form.js';
+} from './service.js?v=20261021-6';
+import { renderNumbersSnapshot } from './list.js?v=20261021-6';
+import { openCombinationForm } from './form.js?v=20261021-6';
 
 let snapshot = null;
 const container = document.querySelector('#numbersAdmin');
