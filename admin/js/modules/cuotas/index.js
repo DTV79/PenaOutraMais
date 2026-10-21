@@ -5,9 +5,9 @@ import {
   createQuotaMovement,
   updateQuotaMovement,
   cancelQuotaMovement
-} from './service.js';
-import { renderQuotaSnapshot } from './list.js';
-import { openQuotaForm } from './form.js';
+} from './service.js?v=20261021-5';
+import { renderQuotaSnapshot } from './list.js?v=20261021-5';
+import { openQuotaForm } from './form.js?v=20261021-5';
 
 let snapshot = null;
 const container = document.querySelector('#feesAdmin');
