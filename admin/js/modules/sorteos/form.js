@@ -40,7 +40,7 @@ function readIntegerList(data, prefix, count, min, max) {
   return values.sort((a,b)=>a-b);
 }
 
-export function openFixedDrawForm({ season, onSave }) {
+export function openFixedDrawForm({ season, combinationCount, onSave }) {
   const modal = openModal({
     title:'Registrar sorteo habitual',
     subtitle:`LA PRIMITIVA · ${season.anio}`,
@@ -52,12 +52,14 @@ export function openFixedDrawForm({ season, onSave }) {
             <input id="fixed-date" name="fecha" type="date" value="${todayIso()}" required />
           </div>
           <div class="admin-form-field">
-            <label for="fixed-amount">Importe por combinación</label>
-            <input id="fixed-amount" name="importe" type="number" min="0" step="0.01" value="0" />
+            <label for="fixed-amount">Importe total del sorteo</label>
+            <input id="fixed-amount" name="importe" type="number" min="0" step="0.01"
+              value="${combinationCount || 0}" />
+            <small id="fixedAmountHelp" class="field-note"></small>
           </div>
           <div class="admin-form-field admin-form-wide">
             <p class="admin-form-help sorteo-help">
-              Se copiarán automáticamente las 10 combinaciones activas de La Primitiva. Después podrás indicar el reintegro correspondiente a cada combinación/resguardo.
+              Se copiarán automáticamente las ${combinationCount} combinaciones activas de La Primitiva. Después podrás indicar el reintegro correspondiente a cada combinación/resguardo.
             </p>
           </div>
         </div>
@@ -73,6 +75,21 @@ export function openFixedDrawForm({ season, onSave }) {
   const form=modal.querySelector('#fixedDrawForm');
   const errorBox=modal.querySelector('#fixedDrawError');
   const save=modal.querySelector('#fixedDrawSave');
+  const amountInput=modal.querySelector('#fixed-amount');
+  const amountHelp=modal.querySelector('#fixedAmountHelp');
+
+  function updateAmountHelp() {
+    const total=Number(amountInput.value || 0);
+    const perBet=combinationCount ? total / combinationCount : 0;
+    amountHelp.textContent=combinationCount
+      ? combinationCount + ' combinaciones · ' +
+        perBet.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) +
+        ' € por combinación'
+      : 'No hay combinaciones activas.';
+  }
+
+  amountInput.addEventListener('input',updateAmountHelp);
+  updateAmountHelp();
 
   form.addEventListener('submit',async(event)=>{
     event.preventDefault();
@@ -83,7 +100,8 @@ export function openFixedDrawForm({ season, onSave }) {
       const data=new FormData(form);
       await onSave({
         date:String(data.get('fecha')),
-        amount:Number(data.get('importe') || 0)
+        totalAmount:Number(data.get('importe') || 0),
+        combinationCount
       });
       closeModal();
     } catch(error) {
