@@ -1,5 +1,17 @@
 import { openModal, closeModal } from '../../ui/modal.js';
 
+function formatDni(value = '') {
+  const compact = String(value || '')
+    .toUpperCase()
+    .replace(/[^0-9A-Z]/g, '');
+
+  if (/^\d{8}[A-Z]$/.test(compact)) {
+    return `${compact.slice(0,2)}.${compact.slice(2,5)}.${compact.slice(5,8)}-${compact.slice(8)}`;
+  }
+
+  return String(value || '').trim().toUpperCase();
+}
+
 function escapeAttr(value = '') {
   return String(value)
     .replaceAll('&', '&amp;')
@@ -31,7 +43,7 @@ export function normalizeMemberPayload(form) {
   return {
     nombre: clean('nombre') || null,
     apellidos: clean('apellidos') || null,
-    dni: clean('dni') || null,
+    dni: formatDni(clean('dni')) || null,
     alias: clean('alias'),
     telefono: clean('telefono') || null,
     email: clean('email') || null,
@@ -52,7 +64,7 @@ export function openMemberForm({ member = null, onSave }) {
           ${field('nombre', 'Nombre', member?.nombre, 'text', false, 'given-name')}
           ${field('apellidos', 'Apellidos', member?.apellidos, 'text', false, 'family-name')}
           ${field('alias', 'Alias', member?.alias, 'text', true)}
-          ${field('dni', 'DNI / NIE', member?.dni, 'text', false)}
+          ${field('dni', 'DNI / NIE', formatDni(member?.dni), 'text', false)}
           ${field('telefono', 'Teléfono', member?.telefono, 'tel', false, 'tel')}
           ${field('email', 'Correo electrónico', member?.email, 'email', false, 'email')}
           ${field('fecha_alta', 'Fecha de alta', member?.fecha_alta, 'date', false)}
@@ -73,6 +85,11 @@ export function openMemberForm({ member = null, onSave }) {
   const form = modal.querySelector('#memberForm');
   const saveButton = modal.querySelector('#memberSave');
   const errorBox = modal.querySelector('#memberFormError');
+  const dniInput = modal.querySelector('#member-dni');
+
+  dniInput?.addEventListener('blur', () => {
+    dniInput.value = formatDni(dniInput.value);
+  });
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
