@@ -32,7 +32,7 @@ export async function getDrawsSnapshot() {
       `programacion_juegos?select=id,temporada_id,juego_codigo,activa,dias_semana,importe_por_apuesta,observaciones&temporada_id=eq.${season.id}&order=id.asc`
     ),
     adminSelect(
-      `combinaciones?select=id&temporada_id=eq.${season.id}&juego_codigo=eq.primitiva&activa=eq.true`
+      `combinaciones?select=id,numero_orden,nombre&temporada_id=eq.${season.id}&juego_codigo=eq.primitiva&activa=eq.true&order=numero_orden.asc`
     )
   ]);
 
@@ -50,6 +50,7 @@ export async function getDrawsSnapshot() {
     draws,
     bets,
     programs,
+    fixedCombinations,
     fixedCombinationCount: fixedCombinations.length
   };
 }
