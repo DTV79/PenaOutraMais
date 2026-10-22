@@ -6,10 +6,10 @@ export function applySeason(season) {
   });
 
   document.querySelectorAll('[data-weekly-fee]').forEach((element) => {
-    element.textContent = Number(season.cuota_semanal).toLocaleString('es-ES') + ' €';
+    element.textContent = Number(season.cuota_semanal).toLocaleString('es-ES',{useGrouping:'always'}) + ' €';
   });
 
   document.querySelectorAll('[data-annual-fee]').forEach((element) => {
-    element.textContent = Number(season.cuota_anual).toLocaleString('es-ES') + ' €';
+    element.textContent = Number(season.cuota_anual).toLocaleString('es-ES',{useGrouping:'always'}) + ' €';
   });
 }
