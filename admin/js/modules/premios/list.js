@@ -6,6 +6,8 @@ const filterState = {
   order: 'fecha_desc'
 };
 
+let filtersOpen = false;
+
 function money(value) {
   return Number(value || 0).toLocaleString('es-ES',{
     useGrouping:'always',
@@ -132,12 +134,44 @@ function filterOptions(movements) {
   return { types, months };
 }
 
+function mobileMovementCard(row) {
+  const amountClass=Number(row.importe) < 0 ? 'danger-text' : 'positive-text';
+
+  return `
+    <article class="award-movement-card ${row.anulado_at ? 'cancelled' : ''}">
+      <div class="award-movement-card-head">
+        <div>
+          <span class="award-movement-date">${formatDate(row)}</span>
+          <span class="award-movement-type">${esc(label(row.tipo))}</span>
+          ${row.anulado_at ? '<span class="quota-cancelled-tag">Anulado</span>' : ''}
+        </div>
+        <strong class="award-movement-amount ${amountClass}">${money(row.importe)}</strong>
+      </div>
+
+      <div class="award-movement-concept">
+        <strong>${esc(row.concepto)}</strong>
+        ${row.observaciones ? `<small>${esc(row.observaciones)}</small>` : ''}
+      </div>
+
+      <div class="award-movement-actions">
+        ${actionButtons(row)}
+      </div>
+    </article>
+  `;
+}
+
 function renderTable(box,movements) {
   const rows=visibleRows(movements);
   const { types, months }=filterOptions(movements);
 
   box.innerHTML = `
-    <div class="award-filter-bar">
+    <button class="award-filter-toggle" type="button" id="awardFilterToggle"
+      aria-expanded="${filtersOpen ? 'true' : 'false'}">
+      <span>Filtros</span>
+      <span aria-hidden="true">${filtersOpen ? '▲' : '▼'}</span>
+    </button>
+
+    <div class="award-filter-bar ${filtersOpen ? 'is-open' : ''}">
       <div class="award-filter-search">
         <label for="awardFilterSearch">Buscar</label>
         <input id="awardFilterSearch" type="search" placeholder="Concepto, fecha, importe…"
@@ -195,7 +229,11 @@ function renderTable(box,movements) {
     </div>
 
     ${rows.length ? `
-      <div class="admin-table-wrap">
+      <div class="award-mobile-list">
+        ${rows.map((row)=>mobileMovementCard(row)).join('')}
+      </div>
+
+      <div class="admin-table-wrap award-desktop-table">
         <table class="admin-table award-table">
           <thead>
             <tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Importe</th><th></th></tr>
@@ -229,6 +267,11 @@ function renderTable(box,movements) {
   `;
 
   const rerender=()=>renderTable(box,movements);
+
+  box.querySelector('#awardFilterToggle')?.addEventListener('click',()=>{
+    filtersOpen=!filtersOpen;
+    rerender();
+  });
 
   box.querySelector('#awardFilterSearch')?.addEventListener('input',(event)=>{
     filterState.search=event.target.value;
