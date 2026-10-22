@@ -154,7 +154,7 @@ export function checkDraw(drawId) {
   return adminFunction('comprobar-sorteos-selae',{ sorteo_id:Number(drawId) });
 }
 
-export async function updateDrawRefund(drawId,bets,refunds,complementario=null) {
+export async function updateDrawRefund(drawId,bets,refunds) {
   const fixedBets=bets.filter(
     (bet)=>Number(bet.sorteo_id)===Number(drawId) && bet.tipo==='fija'
   );
@@ -180,24 +180,6 @@ export async function updateDrawRefund(drawId,bets,refunds,complementario=null) 
         }
       );
     })
-  );
-
-  const draws=await adminSelect(
-    `sorteos?select=id,resultado&id=eq.${encodeURIComponent(drawId)}&limit=1`
-  );
-  const currentResult=draws[0]?.resultado || {};
-  const compValue=complementario==='' || complementario===null || complementario===undefined
-    ? null
-    : Number(complementario);
-
-  await adminUpdate(
-    `sorteos?id=eq.${encodeURIComponent(drawId)}`,
-    {
-      resultado:{
-        ...currentResult,
-        complementario:compValue
-      }
-    }
   );
 
   return fixedBets.length;
