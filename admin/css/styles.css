@@ -3,3 +3,80 @@
 @import url('./components.css?v=20261022-23');
 @import url('./pages.css?v=20261022-23');
 @import url('./forms.css?v=20261022-23');
+
+
+/* Cabecera única v24 */
+.admin-top-nav-static,
+.admin-top-nav{display:none!important}
+
+.admin-fixed-shell{
+  position:sticky!important;
+  top:0!important;
+  z-index:90!important;
+  background:rgba(250,251,252,.97)!important;
+  border-bottom:1px solid rgba(7,26,45,.08)!important;
+  box-shadow:0 8px 26px rgba(7,26,45,.055)!important;
+  backdrop-filter:blur(18px)
+}
+
+.admin-header{
+  position:static!important;
+  padding:calc(9px + env(safe-area-inset-top)) 14px 0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important
+}
+
+.admin-header-inner{
+  max-width:1180px!important;
+  margin:0 auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  padding-bottom:8px!important
+}
+
+.admin-header-actions{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important
+}
+
+.admin-home-button,
+a.admin-home-button{
+  height:38px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  padding:0 12px!important;
+  border:1px solid #dce3e8!important;
+  border-radius:12px!important;
+  background:#fff!important;
+  color:var(--navy)!important;
+  text-decoration:none!important;
+  font-size:11px!important;
+  font-weight:850!important;
+  box-shadow:none!important
+}
+
+.admin-home-button:hover{
+  background:#f8fafb!important;
+  border-color:#c8d4dd!important
+}
+
+.admin-home-button span{
+  font-size:14px!important;
+  line-height:1!important
+}
+
+@media(max-width:759px){
+  .admin-home-button,
+  a.admin-home-button{
+    width:38px!important;
+    min-width:38px!important;
+    padding:0!important
+  }
+  .admin-home-button strong{display:none!important}
+}
