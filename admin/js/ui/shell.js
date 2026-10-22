@@ -1,6 +1,8 @@
 import { signOut } from '../services/auth.js';
 
 export function mountAdminShell(admin) {
+  document.querySelectorAll('.admin-top-nav-static').forEach((nav)=>nav.remove());
+
   const header = document.querySelector('#adminHeader');
 
   if (header) {
@@ -20,7 +22,7 @@ export function mountAdminShell(admin) {
               <strong>${admin?.nombre || 'Administrador'}</strong>
               <small>Sesión segura</small>
             </div>
-            <a class="admin-home-button" href="index.html" aria-label="Ir al inicio">
+            <a class="admin-logout admin-home-button" href="index.html" aria-label="Ir al inicio">
               <span>⌂</span>
               <strong>Inicio</strong>
             </a>
