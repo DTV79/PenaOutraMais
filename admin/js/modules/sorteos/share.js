@@ -30,12 +30,19 @@ function previousWeekRange(drawDate) {
   return { from:isoDate(from), to:isoDate(to) };
 }
 
-function weekdayDate(value) {
-  const date=parseIso(value);
-  const names=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-  const weekday=names[date.getUTCDay()];
+function formatDate(value) {
   const [y,m,d]=String(value).split('-');
-  return `${weekday}, ${d}/${m}/${y}`;
+  return `${d}/${m}/${y}`;
+}
+
+function currentWeekDrawDates(drawDate) {
+  const date=parseIso(drawDate);
+  const mondayOffset=(date.getUTCDay()+6)%7;
+  const monday=addDays(date,-mondayOffset);
+  return {
+    thursday:isoDate(addDays(monday,3)),
+    saturday:isoDate(addDays(monday,5))
+  };
 }
 
 function weeklyPrize(snapshot,draw) {
@@ -62,26 +69,32 @@ export function getShareData(snapshot,drawId) {
   }
 
   const prize=weeklyPrize(snapshot,draw);
-  const pot=Number(snapshot.potBalance || 0);
+  const exactPot=Number(snapshot.potBalance || 0);
+  const previousWholePot=Math.floor(Math.max(0,exactPot-prize));
+  const sharedPot=Math.floor(previousWholePot+prize);
+  const dates=currentWeekDrawDates(draw.fecha);
 
   return {
     draw,
     prize,
-    pot,
-    drawLabel:weekdayDate(draw.fecha),
+    exactPot,
+    sharedPot,
+    thursday:dates.thursday,
+    saturday:dates.saturday,
+    datesText:`Jueves ${formatDate(dates.thursday)} · Sábado ${formatDate(dates.saturday)}`,
     prizeText:money(prize),
-    potText:money(pot)
+    potText:money(sharedPot)
   };
 }
 
 export function buildWhatsAppMessage(data) {
   return [
-    '🍀 *Primitiva sellada · Peña Outra Máis*',
+    '*Primitiva sellada*',
     '',
-    `🏆 Premio semana anterior: *${data.prizeText}*`,
-    `💰 Bote acumulado: *${data.potText}*`,
+    `• Premio semana anterior: *${data.prizeText}*`,
+    `• Bote acumulado: *${data.potText}*`,
     '',
-    '*¡Suerte! 😉*'
+    'Suerte 😉'
   ].join('\n');
 }
 
@@ -167,13 +180,6 @@ export async function createShareCard(data) {
     ctx.restore();
   } catch (_) {}
 
-  ctx.fillStyle='#fff';
-  ctx.font='900 64px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('Peña Outra Máis',105,315);
-  ctx.fillStyle=gold;
-  ctx.font='800 25px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('PRIMITIVA SELLADA',108,355);
-
   // Tarjeta principal
   roundedRect(ctx,75,455,930,650,38);
   ctx.fillStyle='#fff';
@@ -182,36 +188,40 @@ export async function createShareCard(data) {
   ctx.lineWidth=3;
   ctx.stroke();
 
+  ctx.fillStyle=navy;
+  ctx.font='900 48px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+  ctx.fillText('PRIMITIVA SELLADA',125,535);
+
   ctx.fillStyle=muted;
-  ctx.font='650 30px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('Sorteo',125,535);
+  ctx.font='650 27px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+  ctx.fillText('SORTEOS',125,590);
 
   ctx.fillStyle=navy;
-  fitText(ctx,data.drawLabel,820,53,38);
-  ctx.fillText(data.drawLabel.charAt(0).toUpperCase()+data.drawLabel.slice(1),125,600);
+  fitText(ctx,data.datesText,820,43,30);
+  ctx.fillText(data.datesText,125,645);
 
   ctx.strokeStyle='#e6edf2';
   ctx.lineWidth=2;
   ctx.beginPath();
-  ctx.moveTo(125,650);
-  ctx.lineTo(955,650);
+  ctx.moveTo(125,690);
+  ctx.lineTo(955,690);
   ctx.stroke();
 
   ctx.fillStyle=muted;
   ctx.font='700 28px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('PREMIO SEMANA ANTERIOR',125,735);
+  ctx.fillText('PREMIO SEMANA ANTERIOR',125,775);
 
   ctx.fillStyle='#16834c';
   ctx.font='900 70px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText(data.prizeText,125,820);
+  ctx.fillText(data.prizeText,125,860);
 
   ctx.fillStyle=muted;
   ctx.font='700 28px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('BOTE ACUMULADO',125,915);
+  ctx.fillText('BOTE ACUMULADO',125,950);
 
   ctx.fillStyle=navy;
   ctx.font='900 78px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText(data.potText,125,1010);
+  ctx.fillText(data.potText,125,1040);
 
   // Pie
   roundedRect(ctx,75,1150,930,125,32);
@@ -220,7 +230,7 @@ export async function createShareCard(data) {
 
   ctx.fillStyle='#fff';
   ctx.font='800 43px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('¡Suerte! 😉',125,1230);
+  ctx.fillText('Suerte 😉',125,1230);
 
   return new Promise((resolve,reject)=>{
     canvas.toBlob((blob)=>{
@@ -241,8 +251,7 @@ export async function shareCard(data) {
   if (navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))) {
     await navigator.share({
       files:[file],
-      title:'Primitiva sellada · Peña Outra Máis',
-      text:buildWhatsAppMessage(data)
+      title:'Primitiva sellada'
     });
     return { shared:true };
   }
