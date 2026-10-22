@@ -1,4 +1,4 @@
-import { money } from '../utils/format.js';
+import { money } from '../utils/format.js?v=20261022-02';
 
 const DAY_LABELS={1:'Lun',2:'Mar',3:'Mié',4:'Jue',5:'Vie',6:'Sáb',7:'Dom'};
 
