@@ -220,8 +220,42 @@ export function renderQuotaSnapshot({ season, members, movements, quotaSpent, el
     return;
   }
 
+  const mobileCards = movements.map((row) => {
+    const member = escapeHtml(aliasById.get(row.socio_id) || '—');
+    const year = row.aplicar_anio ? escapeHtml(row.aplicar_anio) : season.anio;
+    const amountClass = Number(row.importe) < 0 ? 'danger-text' : 'positive-text';
+
+    return `
+      <article class="quota-movement-card ${row.anulado_at ? 'cancelled' : ''}">
+        <div class="quota-movement-head">
+          <div>
+            <strong class="quota-movement-member">${member}</strong>
+            <span class="quota-movement-type">${escapeHtml(typeLabel(row))}</span>
+            ${row.anulado_at ? '<span class="quota-cancelled-tag">Anulado</span>' : ''}
+          </div>
+          <strong class="quota-movement-amount ${amountClass}">${formatMoney(row.importe)}</strong>
+        </div>
+
+        <div class="quota-movement-meta">
+          <div><small>Fecha</small><strong>${formatDate(row.fecha)}</strong></div>
+          <div><small>Método</small><strong>${escapeHtml(row.metodo || '—')}</strong></div>
+          <div><small>Temporada</small><strong>${year}</strong></div>
+        </div>
+
+        ${row.anulado_at ? '' : `
+          <div class="quota-movement-actions">
+            <button type="button" class="admin-mini-action" data-quota-edit="${row.id}">Editar</button>
+            <button type="button" class="admin-mini-action danger" data-quota-cancel="${row.id}">Anular</button>
+          </div>
+        `}
+      </article>
+    `;
+  }).join('');
+
   container.innerHTML = `
-    <div class="admin-table-wrap">
+    <div class="quota-mobile-list">${mobileCards}</div>
+
+    <div class="admin-table-wrap quota-desktop-table">
       <table class="admin-table quota-table">
         <thead>
           <tr>
