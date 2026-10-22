@@ -5,8 +5,8 @@ import {
   createQuotaMovement,
   updateQuotaMovement,
   cancelQuotaMovement
-} from './service.js?v=20261021-15';
-import { renderQuotaSnapshot } from './list.js?v=20261022-03';
+} from './service.js?v=20261022-21';
+import { renderQuotaSnapshot } from './list.js?v=20261022-21';
 import { openQuotaForm } from './form.js?v=20261021-15';
 
 let snapshot = null;
