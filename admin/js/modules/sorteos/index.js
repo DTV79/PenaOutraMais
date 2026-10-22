@@ -11,10 +11,10 @@ import {
   updateDrawRefund,
   deleteDraw
 } from './service.js?v=20261021-26';
-import { openSpecialBetForm, openRefundForm } from './form.js?v=20261021-26';
+import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-02';
 import { openProgramForm } from './program-form.js?v=20261021-26';
-import { renderPrograms } from './program-list.js?v=20261021-26';
-import { renderDraws } from './list.js?v=20261021-25';
+import { renderPrograms } from './program-list.js?v=20261022-02';
+import { renderDraws } from './list.js?v=20261022-02';
 
 let snapshot=null;
 const panels=document.querySelector('.draw-tab-panels');
