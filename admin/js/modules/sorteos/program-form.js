@@ -38,24 +38,15 @@ function readIntegerList(data,prefix,count,min,max) {
   return values.sort((a,b)=>a-b);
 }
 
-function templateFields(game,useFixed,data={}) {
-  if (game.codigo==='primitiva' && useFixed) {
-    return `
-      <div class="program-fixed-note">
-        <strong>10 combinaciones fijas de La Primitiva</strong>
-        <small>Se usarán las combinaciones configuradas en la sección Números. Los reintegros se añaden después en cada sorteo.</small>
-      </div>
-    `;
-  }
-
-  if (game.formato==='5_estrellas') {
+function manualFields(game,data={}) {
+  if (game?.formato==='5_estrellas') {
     return `
       <div class="admin-form-wide">
-        <p class="admin-form-subtitle">Números fijos</p>
+        <p class="admin-form-subtitle">Números</p>
         ${numberFields('program_numero',5,1,50,data.numeros || [])}
       </div>
       <div class="admin-form-wide">
-        <p class="admin-form-subtitle">Estrellas fijas</p>
+        <p class="admin-form-subtitle">Estrellas</p>
         ${numberFields('program_estrella',2,1,12,data.estrellas || [],'Estrella')}
       </div>
       <p class="admin-form-help admin-form-wide">
@@ -64,7 +55,7 @@ function templateFields(game,useFixed,data={}) {
     `;
   }
 
-  if (game.formato==='decimo') {
+  if (game?.formato==='decimo') {
     return `
       <div class="admin-form-field">
         <label>Número *</label>
@@ -82,11 +73,11 @@ function templateFields(game,useFixed,data={}) {
 
   return `
     <div class="admin-form-wide">
-      <p class="admin-form-subtitle">Números fijos</p>
+      <p class="admin-form-subtitle">Números</p>
       ${numberFields('program_numero',6,1,49,data.numeros || [])}
     </div>
     <p class="admin-form-help admin-form-wide">
-      El reintegro se añadirá después en cada sorteo, porque depende del resguardo.
+      El reintegro se añadirá después en cada sorteo porque depende del resguardo.
     </p>
   `;
 }
@@ -94,16 +85,18 @@ function templateFields(game,useFixed,data={}) {
 export function openProgramForm({
   season,
   games,
-  fixedCombinationCount,
+  fixedPlays,
+  fixedCombinations,
   program=null,
   onSave
 }) {
   const editing=Boolean(program);
   const initialGame=games.find((game)=>game.codigo===program?.juego_codigo) || games[0];
   const initialDays=new Set((program?.dias_semana || []).map(Number));
+  const initialMode=program?.usar_combinaciones_fijas ? 'fixed' : 'manual';
 
   const modal=openModal({
-    title:editing ? 'Editar apuesta programada' : 'Nueva apuesta programada',
+    title:editing?'Editar apuesta programada':'Nueva apuesta programada',
     subtitle:`TEMPORADA ${season.anio}`,
     content:`
       <form id="programForm" class="admin-form">
@@ -112,7 +105,7 @@ export function openProgramForm({
             <label for="program-name">Nombre *</label>
             <input id="program-name" name="nombre" type="text"
               value="${esc(program?.nombre || '')}"
-              placeholder="Ej. Euromillones viernes" required />
+              placeholder="Ej. Primitiva jueves y sábado" required />
           </div>
 
           <div class="admin-form-field">
@@ -140,6 +133,21 @@ export function openProgramForm({
             </select>
           </div>
 
+          <div class="admin-form-field admin-form-wide" id="programModeField">
+            <label for="program-mode">Tipo de jugada *</label>
+            <select id="program-mode" name="modo">
+              <option value="fixed" ${initialMode==='fixed'?'selected':''}>Usar una jugada fija guardada</option>
+              <option value="manual" ${initialMode==='manual'?'selected':''}>Definir una combinación directamente</option>
+            </select>
+            <small class="field-note">Las jugadas fijas se crean y editan desde la sección Números.</small>
+          </div>
+
+          <div class="admin-form-field admin-form-wide" id="programFixedPlayField">
+            <label for="program-fixed-play">Jugada fija *</label>
+            <select id="program-fixed-play" name="jugada_fija_id"></select>
+            <small id="programFixedPlayHelp" class="field-note"></small>
+          </div>
+
           <div class="admin-form-wide">
             <p class="admin-form-subtitle">Días de juego</p>
             <div class="weekday-grid program-weekdays">
@@ -151,16 +159,6 @@ export function openProgramForm({
               `).join('')}
             </div>
           </div>
-
-          <label id="programFixedRow" class="admin-check-row admin-form-wide" style="${initialGame?.codigo==='primitiva'?'':'display:none!important'}">
-            <input id="program-fixed" name="usar_fijas" type="checkbox"
-              ${program?.usar_combinaciones_fijas || (!editing && initialGame?.codigo==='primitiva')?'checked':''}
-              ${editing?'disabled':''} />
-            <span>
-              <strong>Usar las ${fixedCombinationCount} combinaciones fijas</strong>
-              <small>Las mismas que están configuradas en Números.</small>
-            </span>
-          </label>
 
           <div id="programTemplateFields" class="admin-form-wide"></div>
 
@@ -191,8 +189,11 @@ export function openProgramForm({
 
   const form=modal.querySelector('#programForm');
   const gameSelect=modal.querySelector('#program-game');
-  const fixedRow=modal.querySelector('#programFixedRow');
-  const fixedInput=modal.querySelector('#program-fixed');
+  const modeSelect=modal.querySelector('#program-mode');
+  const modeField=modal.querySelector('#programModeField');
+  const fixedField=modal.querySelector('#programFixedPlayField');
+  const fixedSelect=modal.querySelector('#program-fixed-play');
+  const fixedHelp=modal.querySelector('#programFixedPlayHelp');
   const templateBox=modal.querySelector('#programTemplateFields');
   const save=modal.querySelector('#programSave');
   const errorBox=modal.querySelector('#programFormError');
@@ -202,26 +203,82 @@ export function openProgramForm({
     return games.find((game)=>game.codigo===code) || games[0];
   }
 
-  function useFixed() {
-    return selectedGame()?.codigo==='primitiva' && Boolean(fixedInput?.checked);
+  function availableFixedPlays() {
+    const game=selectedGame();
+    return fixedPlays.filter((play)=>
+      play.juego_codigo===game?.codigo &&
+      (play.activa || String(play.id)===String(program?.jugada_fija_id || ''))
+    );
+  }
+
+  function renderFixedOptions() {
+    const game=selectedGame();
+    const supported=['6_numeros','5_estrellas'].includes(game?.formato);
+    const options=supported ? availableFixedPlays() : [];
+
+    if (!supported) {
+      modeSelect.value='manual';
+      modeField.style.display='none';
+    } else {
+      modeField.style.display='';
+    }
+
+    fixedSelect.innerHTML=options.length
+      ? options.map((play)=>`
+          <option value="${play.id}" ${String(play.id)===String(program?.jugada_fija_id || '')?'selected':''}>
+            ${esc(play.nombre)}${play.activa?'':' · Inactiva'}
+          </option>
+        `).join('')
+      : '<option value="">No hay jugadas fijas para este juego</option>';
+
+    if (!editing && options.length && modeSelect.value==='fixed' && !fixedSelect.value) {
+      fixedSelect.value=String(options[0].id);
+    }
+
+    if (!options.length && modeSelect.value==='fixed') {
+      modeSelect.value='manual';
+    }
+  }
+
+  function selectedFixedPlay() {
+    return fixedPlays.find((play)=>String(play.id)===String(fixedSelect.value));
   }
 
   function renderTemplate() {
+    renderFixedOptions();
     const game=selectedGame();
-    if (!editing) {
-      fixedRow.style.display=game?.codigo==='primitiva' ? '' : 'none';
-      if (game?.codigo!=='primitiva') fixedInput.checked=false;
+    const useFixed=modeSelect.value==='fixed';
+    fixedField.style.display=useFixed ? '' : 'none';
+
+    if (useFixed) {
+      const play=selectedFixedPlay();
+      const count=fixedCombinations.filter((row)=>
+        String(row.jugada_fija_id)===String(play?.id) && row.activa
+      ).length;
+      fixedHelp.textContent=play
+        ? `${count} combinación${count===1?'':'es'} activa${count===1?'':'s'} · ${game?.nombre || ''}`
+        : 'Crea antes una jugada fija en Números.';
+      templateBox.innerHTML=play ? `
+        <div class="program-fixed-note">
+          <strong>${esc(play.nombre)}</strong>
+          <small>Se utilizarán sus ${count} combinaciones activas. Cada programación puede asignar días distintos a una jugada diferente.</small>
+        </div>
+      ` : '';
+      return;
     }
 
-    templateBox.innerHTML=templateFields(
+    templateBox.innerHTML=manualFields(
       game,
-      useFixed(),
       editing ? (program.datos_apuesta || {}) : {}
     );
   }
 
-  gameSelect?.addEventListener('change',renderTemplate);
-  fixedInput?.addEventListener('change',renderTemplate);
+  gameSelect?.addEventListener('change',()=>{
+    modeSelect.value=availableFixedPlays().length ? 'fixed' : 'manual';
+    renderTemplate();
+  });
+  modeSelect?.addEventListener('change',renderTemplate);
+  fixedSelect?.addEventListener('change',renderTemplate);
 
   form.querySelectorAll('.weekday-option input').forEach((input)=>{
     input.addEventListener('change',()=>{
@@ -242,45 +299,57 @@ export function openProgramForm({
       const game=selectedGame();
       const days=data.getAll('dia').map(Number).sort((a,b)=>a-b);
       const active=data.get('activa')==='on';
+      const useFixed=modeSelect.value==='fixed';
 
       if (!days.length) throw new Error('Selecciona al menos un día de juego.');
 
+      let fixedPlay=null;
       let betData={};
-      const fixed=useFixed();
 
-      if (!fixed) {
-        if (game.formato==='5_estrellas') {
-          betData={
-            numeros:readIntegerList(data,'program_numero',5,1,50),
-            estrellas:readIntegerList(data,'program_estrella',2,1,12),
-            codigo_millon:null
-          };
-        } else if (game.formato==='decimo') {
-          const number=String(data.get('program_decimo') || '').trim();
-          if (!/^\d{5}$/.test(number)) {
-            throw new Error('El número debe tener exactamente 5 cifras.');
-          }
-          betData={
-            numero:number,
-            cantidad:Math.max(1,Number(data.get('program_cantidad') || 1))
-          };
-        } else {
-          betData={
-            numeros:readIntegerList(data,'program_numero',6,1,49),
-            reintegro:null
-          };
+      if (useFixed) {
+        fixedPlay=selectedFixedPlay();
+        if (!fixedPlay) throw new Error('Selecciona una jugada fija.');
+        if (fixedPlay.juego_codigo!==game.codigo) {
+          throw new Error('La jugada fija no corresponde al juego seleccionado.');
         }
+        if (active && !fixedPlay.activa) {
+          throw new Error('No puedes activar una programación con una jugada fija inactiva.');
+        }
+      } else if (game.formato==='5_estrellas') {
+        betData={
+          numeros:readIntegerList(data,'program_numero',5,1,50),
+          estrellas:readIntegerList(data,'program_estrella',2,1,12),
+          codigo_millon:null
+        };
+      } else if (game.formato==='decimo') {
+        const number=String(data.get('program_decimo') || '').trim();
+        if (!/^\d{5}$/.test(number)) {
+          throw new Error('El número debe tener exactamente 5 cifras.');
+        }
+        betData={
+          numero:number,
+          cantidad:Math.max(1,Number(data.get('program_cantidad') || 1))
+        };
+      } else {
+        betData={
+          numeros:readIntegerList(data,'program_numero',6,1,49),
+          reintegro:null
+        };
       }
+
+      const name=String(data.get('nombre') || '').trim();
+      if (!name) throw new Error('Escribe un nombre para la programación.');
 
       await onSave({
         temporada_id:season.id,
         juego_codigo:game.codigo,
-        nombre:String(data.get('nombre') || '').trim(),
+        nombre:name,
         activa:active,
         dias_semana:days,
         importe_total:Number(data.get('importe_total') || 0),
         fuente_fondos:String(data.get('fuente_fondos') || 'cuotas'),
-        usar_combinaciones_fijas:fixed,
+        usar_combinaciones_fijas:useFixed,
+        jugada_fija_id:useFixed ? Number(fixedPlay.id) : null,
         datos_apuesta:betData,
         observaciones:String(data.get('observaciones') || '').trim() || null
       });
