@@ -20,6 +20,10 @@ export function mountAdminShell(admin) {
               <strong>${admin?.nombre || 'Administrador'}</strong>
               <small>Sesión segura</small>
             </div>
+            <a class="admin-home-button" href="index.html" aria-label="Ir al inicio">
+              <span>⌂</span>
+              <strong>Inicio</strong>
+            </a>
             <button class="admin-logout" id="adminLogout">Salir</button>
           </div>
         </div>
