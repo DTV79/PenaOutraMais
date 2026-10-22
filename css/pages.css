@@ -168,3 +168,20 @@
   .public-program-list{grid-template-columns:repeat(2,1fr)}
   .public-draw-list{grid-template-columns:repeat(2,1fr)}
 }
+
+
+/* Jugadas fijas · pública */
+.public-fixed-play{margin-bottom:14px;padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.public-fixed-play:last-child{margin-bottom:0}
+.public-fixed-play-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.public-fixed-play-head>div{min-width:0}
+.public-fixed-play-head small,.public-fixed-play-head strong,.public-fixed-play-head span{display:block}
+.public-fixed-play-head small{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px}
+.public-fixed-play-head strong{margin-top:2px;font-size:15px}
+.public-fixed-play-head>div>span{margin-top:3px;color:var(--muted);font-size:9px}
+.public-fixed-combinations{display:grid;gap:9px}
+.public-star-separator{display:grid;place-items:center;width:24px;height:34px;color:#997615;font-style:normal;font-weight:900}
+.star-ball{background:radial-gradient(circle at 34% 27%,#fff 0 15%,#fff6c9 18%,#f0d66e 58%,#caa62b 100%)}
+@media(min-width:720px){
+  .public-fixed-combinations{grid-template-columns:repeat(2,1fr)}
+}
