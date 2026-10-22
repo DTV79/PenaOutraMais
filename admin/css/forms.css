@@ -1035,3 +1035,33 @@
     padding:6px 9px
   }
 }
+
+
+/* Sorteos · compartir WhatsApp v40 */
+.draw-share-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-top:13px;
+  padding-top:13px;
+  border-top:1px solid var(--line)
+}
+.admin-action.whatsapp{
+  background:#1f9d61;
+  color:#fff;
+  box-shadow:0 6px 14px rgba(31,157,97,.16)
+}
+.admin-action.whatsapp:hover:not(:disabled){
+  background:#198652;
+  box-shadow:0 8px 18px rgba(31,157,97,.2)
+}
+@media(max-width:599px){
+  .draw-share-actions{
+    gap:7px
+  }
+  .draw-share-actions .admin-action{
+    min-height:42px;
+    padding:9px 8px;
+    font-size:10px
+  }
+}
