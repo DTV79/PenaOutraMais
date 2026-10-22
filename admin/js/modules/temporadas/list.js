@@ -1,6 +1,7 @@
 function money(value) {
   if (value === null || value === undefined || value === '') return '—';
   return Number(value).toLocaleString('es-ES',{
+    useGrouping:'always',
     minimumFractionDigits:2,
     maximumFractionDigits:2
   }) + ' €';
