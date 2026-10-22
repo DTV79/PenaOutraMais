@@ -333,10 +333,16 @@ export function openRefundForm({ draw, game, bets, combinations, onSave }) {
   }
 
   const modal=openModal({
-    title:'Reintegros',
+    title:'Reintegro y complementario',
     subtitle:`${String(game?.nombre || draw.juego_codigo).toUpperCase()} · ${draw.fecha.split('-').reverse().join('/')}`,
     content:`
       <form id="refundForm" class="admin-form">
+        <div class="admin-form-field">
+          <label for="draw-complementary">Complementario</label>
+          <input id="draw-complementary" name="complementario" type="number"
+            min="1" max="49" step="1" value="${draw.resultado?.complementario ?? ''}" />
+          <small class="field-note">Número complementario oficial de La Primitiva.</small>
+        </div>
         <div class="refund-group-list">
           ${groups.map((group)=>`
             <div class="refund-group-card">
@@ -398,7 +404,20 @@ export function openRefundForm({ draw, game, bets, combinations, onSave }) {
     save.textContent='Guardando…';
 
     try {
-      await onSave(refunds);
+      const rawComplementary=String(data.get('complementario') ?? '').trim();
+      let complementary='';
+      if (rawComplementary!=='') {
+        complementary=Number(rawComplementary);
+        if (!Number.isInteger(complementary) || complementary<1 || complementary>49) {
+          errorBox.textContent='El complementario debe estar entre 1 y 49.';
+          errorBox.classList.add('visible');
+          save.disabled=false;
+          save.textContent='Guardar';
+          return;
+        }
+      }
+
+      await onSave(refunds,complementary);
       closeModal();
     } catch(error) {
       errorBox.textContent=error?.message || 'No se pudieron guardar los reintegros.';
