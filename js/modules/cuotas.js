@@ -1,4 +1,4 @@
-import { money } from '../utils/format.js';
+import { money } from '../utils/format.js?v=20261022-02';
 
 export function renderMembers() {
   const container = document.querySelector('#members');
