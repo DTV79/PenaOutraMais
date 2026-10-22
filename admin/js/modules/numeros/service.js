@@ -1,21 +1,47 @@
-import { adminSelect, adminInsert, adminUpdate } from '../../services/admin-api.js?v=20261021-22';
+import {
+  adminSelect,
+  adminInsert,
+  adminUpdate,
+  adminRpc
+} from '../../services/admin-api.js?v=20261021-22';
 
 export async function getNumbersSnapshot() {
-  const seasons = await adminSelect(
-    'temporadas?select=id,anio,activa&activa=eq.true&limit=1'
-  );
+  const [seasons, games] = await Promise.all([
+    adminSelect('temporadas?select=id,anio,activa&activa=eq.true&limit=1'),
+    adminSelect('juegos?select=codigo,nombre,formato,config,activo&activo=eq.true&order=nombre.asc')
+  ]);
 
   const season = seasons[0] || null;
 
   if (!season) {
-    return { season:null, combinations:[] };
+    return { season:null, games, fixedPlays:[], combinations:[] };
   }
 
-  const combinations = await adminSelect(
-    `combinaciones?select=id,temporada_id,numero_orden,nombre,numeros,activa&temporada_id=eq.${season.id}&order=numero_orden.asc`
-  );
+  const [fixedPlays, combinations] = await Promise.all([
+    adminSelect(
+      `jugadas_fijas?select=id,temporada_id,nombre,juego_codigo,activa,observaciones&temporada_id=eq.${season.id}&order=id.asc`
+    ),
+    adminSelect(
+      `combinaciones?select=id,temporada_id,jugada_fija_id,numero_orden,nombre,numeros,estrellas,activa,juego_codigo&temporada_id=eq.${season.id}&order=jugada_fija_id.asc,numero_orden.asc`
+    )
+  ]);
 
-  return { season, combinations };
+  return { season, games, fixedPlays, combinations };
+}
+
+export function createFixedPlay(payload) {
+  return adminInsert('jugadas_fijas', payload);
+}
+
+export function updateFixedPlay(id, payload) {
+  return adminUpdate(
+    `jugadas_fijas?id=eq.${encodeURIComponent(id)}`,
+    payload
+  );
+}
+
+export function setFixedPlayActive(id, active) {
+  return updateFixedPlay(id, { activa:Boolean(active) });
 }
 
 export function createCombination(payload) {
@@ -30,5 +56,9 @@ export function updateCombination(id, payload) {
 }
 
 export function setCombinationActive(id, active) {
-  return updateCombination(id, { activa: active });
+  return updateCombination(id, { activa:Boolean(active) });
+}
+
+export function refreshScheduledDraws() {
+  return adminRpc('refrescar_sorteos_programados', {});
 }
