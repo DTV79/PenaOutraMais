@@ -100,11 +100,9 @@ export function renderQuotaSnapshot({ season, members, movements, quotaSpent, el
   `;
 
   if (fundExplanation) {
+    const totalWeeks=Number(season.numero_semanas || 52);
     fundExplanation.innerHTML =
-      `De los <strong>${formatMoney(paid)}</strong> cobrados en ${season.anio}, ` +
-      `se han gastado <strong>${formatMoney(spent)}</strong> correspondientes a ` +
-      `<strong>${elapsedWeeks} semanas</strong> de juego. ` +
-      `Quedan <strong>${formatMoney(available)}</strong> disponibles para las semanas restantes.`;
+      `<strong>${elapsedWeeks} de ${totalWeeks} semanas jugadas</strong>`;
   }
 
   const pendingMembers = members
