@@ -10,10 +10,10 @@ import {
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261021-26';
+} from './service.js?v=20261022-04';
 import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-02';
-import { openProgramForm } from './program-form.js?v=20261021-26';
-import { renderPrograms } from './program-list.js?v=20261022-02';
+import { openProgramForm } from './program-form.js?v=20261022-04';
+import { renderPrograms } from './program-list.js?v=20261022-04';
 import { renderDraws } from './list.js?v=20261022-02';
 
 let snapshot=null;
@@ -59,13 +59,26 @@ function showError(title,error) {
 
 async function saveProgramming(program,payload) {
   if (program) {
-    await updateProgram(program.id,payload,snapshot.fixedCombinationCount);
+    await updateProgram(program.id,payload,snapshot.fixedCombinations);
   } else {
-    await createProgram(payload,snapshot.fixedCombinationCount);
+    await createProgram(payload,snapshot.fixedCombinations);
   }
 
   await refreshScheduledDraws();
   await refresh();
+}
+
+function openProgramming(program=null) {
+  if (!snapshot?.season) return;
+
+  openProgramForm({
+    season:snapshot.season,
+    games:snapshot.games,
+    fixedPlays:snapshot.fixedPlays,
+    fixedCombinations:snapshot.fixedCombinations,
+    program,
+    onSave:async(payload)=>saveProgramming(program,payload)
+  });
 }
 
 async function init() {
@@ -74,14 +87,7 @@ async function init() {
   setupTabs();
 
   document.querySelector('#newProgramButton')?.addEventListener('click',()=>{
-    if (!snapshot?.season) return;
-
-    openProgramForm({
-      season:snapshot.season,
-      games:snapshot.games,
-      fixedCombinationCount:snapshot.fixedCombinationCount,
-      onSave:async(payload)=>saveProgramming(null,payload)
-    });
+    openProgramming(null);
   });
 
   document.querySelector('#newSpecialBetButton')?.addEventListener('click',()=>{
@@ -104,15 +110,7 @@ async function init() {
       const program=snapshot?.programs.find(
         (row)=>String(row.id)===String(editButton.dataset.programEdit)
       );
-      if (!program) return;
-
-      openProgramForm({
-        season:snapshot.season,
-        games:snapshot.games,
-        fixedCombinationCount:snapshot.fixedCombinationCount,
-        program,
-        onSave:async(payload)=>saveProgramming(program,payload)
-      });
+      if (program) openProgramming(program);
       return;
     }
 
@@ -124,6 +122,20 @@ async function init() {
       if (!program) return;
 
       const nextActive=toggleButton.dataset.nextActive==='true';
+
+      if (nextActive && program.usar_combinaciones_fijas) {
+        const play=snapshot.fixedPlays.find(
+          (row)=>String(row.id)===String(program.jugada_fija_id)
+        );
+        if (!play?.activa) {
+          showError(
+            'No se puede activar',
+            'La jugada fija asociada está inactiva. Reactívala primero desde Números.'
+          );
+          return;
+        }
+      }
+
       const confirmed=await confirmModal({
         title:nextActive?'Activar programación':'Desactivar programación',
         message:nextActive
