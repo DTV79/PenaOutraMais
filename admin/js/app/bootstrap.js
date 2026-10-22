@@ -1,5 +1,5 @@
 import { requireAdmin } from '../services/auth.js';
-import { mountAdminShell } from '../ui/shell.js';
+import { mountAdminShell } from '../ui/shell.js?v=20261022-22';
 
 export async function bootstrapAdmin() {
   const context = await requireAdmin();
