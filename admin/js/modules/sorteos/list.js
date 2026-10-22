@@ -22,6 +22,14 @@ function dateEs(value) {
   return `${d}/${m}/${y}`;
 }
 
+function dateWithWeekday(value) {
+  if (!value) return '—';
+  const [y,m,d]=String(value).split('-').map(Number);
+  const names=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const weekday=names[new Date(Date.UTC(y,m-1,d)).getUTCDay()];
+  return `${weekday}, ${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+}
+
 function dateSortValue(value) {
   if (!value) return Number.MAX_SAFE_INTEGER;
   const [y,m,d]=String(value).split('-').map(Number);
@@ -87,7 +95,7 @@ function resultSummary(draw, game) {
   `;
 }
 
-function renderCard(draw, drawBets, game) {
+function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
   const [label,statusClass]=statusLabel(draw);
   const prize=drawBets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
   const stake=drawBets.reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
@@ -103,13 +111,25 @@ function renderCard(draw, drawBets, game) {
     potStake > 0 ? `Bote ${money(potStake)}` : ''
   ].filter(Boolean).join(' · ');
 
+  const fixedAutomatic=Boolean(
+    draw.automatico &&
+    program?.usar_combinaciones_fijas &&
+    fixedPlay
+  );
+  const title=fixedAutomatic
+    ? dateWithWeekday(draw.fecha)
+    : (draw.nombre || dateEs(draw.fecha));
+  const detailPrefix=fixedAutomatic
+    ? fixedPlay.nombre
+    : dateEs(draw.fecha);
+
   return `
     <article class="draw-admin-card">
       <header class="draw-admin-head">
         <div>
           <p class="eyebrow">${esc(game?.nombre || draw.juego_codigo)}</p>
-          <h3>${esc(draw.nombre || dateEs(draw.fecha))}</h3>
-          <small>${dateEs(draw.fecha)} · ${drawBets.length} apuesta${drawBets.length===1?'':'s'}${draw.automatico?' · Automático':''}</small>
+          <h3>${esc(title)}</h3>
+          <small>${esc(detailPrefix)} · ${drawBets.length} apuesta${drawBets.length===1?'':'s'}${draw.automatico?' · Automático':''}</small>
         </div>
         <span class="draw-status ${statusClass}">${label}</span>
       </header>
@@ -157,11 +177,13 @@ function renderCard(draw, drawBets, game) {
   `;
 }
 
-export function renderDraws({ season, games, draws, bets }) {
+export function renderDraws({ season, games, draws, bets, programs=[], fixedPlays=[] }) {
   const summary=document.querySelector('#drawsSummary');
   const activeBox=document.querySelector('#drawsActive');
   const historyBox=document.querySelector('#drawsHistory');
   const gameMap=new Map(games.map((game)=>[game.codigo,game]));
+  const programMap=new Map(programs.map((program)=>[String(program.id),program]));
+  const fixedPlayMap=new Map(fixedPlays.map((play)=>[String(play.id),play]));
   const betsByDraw=new Map();
 
   bets.forEach((bet)=>{
@@ -194,7 +216,19 @@ export function renderDraws({ season, games, draws, bets }) {
   `;
 
   activeBox.innerHTML=active.length
-    ? active.map((draw)=>renderCard(draw,betsByDraw.get(draw.id)||[],gameMap.get(draw.juego_codigo))).join('')
+    ? active.map((draw)=>{
+        const program=programMap.get(String(draw.programacion_id));
+        const fixedPlay=program?.jugada_fija_id
+          ? fixedPlayMap.get(String(program.jugada_fija_id))
+          : null;
+        return renderCard(
+          draw,
+          betsByDraw.get(draw.id)||[],
+          gameMap.get(draw.juego_codigo),
+          program,
+          fixedPlay
+        );
+      }).join('')
     : `
       <div class="admin-empty">
         <span>◇</span><strong>No hay sorteos activos</strong>
@@ -203,7 +237,19 @@ export function renderDraws({ season, games, draws, bets }) {
     `;
 
   historyBox.innerHTML=history.length
-    ? history.map((draw)=>renderCard(draw,betsByDraw.get(draw.id)||[],gameMap.get(draw.juego_codigo))).join('')
+    ? history.map((draw)=>{
+        const program=programMap.get(String(draw.programacion_id));
+        const fixedPlay=program?.jugada_fija_id
+          ? fixedPlayMap.get(String(program.jugada_fija_id))
+          : null;
+        return renderCard(
+          draw,
+          betsByDraw.get(draw.id)||[],
+          gameMap.get(draw.juego_codigo),
+          program,
+          fixedPlay
+        );
+      }).join('')
     : `
       <div class="admin-empty">
         <span>✓</span><strong>Todavía no hay sorteos comprobados</strong>
