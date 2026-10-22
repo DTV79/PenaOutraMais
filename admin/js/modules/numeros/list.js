@@ -90,6 +90,11 @@ export function renderNumbersSnapshot({ season, games, fixedPlays, combinations 
                 data-fixed-play-toggle="${play.id}" data-fixed-play-active="${play.activa?'true':'false'}">
                 ${play.activa?'Desactivar jugada':'Reactivar jugada'}
               </button>
+              ${play.activa ? '' : `
+                <button class="admin-action danger-soft" type="button" data-fixed-play-delete="${play.id}">
+                  Eliminar jugada
+                </button>
+              `}
             </div>
 
             ${rows.length ? `
