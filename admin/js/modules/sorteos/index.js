@@ -161,7 +161,7 @@ async function init() {
 
       const confirmed=await confirmModal({
         title:'Eliminar sorteo',
-        message:`¿Quieres eliminar el sorteo del ${draw.fecha.split('-').reverse().join('/')}? Se borrarán también sus apuestas y se devolverá el gasto al fondo del que salió. Total jugado: ${total.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €.`,
+        message:`¿Quieres eliminar el sorteo del ${draw.fecha.split('-').reverse().join('/')}? Se borrarán también sus apuestas y se devolverá el gasto al fondo del que salió. Total jugado: ${total.toLocaleString('es-ES',{useGrouping:'always',minimumFractionDigits:2,maximumFractionDigits:2})} €.`,
         confirmText:'Eliminar',
         danger:true
       });
