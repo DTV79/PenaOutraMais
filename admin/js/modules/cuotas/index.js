@@ -6,11 +6,27 @@ import {
   updateQuotaMovement,
   cancelQuotaMovement
 } from './service.js?v=20261021-15';
-import { renderQuotaSnapshot } from './list.js?v=20261022-02';
+import { renderQuotaSnapshot } from './list.js?v=20261022-03';
 import { openQuotaForm } from './form.js?v=20261021-15';
 
 let snapshot = null;
 const container = document.querySelector('#feesAdmin');
+
+function activateQuotaTab(name) {
+  document.querySelectorAll('[data-quota-tab]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.quotaTab === name);
+  });
+
+  document.querySelectorAll('[data-quota-panel]').forEach((panel) => {
+    panel.classList.toggle('active', panel.dataset.quotaPanel === name);
+  });
+}
+
+function setupQuotaTabs() {
+  document.querySelectorAll('[data-quota-tab]').forEach((button) => {
+    button.addEventListener('click', () => activateQuotaTab(button.dataset.quotaTab));
+  });
+}
 
 async function refresh() {
   try {
@@ -30,6 +46,7 @@ function openCreate() {
     onSave: async (payload) => {
       await createQuotaMovement(payload);
       await refresh();
+      activateQuotaTab('movimientos');
     }
   });
 }
@@ -45,6 +62,7 @@ function openEdit(id) {
     onSave: async (payload) => {
       await updateQuotaMovement(id, payload);
       await refresh();
+      activateQuotaTab('movimientos');
     }
   });
 }
@@ -66,6 +84,7 @@ async function cancelMovement(id) {
   try {
     await cancelQuotaMovement(id);
     await refresh();
+    activateQuotaTab('movimientos');
   } catch (error) {
     openModal({
       title: 'No se pudo anular',
@@ -77,6 +96,8 @@ async function cancelMovement(id) {
 
 async function init() {
   if (!await bootstrapAdmin()) return;
+
+  setupQuotaTabs();
 
   document.querySelector('#newQuotaMovementButton')
     ?.addEventListener('click', openCreate);
