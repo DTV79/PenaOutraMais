@@ -380,3 +380,23 @@
   .fixed-play-actions .admin-action{flex:1 1 auto}
   .number-input-grid.five{grid-template-columns:repeat(3,1fr)}
 }
+
+
+/* Próxima temporada */
+.season-prepared-list{display:grid;gap:10px;margin-bottom:13px}
+.season-prepared-card{padding:15px;border:1px solid #d8e3ec;border-radius:18px;background:linear-gradient(135deg,#f7fafc 0%,#fff 72%)}
+.season-prepared-main{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.season-prepared-title{display:flex;align-items:center;gap:9px;margin-top:2px}
+.season-prepared-title h3{margin:0;font-size:24px;line-height:1}
+.season-prepared-date{margin:6px 0 0;color:var(--muted);font-size:10px}
+.season-prepared-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:13px;border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--line)}
+.season-prepared-stats>div{padding:10px 11px;background:#fff}
+.season-prepared-stats small,.season-prepared-stats strong{display:block}
+.season-prepared-stats small{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.45px}
+.season-prepared-stats strong{margin-top:3px;font-size:14px}
+.season-prepared-help{margin:10px 1px 0;color:var(--muted);font-size:10px;line-height:1.45}
+@media(max-width:759px){
+  .season-prepared-main{display:grid;grid-template-columns:1fr}
+  .season-prepared-main .admin-action{width:100%}
+  .season-prepared-stats{grid-template-columns:repeat(2,1fr)}
+}
