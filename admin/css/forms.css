@@ -400,3 +400,92 @@
   .season-prepared-main .admin-action{width:100%}
   .season-prepared-stats{grid-template-columns:repeat(2,1fr)}
 }
+
+
+/* Sorteos · tarjeta uniforme activo/histórico v28 */
+.draw-stake-summary{
+  display:block;
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#f6f8fa
+}
+.draw-stake-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:12px
+}
+.draw-stake-row + .draw-stake-row{margin-top:6px}
+.draw-stake-row span{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800
+}
+.draw-stake-row strong{
+  min-width:86px;
+  font-size:14px;
+  text-align:right
+}
+.draw-stake-summary>small{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:10px
+}
+.draw-winnings-summary{
+  padding-top:6px;
+  border-top:1px solid #e3e8ec
+}
+.draw-admin-head>div{min-width:0}
+.draw-admin-head h3{font-size:17px;line-height:1.18}
+.draw-admin-head small{font-size:10px;line-height:1.35}
+.draw-bet-row>div:first-child strong{font-size:11px}
+.draw-bet-row>div:first-child small{font-size:10px;line-height:1.4}
+
+@media(max-width:639px){
+  .draw-admin-card{padding:16px}
+  .draw-admin-head{
+    position:relative;
+    display:block;
+    min-height:78px
+  }
+  .draw-admin-head>div{width:100%}
+  .draw-admin-head .eyebrow{
+    margin-right:145px;
+    white-space:nowrap
+  }
+  .draw-admin-head h3{
+    width:100%;
+    margin-top:8px;
+    font-size:18px;
+    line-height:1.15
+  }
+  .draw-admin-head small{
+    width:100%;
+    max-width:none;
+    margin-top:5px;
+    font-size:11px;
+    line-height:1.35
+  }
+  .draw-status{
+    position:absolute;
+    top:0;
+    right:0;
+    font-size:9px;
+    padding:6px 9px
+  }
+  .draw-result-balls{gap:7px;margin-top:14px}
+  .draw-result-balls span{
+    width:32px;
+    height:32px;
+    font-size:12px
+  }
+  .draw-result-extra{font-size:10px}
+  .draw-bet-row>div:first-child strong{font-size:12px}
+  .draw-bet-row>div:first-child small{font-size:11px}
+  .draw-bet-prize small{font-size:9px}
+  .draw-bet-prize strong{font-size:12px}
+  .draw-stake-row span{font-size:11px}
+  .draw-stake-row strong{font-size:15px}
+}
