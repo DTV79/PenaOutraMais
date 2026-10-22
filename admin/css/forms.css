@@ -728,3 +728,104 @@
     justify-content:flex-end
   }
 }
+
+
+/* Cuotas · movimientos en tarjetas móvil v34 */
+.quota-mobile-list{display:none}
+
+@media(max-width:599px){
+  .quota-desktop-table{display:none}
+  .quota-mobile-list{
+    display:grid;
+    gap:9px
+  }
+
+  .quota-movement-card{
+    padding:12px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#fff
+  }
+
+  .quota-movement-card.cancelled{opacity:.55}
+
+  .quota-movement-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px
+  }
+
+  .quota-movement-head>div{
+    min-width:0;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:6px
+  }
+
+  .quota-movement-member{
+    color:var(--ink);
+    font-size:13px
+  }
+
+  .quota-movement-type{
+    padding:3px 6px;
+    border-radius:999px;
+    background:#eef4f8;
+    color:#48677e;
+    font-size:9px;
+    font-weight:850
+  }
+
+  .quota-movement-amount{
+    flex:0 0 auto;
+    font-size:15px
+  }
+
+  .quota-movement-meta{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    margin-top:10px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    overflow:hidden;
+    background:var(--line)
+  }
+
+  .quota-movement-meta>div{
+    min-width:0;
+    padding:8px;
+    background:#fafcfd
+  }
+
+  .quota-movement-meta small,
+  .quota-movement-meta strong{
+    display:block
+  }
+
+  .quota-movement-meta small{
+    color:var(--muted);
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:.4px
+  }
+
+  .quota-movement-meta strong{
+    margin-top:3px;
+    font-size:10px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+  }
+
+  .quota-movement-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:6px;
+    margin-top:10px;
+    padding-top:9px;
+    border-top:1px solid #edf1f4
+  }
+}
