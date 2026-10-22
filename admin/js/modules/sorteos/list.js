@@ -106,10 +106,9 @@ function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
     .filter((bet)=>bet.fuente_fondos === 'bote')
     .reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
 
-  const fundingText = [
-    quotaStake > 0 ? `Cuotas ${money(quotaStake)}` : '',
-    potStake > 0 ? `Bote ${money(potStake)}` : ''
-  ].filter(Boolean).join(' · ');
+  const fundingText = quotaStake > 0 && potStake > 0
+    ? `Cuotas ${money(quotaStake)} · Bote ${money(potStake)}`
+    : '';
 
   const fixedAutomatic=Boolean(
     draw.automatico &&
@@ -139,7 +138,10 @@ function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
       <div class="draw-stake-summary">
         <span>Total jugado</span>
         <strong>${money(stake)}</strong>
-        <small>${fundingText || 'Sin gasto registrado'}</small>
+        ${fundingText ? `<small>${fundingText}</small>` : ''}
+        ${draw.estado === 'comprobado'
+          ? `<div class="draw-winnings-summary"><span>Total ganado</span><strong>${money(prize)}</strong></div>`
+          : ''}
       </div>
 
       <div class="draw-bets">
