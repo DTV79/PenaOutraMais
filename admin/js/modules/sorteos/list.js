@@ -211,7 +211,7 @@ export function renderDraws({ season, games, draws, bets, programs=[], fixedPlay
   summary.innerHTML=`
     <article class="admin-kpi"><small>Temporada</small><strong>${season?.anio || '—'}</strong></article>
     <article class="admin-kpi"><small>Sorteos activos</small><strong>${active.length}</strong></article>
-    <article class="admin-kpi"><small>Premios detectados</small><strong>${money(totalPrize)}</strong></article>
+    <article class="admin-kpi"><small>Premios</small><strong>${money(totalPrize)}</strong></article>
   `;
 
   activeBox.innerHTML=active.length
