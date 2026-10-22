@@ -567,3 +567,36 @@
     font-size:11px;
   }
 }
+
+
+/* Sorteos · KPIs ajustados v30 */
+#drawsSummary{
+  grid-template-columns:minmax(0,1fr) minmax(120px,.62fr) minmax(0,1.18fr);
+  align-items:stretch
+}
+#drawsSummary .admin-kpi{
+  display:flex;
+  min-height:108px;
+  flex-direction:column;
+  justify-content:flex-start
+}
+#drawsSummary .admin-kpi small{
+  min-height:26px;
+  display:flex;
+  align-items:flex-end
+}
+#drawsSummary .admin-kpi strong{
+  margin-top:8px
+}
+
+@media(max-width:639px){
+  #drawsSummary{
+    grid-template-columns:minmax(0,1fr) minmax(112px,.68fr) minmax(0,1.2fr)
+  }
+  #drawsSummary .admin-kpi{
+    min-height:116px
+  }
+  #drawsSummary .admin-kpi small{
+    min-height:28px
+  }
+}
