@@ -290,3 +290,32 @@
     object-fit:contain
   }
 }
+
+
+/* Icono Números · bolas numeradas */
+.home-lottery-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  padding:0 3px;
+  background:#eee6ff;
+  color:#6b39ce
+}
+.home-lottery-icon b{
+  width:18px;
+  height:18px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#6b39ce;
+  color:#fff;
+  border:2px solid #eee6ff;
+  font-size:7px;
+  font-weight:950;
+  line-height:1;
+  box-shadow:0 2px 5px rgba(77,43,145,.18)
+}
+.home-lottery-icon b:nth-child(2){
+  transform:translateY(-4px)
+}
