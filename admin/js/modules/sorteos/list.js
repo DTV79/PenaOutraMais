@@ -168,7 +168,7 @@ function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
       <footer class="draw-admin-actions">
         <button class="admin-action danger-soft" type="button" data-draw-delete="${draw.id}">Eliminar sorteo</button>
         ${game?.formato === '6_numeros' && drawBets.some((bet)=>bet.tipo==='fija') ? `
-          <button class="admin-action secondary" type="button" data-draw-refund="${draw.id}">Reintegro / Complementario</button>
+          <button class="admin-action secondary" type="button" data-draw-refund="${draw.id}">Reintegros</button>
         ` : ''}
         ${draw.fuente_url ? `<a class="admin-action secondary" href="${esc(draw.fuente_url)}" target="_blank" rel="noopener">Ver SELAE</a>` : ''}
         <button class="admin-action" type="button" data-draw-check="${draw.id}">Comprobar ahora</button>
