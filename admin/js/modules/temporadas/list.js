@@ -60,7 +60,7 @@ function preparedCard(row) {
         <div><small>Cuota anual</small><strong>${money(row.cuota_anual)}</strong></div>
         <div><small>Jugadas fijas</small><strong>${stats.fixedPlays ?? 0}</strong></div>
         <div><small>Combinaciones</small><strong>${stats.combinations ?? 0}</strong></div>
-        <div><small>Programaciones</small><strong>${stats.programs ?? 0}</strong></div>
+        <div><small>Apuestas programadas</small><strong>${stats.programs ?? 0}</strong></div>
       </div>
 
       <p class="season-prepared-help">
@@ -92,12 +92,7 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
   const historicalCount=tableRows.filter(
     (row)=>Number(row.anio)<Number(activeYear)
   ).length;
-  const historicalRows=tableRows.filter(
-    (row)=>Number(row.anio)<Number(activeYear)
-  );
-  const firstHistorical=historicalRows.length
-    ? Math.min(...historicalRows.map((row)=>Number(row.anio)))
-    : activeYear;
+  const currentBalance=active?.summary?.saldo_final ?? null;
 
   container.innerHTML=`
     ${preparedRows.length ? `
@@ -107,9 +102,9 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
     ` : ''}
 
     <div class="season-summary-strip">
-      <div><small>Primera temporada</small><strong>${firstHistorical}</strong></div>
       <div><small>Temporada activa</small><strong>${activeYear}</strong></div>
-      <div><small>Años históricos</small><strong>${historicalCount}</strong></div>
+      <div><small>Años jugados</small><strong>${historicalCount}</strong></div>
+      <div><small>Saldo actual</small><strong>${money(currentBalance)}</strong></div>
     </div>
 
     <div class="admin-table-wrap">
