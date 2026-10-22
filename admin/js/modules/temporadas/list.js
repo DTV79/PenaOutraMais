@@ -19,15 +19,8 @@ function stateOf(row,activeYear) {
   return {label:'Cerrada',className:'off'};
 }
 
-function historyLabel(summary) {
-  const note=summary?.observaciones || '';
-  if (/cena/i.test(note)) return 'Cena de la peña';
-  if (/décimos/i.test(note)) return 'Lotería extraordinaria';
-  if (/juego extraordinario/i.test(note)) return 'Juego extraordinario';
-  if (/salida\/ajuste/i.test(note)) return 'Salida/ajuste histórico';
-  if (/salida importante/i.test(note)) return 'Salida del bote';
-  if (summary?.provisional) return 'Histórico provisional';
-  return '';
+function historyLabel(row,activeYear) {
+  return Number(row.anio)<Number(activeYear) ? 'Histórico' : '';
 }
 
 export function renderSeasons(snapshot,{ onActivate }={}) {
@@ -75,7 +68,7 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
               : null;
             const prepared=!row.activa && Number(row.anio)>Number(activeYear);
             const canActivate=prepared && new Date().toISOString().slice(0,10)>=row.fecha_inicio;
-            const history=historyLabel(summary);
+            const history=historyLabel(row,activeYear);
 
             return `
               <tr class="${row.activa?'season-current-row':''}">
