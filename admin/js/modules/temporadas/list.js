@@ -7,6 +7,17 @@ function money(value) {
   }) + ' €';
 }
 
+function signedMoney(value) {
+  if (value === null || value === undefined || value === '') return '—';
+  const number=Number(value || 0);
+  const sign=number>0 ? '+' : '';
+  return sign + number.toLocaleString('es-ES',{
+    useGrouping:'always',
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  }) + ' €';
+}
+
 function dateEs(value) {
   if (!value) return '—';
   const [y,m,d]=String(value).split('-');
@@ -37,8 +48,11 @@ function seasonValues(row) {
   const total=summary
     ? Number(summary.arrastre_inicial || 0)+Number(prizes || 0)
     : null;
+  const variation=summary
+    ? Number(prizes || 0)-Number(summary.gastos_salidas || 0)
+    : null;
 
-  return { summary, prizes, total };
+  return { summary, prizes, total, variation };
 }
 
 function preparedCard(row) {
@@ -121,7 +135,7 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
 
     <div class="season-mobile-list">
       ${tableRows.map((row)=>{
-        const { summary, prizes, total }=seasonValues(row);
+        const { summary, prizes, total, variation }=seasonValues(row);
         const state=stateOf(row,activeYear);
         const history=historyLabel(row,activeYear);
 
@@ -141,6 +155,7 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
               <div><small>Premios</small><strong class="positive-text">${money(prizes)}</strong></div>
               <div><small>Total</small><strong>${money(total)}</strong></div>
               <div><small>Salidas / cenas</small><strong>${money(summary?.gastos_salidas)}</strong></div>
+              <div><small>Variación del año</small><strong class="${Number(variation) > 0 ? 'positive-text' : Number(variation) < 0 ? 'danger-text' : ''}">${signedMoney(variation)}</strong></div>
               <div class="season-mobile-balance"><small>Saldo final</small><strong>${money(summary?.saldo_final)}</strong></div>
             </div>
           </article>
