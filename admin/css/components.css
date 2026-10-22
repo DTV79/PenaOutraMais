@@ -152,7 +152,7 @@
   min-height:205px;
   background:
     linear-gradient(90deg,rgba(7,26,45,0) 58%,rgba(7,26,45,.42) 78%,#071a2d 100%),
-    url('../assets/pena-banner.jpg?v=20261022-17') center 43%/cover no-repeat
+    url('../assets/pena-banner.webp?v=20261022-18') center 43%/cover no-repeat
 }
 .admin-brand-banner-copy{
   position:relative;
@@ -240,7 +240,7 @@
     min-height:170px;
     background:
       linear-gradient(180deg,rgba(7,26,45,.06) 20%,rgba(7,26,45,.72) 72%,#071a2d 100%),
-      url('../assets/pena-banner.jpg?v=20261022-17') center 38%/cover no-repeat
+      url('../assets/pena-banner.webp?v=20261022-18') center 38%/cover no-repeat
   }
   .admin-brand-banner-copy{
     position:absolute;
