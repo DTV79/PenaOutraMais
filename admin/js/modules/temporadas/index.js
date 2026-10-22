@@ -4,9 +4,9 @@ import {
   getSeasonsSnapshot,
   createPreparedSeason,
   activateSeason
-} from './service.js?v=20261021-32';
-import { renderSeasons } from './list.js?v=20261021-32';
-import { openSeasonForm } from './form.js?v=20261021-32';
+} from './service.js?v=20261022-01';
+import { renderSeasons } from './list.js?v=20261022-01';
+import { openSeasonForm } from './form.js?v=20261022-01';
 
 let snapshot=null;
 
