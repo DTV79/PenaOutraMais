@@ -59,6 +59,10 @@ export function setCombinationActive(id, active) {
   return updateCombination(id, { activa:Boolean(active) });
 }
 
+export function deleteFixedPlay(id) {
+  return adminRpc('eliminar_jugada_fija', { p_jugada_fija_id:Number(id) });
+}
+
 export function refreshScheduledDraws() {
   return adminRpc('refrescar_sorteos_programados', {});
 }
