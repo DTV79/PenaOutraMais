@@ -41,7 +41,7 @@ function gameMap(games) {
   return new Map((games || []).map((game)=>[game.codigo,game]));
 }
 
-export function renderPublicPrograms(programs = [], games = []) {
+export function renderPublicPrograms(programs = [], games = [], fixedPlays = [], combinations = []) {
   const container=document.querySelector('#publicPrograms');
   if (!container) return;
 
@@ -51,18 +51,28 @@ export function renderPublicPrograms(programs = [], games = []) {
   }
 
   const map=gameMap(games);
+  const playMap=new Map((fixedPlays || []).map((play)=>[String(play.id),play]));
 
   container.innerHTML=programs.map((program)=>{
     const game=map.get(program.juego_codigo);
     const days=(program.dias_semana || []).map((day)=>DAY_LABELS[Number(day)]).filter(Boolean);
     const weekly=Number(program.importe_total || 0) * days.length;
+    const play=program.usar_combinaciones_fijas
+      ? playMap.get(String(program.jugada_fija_id))
+      : null;
+    const fixedCount=play
+      ? (combinations || []).filter((row)=>String(row.jugada_fija_id)===String(play.id)).length
+      : 0;
+    const playText=play
+      ? `${play.nombre} · ${fixedCount} combinación${fixedCount===1?'':'es'} · `
+      : '';
 
     return `
       <article class="public-program-card">
         <div>
           <small>${esc(game?.nombre || program.juego_codigo)}</small>
           <strong>${esc(program.nombre)}</strong>
-          <span>${days.join(' · ')} · ${program.fuente_fondos==='bote'?'Bote':'Cuotas'}</span>
+          <span>${esc(playText)}${days.join(' · ')} · ${program.fuente_fondos==='bote'?'Bote':'Cuotas'}</span>
         </div>
         <div class="public-program-money">
           <strong>${money(program.importe_total)}</strong>
