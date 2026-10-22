@@ -317,3 +317,40 @@
   .season-summary-strip{grid-template-columns:1fr}
   .season-table{min-width:920px}
 }
+
+
+/* Cuotas · navegación y lectura */
+.quota-tabs{grid-template-columns:repeat(4,1fr)}
+.quota-tab-panels .draw-tab-panel>.admin-section{margin-top:0}
+.quota-advance-intro{margin:0 0 13px}
+.quota-status-callout{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px;padding:15px 16px;border:1px solid var(--line);border-radius:16px;background:#f8fafb}
+.quota-status-callout>div{min-width:130px}
+.quota-status-callout small,.quota-status-callout strong{display:block}
+.quota-status-callout small{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px}
+.quota-status-callout strong{margin-top:4px;font-size:19px}
+.quota-status-callout p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+.quota-status-callout.success{background:var(--greensoft);border-color:#cfe8d8}
+.quota-status-callout.success strong{color:var(--green)}
+.quota-status-callout.warning{background:#fff9e9;border-color:#efdfaa}
+.quota-status-callout.warning strong{color:#806314}
+.quota-status-callout.neutral{background:#f5f8fa}
+.quota-advance-summary{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:18px;padding:15px 16px;border:1px solid #d9e7dc;border-radius:16px;background:var(--greensoft)}
+.quota-advance-summary small,.quota-advance-summary strong{display:block}
+.quota-advance-summary small{color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.5px}
+.quota-advance-summary strong{margin-top:4px;color:var(--green);font-size:20px}
+.quota-advance-summary p{margin:0;color:#52645b;font-size:11px;line-height:1.5}
+.quota-advance-years{display:grid;gap:10px;margin-top:12px}
+.quota-advance-year{overflow:hidden;border:1px solid var(--line);border-radius:15px;background:#fff}
+.quota-advance-year-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px;background:#f8fafb;border-bottom:1px solid var(--line)}
+.quota-advance-year-head small,.quota-advance-year-head strong{display:block}
+.quota-advance-year-head small{color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:.5px}
+.quota-advance-year-head strong{margin-top:2px;font-size:16px}
+.quota-advance-year-head span{padding:5px 8px;border-radius:999px;background:var(--greensoft);color:var(--green);font-size:9px;font-weight:850}
+.quota-advance-year .quota-pending-row{padding:10px 13px}
+@media(max-width:759px){
+  .quota-tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .quota-tabs::-webkit-scrollbar{display:none}
+  .quota-tabs .draw-tab{flex:0 0 155px}
+  .quota-status-callout,.quota-advance-summary{grid-template-columns:1fr;gap:8px}
+  .quota-status-callout>div{min-width:0}
+}
