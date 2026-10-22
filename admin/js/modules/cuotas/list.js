@@ -38,9 +38,14 @@ function typeLabel(row) {
     pago:'Pago',
     ajuste:'Ajuste',
     devolucion:'Devolución',
-    saldo_a_favor:'Saldo a favor'
+    saldo_a_favor:'Pago adelantado'
   };
   return labels[row.tipo] || row.tipo;
+}
+
+function setTabCount(name,value) {
+  const badge=document.querySelector(`[data-quota-tab-count="${name}"]`);
+  if (badge) badge.textContent=String(value);
 }
 
 export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend }) {
@@ -49,6 +54,7 @@ export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend
   const pendingBox = document.querySelector('#feesPending');
   const futureBox = document.querySelector('#feesFuture');
   const fundBox = document.querySelector('#feesFund');
+  const fundExplanation = document.querySelector('#feesFundExplanation');
 
   if (!season) {
     container.innerHTML = '<div class="admin-error visible">No hay temporada activa.</div>';
@@ -79,8 +85,8 @@ export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend
 
   summary.innerHTML = `
     <article class="admin-kpi"><small>Socios activos</small><strong>${members.length}</strong></article>
-    <article class="admin-kpi"><small>Previsto</small><strong>${formatMoney(expected)}</strong></article>
-    <article class="admin-kpi"><small>Aportado</small><strong>${formatMoney(paid)}</strong></article>
+    <article class="admin-kpi"><small>Previsto ${season.anio}</small><strong>${formatMoney(expected)}</strong></article>
+    <article class="admin-kpi"><small>Cobrado ${season.anio}</small><strong>${formatMoney(paid)}</strong></article>
     <article class="admin-kpi"><small>Pendiente</small><strong>${formatMoney(pending)}</strong></article>
   `;
 
@@ -90,8 +96,15 @@ export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend
   fundBox.innerHTML = `
     <article class="admin-kpi"><small>Cuotas cobradas</small><strong>${formatMoney(paid)}</strong></article>
     <article class="admin-kpi"><small>Jugado con cuotas</small><strong>${formatMoney(spent)}</strong></article>
-    <article class="admin-kpi"><small>Disponible</small><strong class="${available < 0 ? 'danger-text' : ''}">${formatMoney(available)}</strong></article>
+    <article class="admin-kpi"><small>Disponible para jugar</small><strong class="${available < 0 ? 'danger-text' : ''}">${formatMoney(available)}</strong></article>
   `;
+
+  if (fundExplanation) {
+    fundExplanation.innerHTML =
+      `De los <strong>${formatMoney(paid)}</strong> cobrados en ${season.anio}, ` +
+      `se han utilizado <strong>${formatMoney(spent)}</strong> en sorteos. ` +
+      `Quedan <strong>${formatMoney(available)}</strong> disponibles para próximas apuestas.`;
+  }
 
   const pendingMembers = members
     .map((member) => ({
@@ -103,17 +116,36 @@ export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend
     }))
     .filter((member) => member.pending > 0.0001);
 
+  setTabCount('pendientes',pendingMembers.length);
+
   pendingBox.innerHTML = pendingMembers.length
-    ? pendingMembers.map((member) => `
+    ? `
+      <div class="quota-status-callout warning">
+        <div>
+          <small>Pendiente total</small>
+          <strong>${formatMoney(pending)}</strong>
+        </div>
+        <p>${pendingMembers.length} socio${pendingMembers.length===1?'':'s'} con parte de la cuota ${season.anio} pendiente.</p>
+      </div>
+      ${pendingMembers.map((member) => `
         <div class="quota-pending-row">
           <div>
             <strong>${escapeHtml(member.alias)}</strong>
-            <small>Pendiente en ${season.anio}</small>
+            <small>Pendiente de la cuota ${season.anio}</small>
           </div>
           <strong>${formatMoney(member.pending)}</strong>
         </div>
-      `).join('')
-    : '<div class="admin-empty"><span>✓</span><strong>Todos al corriente</strong></div>';
+      `).join('')}
+    `
+    : `
+      <div class="quota-status-callout success">
+        <div>
+          <small>Temporada ${season.anio}</small>
+          <strong>0,00 €</strong>
+        </div>
+        <p>Todos los socios están al corriente. No queda ninguna cuota pendiente.</p>
+      </div>
+    `;
 
   const futureMovements = validMovements.filter(
     (movement) =>
@@ -126,23 +158,57 @@ export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend
     0
   );
 
+  setTabCount('movimientos',movements.length);
+  setTabCount('adelantos',futureMovements.length);
+
+  const futureByYear = new Map();
+  futureMovements.forEach((movement) => {
+    const year=Number(movement.aplicar_anio);
+    if (!futureByYear.has(year)) futureByYear.set(year,[]);
+    futureByYear.get(year).push(movement);
+  });
+
   futureBox.innerHTML = futureMovements.length
     ? `
-      <div class="quota-future-head">
-        <span>Saldo total futuro</span>
-        <strong>${formatMoney(futureTotal)}</strong>
-      </div>
-      ${futureMovements.map((movement) => `
-        <div class="quota-pending-row quota-future-row">
-          <div>
-            <strong>${escapeHtml(aliasById.get(movement.socio_id) || '—')}</strong>
-            <small>Aplicar a ${movement.aplicar_anio}</small>
-          </div>
-          <strong>+${formatMoney(movement.importe)}</strong>
+      <div class="quota-advance-summary">
+        <div>
+          <small>Total ya pagado para próximos años</small>
+          <strong>${formatMoney(futureTotal)}</strong>
         </div>
-      `).join('')}
+        <p>Este dinero no cuenta como cobrado en ${season.anio}: queda reservado para descontarlo de futuras cuotas.</p>
+      </div>
+
+      <div class="quota-advance-years">
+        ${[...futureByYear.entries()]
+          .sort((a,b)=>a[0]-b[0])
+          .map(([year,rows])=>{
+            const yearTotal=rows.reduce((sum,row)=>sum+Number(row.importe || 0),0);
+            return `
+              <section class="quota-advance-year">
+                <header class="quota-advance-year-head">
+                  <div><small>Temporada</small><strong>${year}</strong></div>
+                  <span>${formatMoney(yearTotal)} adelantados</span>
+                </header>
+                ${rows.map((movement)=>`
+                  <div class="quota-pending-row quota-future-row">
+                    <div>
+                      <strong>${escapeHtml(aliasById.get(movement.socio_id) || '—')}</strong>
+                      <small>Ya pagado para ${year}</small>
+                    </div>
+                    <strong>+${formatMoney(movement.importe)}</strong>
+                  </div>
+                `).join('')}
+              </section>
+            `;
+          }).join('')}
+      </div>
     `
-    : '<div class="admin-empty"><span>↗</span><strong>Sin saldos futuros</strong></div>';
+    : `
+      <div class="quota-status-callout neutral">
+        <div><small>Próximas temporadas</small><strong>0,00 €</strong></div>
+        <p>No hay ningún pago adelantado. Todo lo cobrado corresponde a la temporada ${season.anio}.</p>
+      </div>
+    `;
 
   if (!movements.length) {
     container.innerHTML = `
@@ -162,7 +228,7 @@ export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend
             <th>Socio</th>
             <th>Tipo</th>
             <th>Método</th>
-            <th>Destino</th>
+            <th>Temporada</th>
             <th>Importe</th>
             <th></th>
           </tr>
