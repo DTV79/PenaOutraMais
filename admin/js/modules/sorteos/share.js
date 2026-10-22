@@ -90,8 +90,7 @@ export function getShareData(snapshot,drawId) {
 export function buildWhatsAppMessage(data) {
   return [
     '*Primitiva sellada*',
-    '',
-    `• Premio semana anterior: *${data.prizeText}*`,
+    `• Premio: *${data.prizeText}*`,
     `• Bote acumulado: *${data.potText}*`,
     '',
     'Suerte 😉'
