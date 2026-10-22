@@ -14,7 +14,7 @@ import {
 import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-26';
 import { openProgramForm } from './program-form.js?v=20261022-04';
 import { renderPrograms } from './program-list.js?v=20261022-04';
-import { renderDraws } from './list.js?v=20261022-27';
+import { renderDraws } from './list.js?v=20261022-28';
 
 let snapshot=null;
 const panels=document.querySelector('.draw-tab-panels');
