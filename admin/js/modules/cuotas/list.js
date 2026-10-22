@@ -48,7 +48,7 @@ function setTabCount(name,value) {
   if (badge) badge.textContent=String(value);
 }
 
-export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend }) {
+export function renderQuotaSnapshot({ season, members, movements, quotaSpent, elapsedWeeks }) {
   const summary = document.querySelector('#feesSummary');
   const container = document.querySelector('#feesAdmin');
   const pendingBox = document.querySelector('#feesPending');
@@ -90,20 +90,21 @@ export function renderQuotaSnapshot({ season, members, movements, quotaPlaySpend
     <article class="admin-kpi"><small>Pendiente</small><strong>${formatMoney(pending)}</strong></article>
   `;
 
-  const spent = Number(quotaPlaySpend || 0);
+  const spent = Number(quotaSpent || 0);
   const available = paid - spent;
 
   fundBox.innerHTML = `
     <article class="admin-kpi"><small>Cuotas cobradas</small><strong>${formatMoney(paid)}</strong></article>
-    <article class="admin-kpi"><small>Jugado con cuotas</small><strong>${formatMoney(spent)}</strong></article>
+    <article class="admin-kpi"><small>Gastado cuotas</small><strong>${formatMoney(spent)}</strong></article>
     <article class="admin-kpi"><small>Disponible para jugar</small><strong class="${available < 0 ? 'danger-text' : ''}">${formatMoney(available)}</strong></article>
   `;
 
   if (fundExplanation) {
     fundExplanation.innerHTML =
       `De los <strong>${formatMoney(paid)}</strong> cobrados en ${season.anio}, ` +
-      `se han utilizado <strong>${formatMoney(spent)}</strong> en sorteos. ` +
-      `Quedan <strong>${formatMoney(available)}</strong> disponibles para próximas apuestas.`;
+      `se han gastado <strong>${formatMoney(spent)}</strong> correspondientes a ` +
+      `<strong>${elapsedWeeks} semanas</strong> de juego. ` +
+      `Quedan <strong>${formatMoney(available)}</strong> disponibles para las semanas restantes.`;
   }
 
   const pendingMembers = members
