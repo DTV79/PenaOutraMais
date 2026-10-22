@@ -5,7 +5,7 @@ import {
   createPreparedSeason,
   activateSeason
 } from './service.js?v=20261022-10';
-import { renderSeasons } from './list.js?v=20261022-12';
+import { renderSeasons } from './list.js?v=20261022-36';
 import { openSeasonForm } from './form.js?v=20261022-02';
 
 let snapshot=null;
