@@ -354,3 +354,29 @@
   .quota-status-callout,.quota-advance-summary{grid-template-columns:1fr;gap:8px}
   .quota-status-callout>div{min-width:0}
 }
+
+
+/* Jugadas fijas */
+.fixed-play-list{display:grid;gap:13px}
+.fixed-play-card{padding:15px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.fixed-play-card.inactive{background:#f8fafb;opacity:.76}
+.fixed-play-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.fixed-play-title{min-width:0}
+.fixed-play-title h3{margin:2px 0 0;font-size:17px}
+.fixed-play-title small{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.fixed-play-note{margin:10px 0 0;padding:9px 10px;border-radius:11px;background:#f6f8fa;color:var(--muted);font-size:10px;line-height:1.45}
+.fixed-play-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px;margin-top:12px}
+.fixed-play-combinations{display:grid;gap:9px;margin-top:13px;padding-top:13px;border-top:1px solid var(--line)}
+.fixed-play-empty{margin-top:13px;padding:20px 10px;border-top:1px solid var(--line)}
+.number-stars-label{display:grid;place-items:center;width:24px;height:38px;color:#9a771c;font-size:15px;font-weight:900}
+.number-star{background:radial-gradient(circle at 34% 27%,#fff 0 15%,#fff6c9 18%,#f0d66e 58%,#caa62b 100%)}
+.number-input-grid.five{grid-template-columns:repeat(5,1fr)}
+@media(min-width:760px){
+  .fixed-play-combinations{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:759px){
+  .fixed-play-head{align-items:flex-start}
+  .fixed-play-actions{justify-content:stretch}
+  .fixed-play-actions .admin-action{flex:1 1 auto}
+  .number-input-grid.five{grid-template-columns:repeat(3,1fr)}
+}
