@@ -5,16 +5,17 @@ import {
   createFixedPlay,
   updateFixedPlay,
   setFixedPlayActive,
+  deleteFixedPlay,
   createCombination,
   updateCombination,
   setCombinationActive,
   refreshScheduledDraws
-} from './service.js?v=20261022-06';
+} from './service.js?v=20261022-07';
 import {
   openFixedPlayForm,
   openCombinationForm
-} from './form.js?v=20261022-06';
-import { renderNumbersSnapshot } from './list.js?v=20261022-06';
+} from './form.js?v=20261022-07';
+import { renderNumbersSnapshot } from './list.js?v=20261022-07';
 
 let snapshot=null;
 const container=document.querySelector('#numbersAdmin');
@@ -140,6 +141,26 @@ async function toggleFixedPlay(id,active) {
   }
 }
 
+async function removeFixedPlay(id) {
+  const fixedPlay=snapshot?.fixedPlays.find((row)=>String(row.id)===String(id));
+  if (!fixedPlay || fixedPlay.activa) return;
+
+  const confirmed=await confirmModal({
+    title:'Eliminar jugada fija',
+    message:`¿Quieres eliminar definitivamente “${fixedPlay.nombre}”? También se eliminarán sus combinaciones y cualquier programación futura asociada. Si la jugada ya tiene histórico de sorteos, no se permitirá borrarla.`,
+    confirmText:'Eliminar definitivamente',
+    danger:true
+  });
+  if (!confirmed) return;
+
+  try {
+    await deleteFixedPlay(id);
+    await refresh();
+  } catch(error) {
+    showError('No se pudo eliminar la jugada',error);
+  }
+}
+
 async function toggleCombination(id,active) {
   const combination=snapshot?.combinations.find((row)=>String(row.id)===String(id));
   if (!combination) return;
@@ -181,6 +202,12 @@ async function init() {
         togglePlay.dataset.fixedPlayToggle,
         togglePlay.dataset.fixedPlayActive==='true'
       );
+      return;
+    }
+
+    const deletePlay=event.target.closest('[data-fixed-play-delete]');
+    if (deletePlay) {
+      removeFixedPlay(deletePlay.dataset.fixedPlayDelete);
       return;
     }
 
