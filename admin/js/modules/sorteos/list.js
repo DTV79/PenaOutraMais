@@ -208,14 +208,9 @@ export function renderDraws({ season, games, draws, bets, programs=[], fixedPlay
   if (historyBadge) historyBadge.textContent=history.length;
 
   const totalPrize=bets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
-  const quotaSpend=bets
-    .filter((bet)=>bet.fuente_fondos !== 'bote')
-    .reduce((sum,bet)=>sum+Number(bet.importe || 0),0);
-
   summary.innerHTML=`
     <article class="admin-kpi"><small>Temporada</small><strong>${season?.anio || '—'}</strong></article>
     <article class="admin-kpi"><small>Sorteos activos</small><strong>${active.length}</strong></article>
-    <article class="admin-kpi"><small>Gastado de cuotas</small><strong>${money(quotaSpend)}</strong></article>
     <article class="admin-kpi"><small>Premios detectados</small><strong>${money(totalPrize)}</strong></article>
   `;
 
