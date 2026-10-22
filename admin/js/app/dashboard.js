@@ -26,7 +26,7 @@ async function getDashboardSnapshot() {
   }
 
   const [members,quotaRows,balanceRows]=await Promise.all([
-    adminSelect('socios?select=id&activo=eq.true'),
+    adminSelect('socios?select=id,fecha_baja'),
     adminSelect(
       `resumen_cuotas_publico?select=cobrado,jugado_con_cuotas&temporada_id=eq.${season.id}&limit=1`
     ),
@@ -37,7 +37,7 @@ async function getDashboardSnapshot() {
 
   return {
     season,
-    activeMembers:members.length,
+    activeMembers:members.filter((row)=>!row.fecha_baja).length,
     quotaCollected:Number(quotaRows?.[0]?.cobrado || 0),
     quotaSpent:Number(quotaRows?.[0]?.jugado_con_cuotas || 0),
     pot:Number(balanceRows?.[0]?.saldo_final || 0)
@@ -63,7 +63,7 @@ function renderDashboard(snapshot) {
       <strong>${money(snapshot.quotaCollected)}</strong>
     </article>
     <article class="admin-kpi">
-      <small>Gastado (cuotas)</small>
+      <small>Gastado</small>
       <strong>${money(snapshot.quotaSpent)}</strong>
     </article>
     <article class="admin-kpi">
