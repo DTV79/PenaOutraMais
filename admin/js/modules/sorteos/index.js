@@ -11,10 +11,10 @@ import {
   updateDrawRefund,
   deleteDraw
 } from './service.js?v=20261022-04';
-import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-02';
+import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-05';
 import { openProgramForm } from './program-form.js?v=20261022-04';
 import { renderPrograms } from './program-list.js?v=20261022-04';
-import { renderDraws } from './list.js?v=20261022-02';
+import { renderDraws } from './list.js?v=20261022-05';
 
 let snapshot=null;
 const panels=document.querySelector('.draw-tab-panels');
@@ -198,6 +198,7 @@ async function init() {
 
       openRefundForm({
         draw,
+        game:snapshot.games.find((row)=>row.codigo===draw.juego_codigo),
         bets:snapshot.bets,
         combinations:snapshot.fixedCombinations,
         onSave:async(reintegros)=>{
