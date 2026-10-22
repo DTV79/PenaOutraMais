@@ -8,8 +8,8 @@ import {
   deleteBoteMovement
 } from './service.js?v=20261021-31';
 import { openBoteForm } from './form.js?v=20261021-31';
-import { renderAwardsSummary } from './summary.js?v=20261021-31';
-import { renderBoteMovements } from './list.js?v=20261021-31';
+import { renderAwardsSummary } from './summary.js?v=20261022-02';
+import { renderBoteMovements } from './list.js?v=20261022-02';
 
 let snapshot=null;
 
