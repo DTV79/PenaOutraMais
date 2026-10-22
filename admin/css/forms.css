@@ -968,3 +968,70 @@
     line-height:1.4
   }
 }
+
+
+/* Temporadas móvil · opción limpia v38 */
+@media(max-width:759px){
+  body[data-admin-page="temporadas"] .admin-wrap{
+    padding-left:6px;
+    padding-right:6px
+  }
+
+  body[data-admin-page="temporadas"] .admin-section{
+    padding-left:8px;
+    padding-right:8px
+  }
+
+  body[data-admin-page="temporadas"] .season-summary-strip{
+    display:none
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-list{
+    gap:10px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-card{
+    width:100%;
+    border-radius:16px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-head{
+    padding:12px 13px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-year{
+    font-size:21px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-head small{
+    font-size:10px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-grid>div{
+    padding:10px 11px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-grid small{
+    font-size:9px;
+    line-height:1.25
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-grid strong{
+    margin-top:4px;
+    font-size:13px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-balance{
+    padding-top:11px;
+    padding-bottom:11px
+  }
+
+  body[data-admin-page="temporadas"] .season-mobile-balance strong{
+    font-size:16px
+  }
+
+  body[data-admin-page="temporadas"] .admin-status{
+    font-size:10px;
+    padding:6px 9px
+  }
+}
