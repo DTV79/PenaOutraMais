@@ -1,5 +1,5 @@
 import { fallbackHistory } from '../data/fallback.js';
-import { money } from '../utils/format.js';
+import { money } from '../utils/format.js?v=20261022-02';
 
 function normalizeHistory(rows) {
   if (!rows?.length) {
