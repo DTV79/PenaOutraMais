@@ -829,3 +829,142 @@
     border-top:1px solid #edf1f4
   }
 }
+
+
+/* Temporadas · resumen y tarjetas móvil v36 */
+.season-mobile-list{display:none}
+
+@media(max-width:759px){
+  .season-summary-strip{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px
+  }
+
+  .season-summary-strip>div{
+    min-width:0;
+    padding:9px 8px;
+    text-align:center
+  }
+
+  .season-summary-strip small{
+    min-height:26px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    font-size:8px;
+    line-height:1.2
+  }
+
+  .season-summary-strip strong{
+    margin-top:4px;
+    font-size:16px;
+    white-space:nowrap
+  }
+
+  .season-desktop-table{display:none}
+
+  .season-mobile-list{
+    display:grid;
+    gap:9px
+  }
+
+  .season-mobile-card{
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:15px;
+    background:#fff
+  }
+
+  .season-mobile-card.current{
+    border-color:#ead792;
+    background:#fffdf5
+  }
+
+  .season-mobile-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:11px 12px;
+    border-bottom:1px solid var(--line);
+    background:#f8fafb
+  }
+
+  .season-mobile-card.current .season-mobile-head{
+    background:#fbf7e9
+  }
+
+  .season-mobile-head>div{
+    min-width:0
+  }
+
+  .season-mobile-year{
+    display:block;
+    font-size:18px;
+    line-height:1
+  }
+
+  .season-mobile-head small{
+    display:block;
+    margin-top:4px;
+    color:var(--muted);
+    font-size:9px
+  }
+
+  .season-mobile-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:1px;
+    background:var(--line)
+  }
+
+  .season-mobile-grid>div{
+    min-width:0;
+    padding:9px 10px;
+    background:#fff
+  }
+
+  .season-mobile-card.current .season-mobile-grid>div{
+    background:#fffdf8
+  }
+
+  .season-mobile-grid small,
+  .season-mobile-grid strong{
+    display:block
+  }
+
+  .season-mobile-grid small{
+    color:var(--muted);
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:.35px
+  }
+
+  .season-mobile-grid strong{
+    margin-top:4px;
+    font-size:11px
+  }
+
+  .season-mobile-balance{
+    grid-column:1/-1;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px
+  }
+
+  .season-mobile-balance small,
+  .season-mobile-balance strong{
+    margin:0
+  }
+
+  .season-mobile-balance strong{
+    font-size:14px
+  }
+
+  .season-history-note{
+    margin-top:10px;
+    font-size:9px;
+    line-height:1.4
+  }
+}
