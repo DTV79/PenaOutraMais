@@ -10,11 +10,11 @@ import {
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261022-04';
-import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-05';
+} from './service.js?v=20261022-25';
+import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-25';
 import { openProgramForm } from './program-form.js?v=20261022-04';
 import { renderPrograms } from './program-list.js?v=20261022-04';
-import { renderDraws } from './list.js?v=20261022-08';
+import { renderDraws } from './list.js?v=20261022-25';
 
 let snapshot=null;
 const panels=document.querySelector('.draw-tab-panels');
@@ -201,8 +201,13 @@ async function init() {
         game:snapshot.games.find((row)=>row.codigo===draw.juego_codigo),
         bets:snapshot.bets,
         combinations:snapshot.fixedCombinations,
-        onSave:async(reintegros)=>{
-          await updateDrawRefund(draw.id,snapshot.bets,reintegros);
+        onSave:async(reintegros,complementario)=>{
+          await updateDrawRefund(
+            draw.id,
+            snapshot.bets,
+            reintegros,
+            complementario
+          );
           await refresh();
         }
       });
