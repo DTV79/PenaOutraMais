@@ -18,7 +18,7 @@ async function loadDashboard() {
     document.querySelector('[data-kpi-temporada]').textContent = seasons.find((row) => row.activa)?.anio || '—';
     document.querySelector('[data-kpi-combinaciones]').textContent = combinations.filter((row) => row.activa).length;
     document.querySelector('[data-kpi-bote]').textContent = summary[0]
-      ? Number(summary[0].saldo_final).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €'
+      ? Number(summary[0].saldo_final).toLocaleString('es-ES',{useGrouping:'always',minimumFractionDigits:2,maximumFractionDigits:2}) + ' €'
       : '—';
   } catch (error) {
     const box = document.querySelector('#dashboardError');
