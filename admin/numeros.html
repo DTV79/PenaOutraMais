@@ -5,35 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#071a2d" />
   <meta name="robots" content="noindex,nofollow" />
-  <title>Números · Peña Outra Máis</title>
+  <title>Jugadas fijas · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/styles.css?v=20261021-18" />
-  <link rel="stylesheet" href="css/forms.css?v=20261021-18" />
+  <link rel="stylesheet" href="css/forms.css?v=20261022-04" />
 </head>
 <body data-admin-page="numeros">
   <div class="admin-fixed-shell">
-  <div id="adminHeader"></div>
-  <nav class="admin-top-nav-static" aria-label="Administración">
-    <a class="" href="index.html"><span>⌂</span><small>Inicio</small></a>
-    <a class="" href="socios.html"><span>◎</span><small>Socios</small></a>
-    <a class="" href="cuotas.html"><span>€</span><small>Cuotas</small></a>
-    <a class="active" href="numeros.html"><span>⑩</span><small>Números</small></a>
-    <a class="" href="sorteos.html"><span>◇</span><small>Sorteos</small></a>
-    <a class="" href="premios.html"><span>★</span><small>Premios</small></a>
-    <a class="" href="temporadas.html"><span>▦</span><small>Años</small></a>
-  </nav>
-</div>
-  <div class="admin-wrap"><main class="admin-main">
-    <header class="admin-page-title"><p class="eyebrow">APUESTAS FIJAS</p><h1>Números</h1><p>Las 10 combinaciones fijas de La Primitiva de la temporada activa.</p></header>
-    <section id="numbersSummary" class="admin-kpis"></section>
-    <section class="admin-section">
-      <div class="admin-section-head">
-        <div><p class="eyebrow">COMBINACIONES</p><h2>Temporada <span data-numbers-season>actual</span></h2></div>
-        <button class="admin-action" id="newCombinationButton" type="button">+ Nueva combinación</button>
-      </div>
-      <div id="numbersAdmin" class="admin-loading">Cargando números…</div>
-    </section>
-  </main></div>
-  <script type="module" src="js/modules/numeros/index.js?v=20261021-22"></script>
+    <div id="adminHeader"></div>
+    <nav class="admin-top-nav-static" aria-label="Administración">
+      <a href="index.html"><span>⌂</span><small>Inicio</small></a>
+      <a href="socios.html"><span>◎</span><small>Socios</small></a>
+      <a href="cuotas.html"><span>€</span><small>Cuotas</small></a>
+      <a class="active" href="numeros.html"><span>⑩</span><small>Números</small></a>
+      <a href="sorteos.html"><span>◇</span><small>Sorteos</small></a>
+      <a href="premios.html"><span>★</span><small>Premios</small></a>
+      <a href="temporadas.html"><span>▦</span><small>Años</small></a>
+    </nav>
+  </div>
+
+  <div class="admin-wrap">
+    <main class="admin-main">
+      <header class="admin-page-title">
+        <p class="eyebrow">APUESTAS FIJAS</p>
+        <h1>Jugadas fijas</h1>
+        <p>Grupos de combinaciones que después puedes asignar a distintas programaciones y días de juego.</p>
+      </header>
+
+      <section id="numbersSummary" class="admin-kpis"></section>
+
+      <section class="admin-section">
+        <div class="admin-section-head">
+          <div>
+            <p class="eyebrow">TEMPORADA <span data-numbers-season>ACTUAL</span></p>
+            <h2>Jugadas configuradas</h2>
+          </div>
+          <button class="admin-action" id="newFixedPlayButton" type="button">+ Nueva jugada fija</button>
+        </div>
+        <p class="admin-form-help program-intro">
+          Cada jugada fija puede contener una o varias combinaciones. Después podrás decidir en Sorteos qué jugada usar y qué días se juega.
+        </p>
+        <div id="numbersAdmin" class="admin-loading">Cargando jugadas fijas…</div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/modules/numeros/index.js?v=20261022-04"></script>
 </body>
 </html>
