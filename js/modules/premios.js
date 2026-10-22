@@ -36,7 +36,7 @@ export function renderMonthlyAwards(values = fallbackMonthlyAwards) {
       <div>
         <span>${monthLabels[index]}</span>
         <i><b style="height:${Math.round((Number(value || 0)/max)*100)}%"></b></i>
-        <strong>${Number(value || 0).toLocaleString('es-ES',{maximumFractionDigits:2})} €</strong>
+        <strong>${Number(value || 0).toLocaleString('es-ES',{useGrouping:'always',maximumFractionDigits:2})} €</strong>
       </div>
     `).join('');
   }
@@ -73,7 +73,7 @@ export function applyBalanceSummary(current) {
   });
 
   document.querySelectorAll('[data-year-awards-short]').forEach((element) => {
-    element.textContent = Number(prizes).toLocaleString('es-ES',{maximumFractionDigits:2}) + ' €';
+    element.textContent = Number(prizes).toLocaleString('es-ES',{useGrouping:'always',maximumFractionDigits:2}) + ' €';
   });
 
   document.querySelectorAll('[data-year-expenses]').forEach((element) => {
