@@ -59,7 +59,7 @@ function renderDashboard(snapshot) {
       <strong>${snapshot.activeMembers}</strong>
     </article>
     <article class="admin-kpi">
-      <small>Cuotas ${snapshot.season.anio} (lo cobrado)</small>
+      <small>Cuotas ${snapshot.season.anio}</small>
       <strong>${money(snapshot.quotaCollected)}</strong>
     </article>
     <article class="admin-kpi">
