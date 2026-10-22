@@ -155,14 +155,40 @@ alter table public.combinaciones
   );
 
 alter table public.programacion_juegos
-  add column if not exists jugada_fija_id bigint
-    references public.jugadas_fijas(id) on delete set null;
+  add column if not exists jugada_fija_id bigint;
+
+alter table public.programacion_juegos
+  add constraint programacion_juegos_jugada_fija_rel_fkey
+  foreign key (jugada_fija_id,temporada_id,juego_codigo)
+  references public.jugadas_fijas(id,temporada_id,juego_codigo);
 
 create index if not exists combinaciones_jugada_fija_rel_idx
   on public.combinaciones(jugada_fija_id,temporada_id,juego_codigo);
 
-create index if not exists programacion_juegos_jugada_fija_id_idx
-  on public.programacion_juegos(jugada_fija_id);
+create index if not exists programacion_juegos_jugada_fija_rel_idx
+  on public.programacion_juegos(jugada_fija_id,temporada_id,juego_codigo);
+
+drop policy if exists combinaciones_public_read on public.combinaciones;
+create policy combinaciones_public_read
+on public.combinaciones
+for select
+to anon
+using (
+  activa=true
+  and exists (
+    select 1
+    from public.jugadas_fijas jf
+    where jf.id=combinaciones.jugada_fija_id
+      and jf.activa=true
+  )
+);
+
+drop policy if exists programacion_juegos_public_read on public.programacion_juegos;
+create policy programacion_juegos_public_read
+on public.programacion_juegos
+for select
+to anon
+using (activa=true);
 
 update public.programacion_juegos p
 set jugada_fija_id=jf.id
