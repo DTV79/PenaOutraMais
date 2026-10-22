@@ -51,7 +51,7 @@ export function openSeasonForm({ activeSeason, onSave }) {
 
           <div class="admin-form-field season-annual-preview">
             <label>Cuota anual</label>
-            <strong id="seasonAnnualPreview">${(weekly*weeks).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €</strong>
+            <strong id="seasonAnnualPreview">${(weekly*weeks).toLocaleString('es-ES',{useGrouping:'always',minimumFractionDigits:2,maximumFractionDigits:2})} €</strong>
           </div>
 
           <label class="admin-check-row admin-form-wide">
