@@ -83,7 +83,7 @@ export function openFixedDrawForm({ season, combinationCount, onSave }) {
     const perBet=combinationCount ? total / combinationCount : 0;
     amountHelp.textContent=combinationCount
       ? combinationCount + ' combinaciones · ' +
-        perBet.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) +
+        perBet.toLocaleString('es-ES',{useGrouping:'always',minimumFractionDigits:2,maximumFractionDigits:2}) +
         ' € por combinación'
       : 'No hay combinaciones activas.';
   }
