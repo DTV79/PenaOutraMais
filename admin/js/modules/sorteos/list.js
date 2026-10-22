@@ -136,12 +136,14 @@ function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
       ${resultSummary(draw,game)}
 
       <div class="draw-stake-summary">
-        <span>Total jugado</span>
-        <strong>${money(stake)}</strong>
-        ${fundingText ? `<small>${fundingText}</small>` : ''}
+        <div class="draw-stake-row">
+          <span>Total jugado</span>
+          <strong>${money(stake)}</strong>
+        </div>
         ${draw.estado === 'comprobado'
-          ? `<div class="draw-winnings-summary"><span>Total ganado</span><strong>${money(prize)}</strong></div>`
+          ? `<div class="draw-stake-row draw-winnings-summary"><span>Total ganado</span><strong>${money(prize)}</strong></div>`
           : ''}
+        ${fundingText ? `<small>${fundingText}</small>` : ''}
       </div>
 
       <div class="draw-bets">
