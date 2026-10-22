@@ -576,7 +576,7 @@
 }
 #drawsSummary .admin-kpi{
   display:flex;
-  min-height:108px;
+  min-height:86px;
   flex-direction:column;
   justify-content:flex-start
 }
@@ -594,9 +594,11 @@
     grid-template-columns:minmax(0,1fr) minmax(112px,.68fr) minmax(0,1.2fr)
   }
   #drawsSummary .admin-kpi{
-    min-height:116px
+    min-height:92px;
+    padding-top:10px;
+    padding-bottom:10px
   }
   #drawsSummary .admin-kpi small{
-    min-height:28px
+    min-height:24px
   }
 }
