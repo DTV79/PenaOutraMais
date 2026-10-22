@@ -16,11 +16,11 @@ export async function getDrawsSnapshot() {
   if (!season) {
     return {
       season:null,games,draws:[],bets:[],programs:[],
-      fixedPlays:[],fixedCombinations:[]
+      fixedPlays:[],fixedCombinations:[],prizeMovements:[],potBalance:0
     };
   }
 
-  const [draws,programs,fixedPlays,fixedCombinations]=await Promise.all([
+  const [draws,programs,fixedPlays,fixedCombinations,prizeMovements,balanceRows]=await Promise.all([
     adminSelect(
       `sorteos?select=id,temporada_id,juego_codigo,fecha,nombre,estado,resultado,fuente_url,comprobado_at,error_comprobacion,automatico,movimiento_bote_id,movimiento_gasto_bote_id,programacion_id&temporada_id=eq.${season.id}&order=fecha.desc,id.desc`
     ),
@@ -32,6 +32,12 @@ export async function getDrawsSnapshot() {
     ),
     adminSelect(
       `combinaciones?select=id,jugada_fija_id,numero_orden,nombre,numeros,estrellas,activa,juego_codigo&temporada_id=eq.${season.id}&order=jugada_fija_id.asc,numero_orden.asc`
+    ),
+    adminSelect(
+      `movimientos_bote?select=id,fecha,tipo,concepto,importe,anulado_at&tipo=eq.premio&fecha=gte.${season.anio}-01-01&fecha=lte.${season.anio}-12-31&anulado_at=is.null&order=fecha.desc,id.desc`
+    ),
+    adminSelect(
+      `resumen_anual?select=saldo_final&anio=eq.${season.anio}&limit=1`
     )
   ]);
 
@@ -44,7 +50,9 @@ export async function getDrawsSnapshot() {
   }
 
   return {
-    season,games,draws,bets,programs,fixedPlays,fixedCombinations
+    season,games,draws,bets,programs,fixedPlays,fixedCombinations,
+    prizeMovements,
+    potBalance:Number(balanceRows?.[0]?.saldo_final || 0)
   };
 }
 
