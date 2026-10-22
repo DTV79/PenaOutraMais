@@ -1,5 +1,5 @@
 import { fallbackMonthlyAwards, monthLabels } from '../data/fallback.js';
-import { money, formatNumber } from '../utils/format.js';
+import { money, formatNumber } from '../utils/format.js?v=20261022-02';
 
 function esc(value='') {
   return String(value ?? '')
