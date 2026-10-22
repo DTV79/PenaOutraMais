@@ -294,47 +294,47 @@ export function openSpecialBetForm({ season, games, onSave }) {
 }
 
 
-export function openRefundForm({ draw, bets, combinations, onSave }) {
+export function openRefundForm({ draw, game, bets, combinations, onSave }) {
   const orderById=new Map(
     (combinations || []).map((combo)=>[String(combo.id),Number(combo.numero_orden)])
   );
 
-  const fixedBets = bets
-    .filter((bet) => Number(bet.sorteo_id) === Number(draw.id) && bet.tipo === 'fija')
-    .map((bet)=>({
-      ...bet,
-      numero_orden:orderById.get(String(bet.origen_combinacion_id)) || 999
-    }))
+  const fixedBets=bets
+    .filter((bet)=>Number(bet.sorteo_id)===Number(draw.id) && bet.tipo==='fija')
+    .map((bet)=>{
+      const order=orderById.get(String(bet.origen_combinacion_id)) || 999;
+      const slip=Number(bet.datos?.resguardo || Math.floor((order-1)/5)+1);
+      return {...bet,numero_orden:order,resguardo:slip};
+    })
     .sort((a,b)=>a.numero_orden-b.numero_orden);
 
-  const groups=[
-    {
-      id:'grupo1',
-      title:'Resguardo 1',
-      subtitle:'Combinaciones I–V',
-      bets:fixedBets.filter((bet)=>bet.numero_orden>=1 && bet.numero_orden<=5)
-    },
-    {
-      id:'grupo2',
-      title:'Resguardo 2',
-      subtitle:'Combinaciones VI–X',
-      bets:fixedBets.filter((bet)=>bet.numero_orden>=6 && bet.numero_orden<=10)
-    }
-  ];
+  const slipIds=[...new Set(fixedBets.map((bet)=>bet.resguardo))].sort((a,b)=>a-b);
+  const groups=slipIds.map((id)=>{
+    const groupBets=fixedBets.filter((bet)=>bet.resguardo===id);
+    const orders=groupBets.map((bet)=>bet.numero_orden).filter((value)=>value<999);
+    return {
+      id:`grupo-${id}`,
+      title:`Resguardo ${id}`,
+      subtitle:orders.length
+        ? `Combinaciones ${Math.min(...orders)}–${Math.max(...orders)}`
+        : `${groupBets.length} combinaciones`,
+      bets:groupBets
+    };
+  });
 
   function commonRefund(group) {
     const values=[...new Set(
       group.bets
         .map((bet)=>bet.datos?.reintegro)
-        .filter((value)=>value !== null && value !== undefined && value !== '')
+        .filter((value)=>value!==null && value!==undefined && value!=='')
         .map(Number)
     )];
     return values.length===1 ? values[0] : '';
   }
 
-  const modal = openModal({
+  const modal=openModal({
     title:'Reintegros',
-    subtitle:`LA PRIMITIVA · ${draw.fecha.split('-').reverse().join('/')}`,
+    subtitle:`${String(game?.nombre || draw.juego_codigo).toUpperCase()} · ${draw.fecha.split('-').reverse().join('/')}`,
     content:`
       <form id="refundForm" class="admin-form">
         <div class="refund-group-list">
@@ -342,7 +342,7 @@ export function openRefundForm({ draw, bets, combinations, onSave }) {
             <div class="refund-group-card">
               <div>
                 <strong>${group.title}</strong>
-                <small>${group.subtitle} · mismo reintegro para las 5</small>
+                <small>${group.subtitle} · mismo reintegro para ${group.bets.length}</small>
               </div>
               <div class="admin-form-field">
                 <label for="refund-${group.id}">R</label>
@@ -353,7 +353,7 @@ export function openRefundForm({ draw, bets, combinations, onSave }) {
           `).join('')}
         </div>
         <p class="admin-form-help">
-          Cada sorteo tiene dos resguardos: un reintegro para las combinaciones I–V y otro para VI–X.
+          Cada resguardo puede tener un reintegro distinto. Se aplicará a todas las combinaciones incluidas en ese resguardo.
         </p>
         <div id="refundError" class="admin-error"></div>
       </form>
@@ -376,9 +376,9 @@ export function openRefundForm({ draw, bets, combinations, onSave }) {
     for (const group of groups) {
       const raw=String(data.get(group.id) ?? '').trim();
 
-      if (raw !== '') {
+      if (raw!=='') {
         const value=Number(raw);
-        if (!Number.isInteger(value) || value < 0 || value > 9) {
+        if (!Number.isInteger(value) || value<0 || value>9) {
           errorBox.textContent='Los reintegros deben estar entre 0 y 9.';
           errorBox.classList.add('visible');
           return;
