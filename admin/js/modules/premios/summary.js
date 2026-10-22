@@ -2,6 +2,7 @@ const MONTHS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov',
 
 function money(value) {
   return Number(value || 0).toLocaleString('es-ES',{
+    useGrouping:'always',
     minimumFractionDigits:2,
     maximumFractionDigits:2
   }) + ' €';
