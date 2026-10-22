@@ -44,7 +44,7 @@
       </article>
 
       <div class="kpi-grid">
-        <button class="kpi-card" data-go="numeros"><span class="kpi-icon">⑩</span><strong>10</strong><small>combinaciones fijas</small></button>
+        <button class="kpi-card" data-go="numeros"><span class="kpi-icon">⑩</span><strong data-fixed-play-count>1</strong><small>jugadas fijas</small></button>
         <button class="kpi-card" data-go="cuotas"><span class="kpi-icon">✓</span><strong data-members-current>20/20</strong><small>socios al corriente</small></button>
         <button class="kpi-card" data-go="premios"><span class="kpi-icon">★</span><strong data-year-awards-short>260,27 €</strong><small>premios en <span data-season-year>2026</span></small></button>
         <button class="kpi-card" data-go="mas"><span class="kpi-icon">1€</span><strong data-annual-fee>52 €</strong><small>cuota anual</small></button>
@@ -104,8 +104,8 @@
     </section>
 
     <section class="view" id="numeros">
-      <div class="page-title"><p class="eyebrow">APUESTAS FIJAS</p><h2>Nuestros números</h2><p>Las mismas 10 combinaciones durante todo el año, jueves y sábado.</p></div>
-      <article class="mini-summary"><div><strong>10</strong><span>apuestas</span></div><div><strong>2</strong><span>sorteos/semana</span></div><div><strong>20 €</strong><span>coste semanal</span></div></article>
+      <div class="page-title"><p class="eyebrow">APUESTAS FIJAS</p><h2>Nuestras jugadas</h2><p>Grupos de combinaciones por juego. Cada jugada puede tener su propia programación y días de juego.</p></div>
+      <article class="mini-summary"><div><strong data-fixed-play-count>1</strong><span>jugadas fijas</span></div><div><strong data-fixed-combination-count>10</strong><span>combinaciones</span></div><div><strong data-fixed-game-count>1</strong><span>juegos</span></div></article>
       <div id="combinations" class="combination-list"></div>
       <article class="section-card compact"><p class="muted no-margin">Cuando haya una jugada especial (décimo, apuesta extraordinaria, etc.), aparecerá aquí separada de las combinaciones fijas.</p></article>
     </section>
@@ -212,7 +212,7 @@
     <button class="nav-item" data-go="mas"><span>•••</span><small>Más</small></button>
   </nav>
 </div>
-<script type="module" src="js/app/main.js?v=20261022-02"></script>
+<script type="module" src="js/app/main.js?v=20261022-05"></script>
 <script src="js/pwa.js" defer></script>
 </body>
 </html>
