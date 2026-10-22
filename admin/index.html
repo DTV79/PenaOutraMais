@@ -8,7 +8,6 @@
   <title>Administración · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/styles.css?v=20261022-14" />
-  <link rel="stylesheet" href="css/forms.css?v=20261022-13" />
 </head>
 <body data-admin-page="inicio">
   <div class="admin-fixed-shell">
@@ -26,80 +25,86 @@
 
   <div class="admin-wrap">
     <main class="admin-main">
-      <header class="admin-page-title dashboard-title">
+      <header class="admin-page-title">
         <p class="eyebrow">GESTIÓN</p>
         <h1>Panel de administración</h1>
         <p>Control de socios, cuotas, números, sorteos, premios y temporadas.</p>
       </header>
 
-      <div id="dashboardError" class="admin-error"></div>
-
-      <section class="admin-brand-banner" aria-label="Peña Outra Máis">
-        <div class="admin-brand-banner-art" aria-hidden="true"></div>
-        <div class="admin-brand-banner-copy">
-          <p>PEÑA OUTRA MÁIS</p>
+      <section class="admin-home-banner" aria-label="Peña Outra Máis">
+        <div class="admin-home-banner-art" aria-hidden="true">
+          <span class="banner-brush banner-brush-one"></span>
+          <span class="banner-brush banner-brush-two"></span>
+          <div class="banner-cathedral">
+            <span class="cathedral-tower t1"></span>
+            <span class="cathedral-tower t2"></span>
+            <span class="cathedral-tower t3"></span>
+            <span class="cathedral-body"></span>
+            <span class="cathedral-rosette"></span>
+          </div>
+          <strong>Peña<br>Outra Máis</strong>
+        </div>
+        <div class="admin-home-banner-copy">
           <h2>Peña Outra Máis</h2>
-          <span>Gestión de socios, cuotas, sorteos y premios.</span>
+          <p>Gestión de socios, cuotas, sorteos y premios.</p>
           <i></i>
         </div>
       </section>
 
-      <section class="admin-kpis dashboard-kpis">
-        <article class="admin-kpi">
-          <small>Socios activos</small>
-          <strong data-kpi-socios>—</strong>
-        </article>
-        <article class="admin-kpi">
-          <small data-kpi-cuotas-label>Cuotas (lo cobrado)</small>
-          <strong data-kpi-cuotas>—</strong>
-        </article>
-        <article class="admin-kpi">
-          <small>Gastado (cuotas)</small>
-          <strong data-kpi-gastado>—</strong>
-        </article>
-        <article class="admin-kpi">
-          <small>Bote</small>
-          <strong data-kpi-bote>—</strong>
-        </article>
+      <section id="dashboardSummary" class="admin-kpis admin-home-kpis">
+        <article class="admin-kpi"><small>Socios activos</small><strong>—</strong></article>
+        <article class="admin-kpi"><small>Cuotas</small><strong>—</strong></article>
+        <article class="admin-kpi"><small>Gastado</small><strong>—</strong></article>
+        <article class="admin-kpi"><small>Bote</small><strong>—</strong></article>
       </section>
 
-      <section class="admin-grid dashboard-links">
+      <section class="admin-home-grid" aria-label="Accesos de administración">
         <a class="admin-card" href="socios.html">
-          <span class="admin-card-icon icon-socios" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-3.7-5.5A4.5 4.5 0 0 1 14 9c0 .7-.2 1.4-.5 2H16Zm-8 0a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.1 0-6 2.1-6 4.3V19h12v-1.7C14 15.1 12.1 13 8 13Zm8.3.3c-.8 0-1.5.1-2.1.3 1.2 1 1.8 2.3 1.8 3.7V19h6v-1.4c0-2.1-1.8-4.3-5.7-4.3Z"/></svg>
+          <span class="admin-card-icon home-icon home-icon-blue" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8.2 11.2a3.3 3.3 0 1 0 0-6.6 3.3 3.3 0 0 0 0 6.6Zm7.7-.8a2.7 2.7 0 1 0 0-5.4 2.7 2.7 0 0 0 0 5.4ZM2.8 18.7c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4v.7H2.8v-.7Zm11.3.7c0-1.8-.6-3.4-1.7-4.6a4.8 4.8 0 0 1 3.5-1.5c2.9 0 5.2 2.3 5.2 5.2v.9h-7Z"/></svg>
           </span>
-          <strong>Socios</strong><small>Datos, altas y bajas.</small>
+          <strong>Socios</strong>
+          <small>Datos, altas y bajas.</small>
         </a>
 
         <a class="admin-card" href="cuotas.html">
-          <span class="admin-card-icon icon-cuotas" aria-hidden="true">€</span>
-          <strong>Cuotas</strong><small>Pagos, ajustes y saldos.</small>
+          <span class="admin-card-icon home-icon home-icon-green" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M14.8 5.1c-3.5 0-6.1 2-6.9 5H5.5v2h2.1v1H5.5v2h2.4c.9 2.9 3.5 4.8 6.9 4.8 1.7 0 3.2-.4 4.4-1.2l-1.1-2.1c-.9.5-1.9.8-3 .8-1.8 0-3.3-.8-4-2.4h4.8v-2h-5.3v-1h5.3v-2h-4.8c.7-1.6 2.2-2.5 4-2.5 1.1 0 2.1.3 3 .8l1.1-2.1a8.5 8.5 0 0 0-4.4-1.1Z"/></svg>
+          </span>
+          <strong>Cuotas</strong>
+          <small>Pagos, ajustes y saldos.</small>
         </a>
 
         <a class="admin-card" href="numeros.html">
-          <span class="admin-card-icon icon-numeros" aria-hidden="true"><b>1</b><b>2</b><b>3</b></span>
-          <strong>Números</strong><small>Combinaciones de la temporada.</small>
+          <span class="admin-card-icon home-icon home-icon-purple home-lottery-icon" aria-hidden="true">
+            <b>1</b><b>2</b><b>3</b>
+          </span>
+          <strong>Números</strong>
+          <small>Jugadas y combinaciones.</small>
         </a>
 
         <a class="admin-card" href="premios.html">
-          <span class="admin-card-icon icon-premios" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M7 3h10v3h3v2c0 3.2-1.7 5.3-4.7 5.9A5.3 5.3 0 0 1 13 16.7V19h4v2H7v-2h4v-2.3a5.3 5.3 0 0 1-2.3-2.8C5.7 13.3 4 11.2 4 8V6h3V3Zm0 5H6c0 1.8.7 3 2 3.6A8.8 8.8 0 0 1 7 8Zm10 0c0 1.4-.3 2.6-1 3.6 1.3-.6 2-1.8 2-3.6h-1Z"/></svg>
+          <span class="admin-card-icon home-icon home-icon-gold" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 3h8v2h4v3.2c0 2.9-2 5.3-4.8 5.8A5.2 5.2 0 0 1 13 16.6V19h4v2H7v-2h4v-2.4A5.2 5.2 0 0 1 8.8 14C6 13.5 4 11.1 4 8.2V5h4V3Zm0 4H6v1.2c0 1.6.9 3 2.3 3.6A7.8 7.8 0 0 1 8 9.6V7Zm8 0v2.6c0 .8-.1 1.5-.3 2.2A3.9 3.9 0 0 0 18 8.2V7h-2Z"/></svg>
           </span>
-          <strong>Premios y bote</strong><small>Entradas, gastos y saldo.</small>
+          <strong>Premios y bote</strong>
+          <small>Entradas, gastos y saldo.</small>
         </a>
 
         <a class="admin-card" href="temporadas.html">
-          <span class="admin-card-icon icon-temporadas" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2Zm11 8H6v10h12V10ZM6 6v2h12V6H6Zm2 6h3v3H8v-3Zm5 0h3v3h-3v-3Zm-5 5h3v2H8v-2Zm5 0h3v2h-3v-2Z"/></svg>
+          <span class="admin-card-icon home-icon home-icon-teal" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3v17H4V4h3V2Zm11 8H6v9h12v-9ZM8 12h3v2H8v-2Zm5 0h3v2h-3v-2Zm-5 4h3v2H8v-2Zm5 0h3v2h-3v-2Z"/></svg>
           </span>
-          <strong>Temporadas</strong><small>Cuota anual y configuración.</small>
+          <strong>Temporadas</strong>
+          <small>Cuota anual y configuración.</small>
         </a>
 
         <a class="admin-card" href="sorteos.html">
-          <span class="admin-card-icon icon-sorteos" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 7.5 7.5 3H21v13.5L16.5 21H3V7.5Zm5.3-2.5L5 8.3V19h10.7l3.3-3.3V5H8.3ZM9 8h6v2H9V8Zm0 4h6v2H9v-2Zm0 4h3v2H9v-2Z"/></svg>
+          <span class="admin-card-icon home-icon home-icon-orange" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m4.3 8.2 11-5.2 4.4 9.2-11 5.2-4.4-9.2Zm3.4 1.1.8 1.7 1.7-.8-.8-1.7-1.7.8Zm3.4-1.6.8 1.7 1.7-.8-.8-1.7-1.7.8Zm3.4-1.6.8 1.7 1.7-.8-.8-1.7-1.7.8ZM3 11.3l2 4.2v4.1h12v-3l2-.9V22H3V11.3Z"/></svg>
           </span>
-          <strong>Sorteos y apuestas</strong><small>Comprobación SELAE y jugadas especiales.</small>
+          <strong>Sorteos y apuestas</strong>
+          <small>Comprobación SELAE y jugadas especiales.</small>
         </a>
       </section>
     </main>
