@@ -9,12 +9,12 @@ import {
   updateCombination,
   setCombinationActive,
   refreshScheduledDraws
-} from './service.js?v=20261022-04';
+} from './service.js?v=20261022-06';
 import {
   openFixedPlayForm,
   openCombinationForm
-} from './form.js?v=20261022-04';
-import { renderNumbersSnapshot } from './list.js?v=20261022-04';
+} from './form.js?v=20261022-06';
+import { renderNumbersSnapshot } from './list.js?v=20261022-06';
 
 let snapshot=null;
 const container=document.querySelector('#numbersAdmin');
