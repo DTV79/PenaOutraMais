@@ -18,6 +18,17 @@ function stateOf(row,activeYear) {
   return {label:'Cerrada',className:'off'};
 }
 
+function historyLabel(summary) {
+  const note=summary?.observaciones || '';
+  if (/cena/i.test(note)) return 'Cena de la peña';
+  if (/décimos/i.test(note)) return 'Lotería extraordinaria';
+  if (/juego extraordinario/i.test(note)) return 'Juego extraordinario';
+  if (/salida\/ajuste/i.test(note)) return 'Salida/ajuste histórico';
+  if (/salida importante/i.test(note)) return 'Salida del bote';
+  if (summary?.provisional) return 'Histórico provisional';
+  return '';
+}
+
 export function renderSeasons(snapshot,{ onActivate }={}) {
   const container=document.querySelector('#seasonsAdmin');
   const rows=snapshot.seasons || [];
@@ -45,7 +56,8 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
             <th>Cuota anual</th>
             <th>Arrastre</th>
             <th>Premios</th>
-            <th>Gastos</th>
+            <th>Total</th>
+            <th>Salidas / cenas</th>
             <th>Saldo final</th>
             <th></th>
           </tr>
@@ -57,22 +69,24 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
             const prizes=summary
               ? Number(summary.premios_ordinarios || 0)+Number(summary.premios_extra || 0)
               : null;
+            const total=summary
+              ? Number(summary.arrastre_inicial || 0)+Number(prizes || 0)
+              : null;
             const prepared=!row.activa && Number(row.anio)>Number(activeYear);
             const canActivate=prepared && new Date().toISOString().slice(0,10)>=row.fecha_inicio;
+            const history=historyLabel(summary);
 
             return `
               <tr class="${row.activa?'season-current-row':''}">
                 <td>
                   <strong>${row.anio}</strong>
-                  ${summary?.provisional ? '<small class="season-provisional">Histórico provisional</small>' : ''}
+                  ${history ? `<small class="season-provisional" title="${summary?.observaciones || ''}">${history}</small>` : ''}
                 </td>
                 <td><span class="admin-status ${state.className}">${state.label}</span></td>
-                <td>
-                  ${money(row.cuota_anual)}
-                  ${row.cuota_anual===null ? '<small class="season-unknown">Dato no disponible</small>' : ''}
-                </td>
+                <td><strong>${money(row.cuota_anual)}</strong></td>
                 <td>${money(summary?.arrastre_inicial)}</td>
                 <td class="positive-text"><strong>${money(prizes)}</strong></td>
+                <td><strong>${money(total)}</strong></td>
                 <td>${money(summary?.gastos_salidas)}</td>
                 <td><strong>${money(summary?.saldo_final)}</strong></td>
                 <td>
@@ -94,8 +108,8 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
     </div>
 
     <p class="admin-form-help season-history-note">
-      En los años históricos solo se muestran datos de cuota cuando constan de forma fiable.
-      Los importes económicos proceden del histórico ya utilizado en la web pública.
+      <strong>Total</strong> = arrastre + premios. <strong>Saldo final</strong> = total − salidas/cenas
+      y es el importe que queda para enlazar con el año siguiente. En la temporada activa representa el saldo actual.
     </p>
   `;
 
