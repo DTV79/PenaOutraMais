@@ -38,8 +38,10 @@ export function renderCombinations(fixedPlays,rows,games) {
     : fallbackData();
 
   const gameMap=new Map(data.games.map((game)=>[game.codigo,game]));
-  const activePlays=data.fixedPlays || [];
   const combinations=data.combinations || [];
+  const activePlays=(data.fixedPlays || []).filter((play)=>
+    combinations.some((row)=>String(row.jugada_fija_id)===String(play.id))
+  );
   const activeGames=new Set(activePlays.map((play)=>play.juego_codigo));
 
   document.querySelectorAll('[data-fixed-play-count]').forEach((el)=>{
