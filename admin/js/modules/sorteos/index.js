@@ -10,11 +10,12 @@ import {
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261022-26';
+} from './service.js?v=20261023-40';
 import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-26';
 import { openProgramForm } from './program-form.js?v=20261022-04';
 import { renderPrograms } from './program-list.js?v=20261022-04';
-import { renderDraws } from './list.js?v=20261022-30';
+import { renderDraws } from './list.js?v=20261023-40';
+import { getShareData, shareWhatsApp, shareCard } from './share.js?v=20261023-40';
 
 let snapshot=null;
 const panels=document.querySelector('.draw-tab-panels');
@@ -159,6 +160,45 @@ async function init() {
   });
 
   panels?.addEventListener('click',async(event)=>{
+    const whatsappButton=event.target.closest('[data-draw-whatsapp]');
+    if (whatsappButton) {
+      try {
+        const data=getShareData(snapshot,whatsappButton.dataset.drawWhatsapp);
+        shareWhatsApp(data);
+      } catch(error) {
+        showError('No se pudo preparar el mensaje',error);
+      }
+      return;
+    }
+
+    const cardButton=event.target.closest('[data-draw-card]');
+    if (cardButton) {
+      cardButton.disabled=true;
+      const previous=cardButton.textContent;
+      cardButton.textContent='Preparando…';
+
+      try {
+        const data=getShareData(snapshot,cardButton.dataset.drawCard);
+        const result=await shareCard(data);
+
+        if (result?.downloaded) {
+          openModal({
+            title:'Tarjeta creada',
+            content:'<p class="admin-confirm-text">La tarjeta se ha guardado como imagen. Puedes compartirla desde Fotos/Archivos por WhatsApp.</p>',
+            actions:'<button class="admin-action" type="button" data-modal-close>Cerrar</button>'
+          });
+        }
+      } catch(error) {
+        if (error?.name!=='AbortError') {
+          showError('No se pudo compartir la tarjeta',error);
+        }
+      } finally {
+        cardButton.disabled=false;
+        cardButton.textContent=previous;
+      }
+      return;
+    }
+
     const deleteButton=event.target.closest('[data-draw-delete]');
     if (deleteButton) {
       const draw=snapshot?.draws.find(
