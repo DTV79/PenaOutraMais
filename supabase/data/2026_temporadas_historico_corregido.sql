@@ -36,7 +36,7 @@ set arrastre_inicial = 7.00,
     gastos_salidas = 159.00,
     saldo_final = 46.00,
     observaciones = 'Total histórico confirmado: 205,00 €. Salida/ajuste de 159,00 € inferida para enlazar con el arrastre de 46,00 € de 2015',
-    provisional = true,
+    provisional = false,
     updated_at = now()
 where anio = 2014;
 
@@ -61,5 +61,10 @@ set arrastre_inicial = 10.00,
     provisional = false,
     updated_at = now()
 where anio = 2018;
+
+update public.resumen_anual
+set provisional = false,
+    updated_at = now()
+where anio between 2012 and 2025;
 
 commit;
