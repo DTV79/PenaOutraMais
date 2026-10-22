@@ -16,9 +16,15 @@ function money(value) {
   }) + ' €';
 }
 
-function templateSummary(program,game,fixedCount) {
+function templateSummary(program,game,fixedPlays,fixedCombinations) {
   if (program.usar_combinaciones_fijas) {
-    return `${fixedCount} combinaciones fijas`;
+    const play=fixedPlays.find((row)=>String(row.id)===String(program.jugada_fija_id));
+    const count=fixedCombinations.filter((row)=>
+      String(row.jugada_fija_id)===String(program.jugada_fija_id) && row.activa
+    ).length;
+    return play
+      ? `${esc(play.nombre)} · ${count} combinación${count===1?'':'es'}`
+      : 'Jugada fija no disponible';
   }
 
   const data=program.datos_apuesta || {};
@@ -33,7 +39,12 @@ function templateSummary(program,game,fixedCount) {
   return (data.numeros || []).join(' · ');
 }
 
-export function renderPrograms({ programs, games, fixedCombinationCount }) {
+export function renderPrograms({
+  programs,
+  games,
+  fixedPlays=[],
+  fixedCombinations=[]
+}) {
   const box=document.querySelector('#programsAdmin');
   const badge=document.querySelector('[data-tab-count="programadas"]');
   const gameMap=new Map(games.map((game)=>[game.codigo,game]));
@@ -45,7 +56,7 @@ export function renderPrograms({ programs, games, fixedCombinationCount }) {
       <div class="admin-empty">
         <span>◷</span>
         <strong>No hay apuestas programadas</strong>
-        <p>Crea una programación para que los sorteos se preparen automáticamente.</p>
+        <p>Crea una programación y elige qué jugada fija usar o define una combinación directamente.</p>
       </div>
     `;
     return;
@@ -56,7 +67,7 @@ export function renderPrograms({ programs, games, fixedCombinationCount }) {
       ${programs.map((program)=>{
         const game=gameMap.get(program.juego_codigo);
         const days=(program.dias_semana || []).map((day)=>DAY_LABELS[day]).join(' · ');
-        const weekly=Number(program.importe_total || 0) * (program.dias_semana || []).length;
+        const weekly=Number(program.importe_total || 0)*(program.dias_semana || []).length;
 
         return `
           <article class="program-card ${program.activa?'':'inactive'}">
@@ -74,7 +85,10 @@ export function renderPrograms({ programs, games, fixedCombinationCount }) {
             <div class="program-card-grid">
               <div><small>Por sorteo</small><strong>${money(program.importe_total)}</strong></div>
               <div><small>Por semana</small><strong>${money(weekly)}</strong></div>
-              <div class="program-template"><small>Jugada</small><strong>${templateSummary(program,game,fixedCombinationCount)}</strong></div>
+              <div class="program-template">
+                <small>${program.usar_combinaciones_fijas?'Jugada fija':'Jugada'}</small>
+                <strong>${templateSummary(program,game,fixedPlays,fixedCombinations)}</strong>
+              </div>
             </div>
 
             <div class="program-card-actions">
