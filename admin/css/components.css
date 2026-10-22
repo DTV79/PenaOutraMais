@@ -55,3 +55,80 @@
 .admin-empty p{font-size:11px}
 .admin-status{font-size:10px}
 .admin-error,.admin-loading{font-size:11px}
+
+
+/* Identidad visual Peña Outra Máis · v1 */
+.admin-page-title .eyebrow,
+.admin-section-head .eyebrow{
+  color:#9a771c
+}
+.admin-page-title h1{
+  color:var(--navy);
+  letter-spacing:-.9px
+}
+.admin-card,
+.admin-kpi,
+.admin-section{
+  border-color:#dfe5ea;
+  box-shadow:var(--shadow-soft)
+}
+.admin-card{
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease
+}
+.admin-card:hover{
+  transform:translateY(-1px);
+  border-color:#d1dae2;
+  box-shadow:0 12px 28px rgba(7,26,45,.07)
+}
+.admin-card-icon{
+  background:var(--goldsoft);
+  color:#8c6912
+}
+.admin-kpi{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#fff,#fdfefe)
+}
+.admin-kpi:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:3px;
+  height:100%;
+  background:linear-gradient(var(--gold2),var(--gold))
+}
+.admin-kpi strong{color:var(--navy)}
+.admin-section{
+  background:rgba(255,255,255,.96);
+  border-radius:20px
+}
+.admin-action{
+  background:linear-gradient(145deg,var(--navy),var(--navy2));
+  box-shadow:0 6px 14px rgba(7,26,45,.12);
+  transition:transform .14s ease,box-shadow .14s ease,filter .14s ease
+}
+.admin-action:hover:not(:disabled){
+  transform:translateY(-1px);
+  box-shadow:0 9px 18px rgba(7,26,45,.16);
+  filter:brightness(1.03)
+}
+.admin-action.secondary{
+  border-color:#d9e1e7;
+  background:#fff;
+  color:var(--navy);
+  box-shadow:none
+}
+.admin-table th{
+  color:#637181;
+  background:#f8fafb
+}
+.admin-table tbody tr:hover{background:#fbfcfd}
+.admin-status.ok{
+  background:var(--greensoft);
+  color:var(--green)
+}
+.admin-status.pending{
+  background:var(--goldsoft);
+  color:#806113
+}
