@@ -169,6 +169,13 @@ function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
       ${draw.resultado?.revision_manual ? '<p class="draw-message warning">Revisión manual necesaria antes de considerar definitivo el premio.</p>' : ''}
       ${prize > 0 ? `<p class="draw-total">Premio detectado <strong>${money(prize)}</strong></p>` : ''}
 
+      ${draw.juego_codigo === 'primitiva' && draw.estado !== 'comprobado' ? `
+        <div class="draw-share-actions">
+          <button class="admin-action whatsapp" type="button" data-draw-whatsapp="${draw.id}">WhatsApp</button>
+          <button class="admin-action secondary" type="button" data-draw-card="${draw.id}">Compartir tarjeta</button>
+        </div>
+      ` : ''}
+
       <footer class="draw-admin-actions">
         <button class="admin-action danger-soft" type="button" data-draw-delete="${draw.id}">Eliminar sorteo</button>
         ${game?.formato === '6_numeros' && drawBets.some((bet)=>bet.tipo==='fija') ? `
