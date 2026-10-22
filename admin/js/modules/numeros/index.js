@@ -1,4 +1,4 @@
-import { bootstrapAdmin } from '../../app/bootstrap.js';
+import { bootstrapAdmin } from '../../app/bootstrap.js?v=20261022-23';
 import { confirmModal, openModal } from '../../ui/modal.js';
 import {
   getNumbersSnapshot,
