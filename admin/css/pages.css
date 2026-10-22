@@ -228,7 +228,9 @@
 .home-icon-orange{background:#ffe7d9;color:#ed6c2f}
 .home-lottery-icon{
   position:relative;
-  display:block
+  display:block;
+  background:#eee6ff;
+  color:#7143d6
 }
 .home-lottery-icon b{
   position:absolute;
@@ -237,15 +239,17 @@
   display:grid;
   place-items:center;
   border-radius:50%;
-  background:currentColor;
+  background:#7143d6;
   color:#fff;
-  font-size:8px;
+  border:2px solid #eee6ff;
+  font-size:7px;
+  font-weight:950;
   line-height:1;
   box-shadow:0 2px 5px rgba(55,23,125,.18)
 }
-.home-lottery-icon b:nth-child(1){left:5px;bottom:6px}
-.home-lottery-icon b:nth-child(2){left:16px;top:4px}
-.home-lottery-icon b:nth-child(3){right:4px;bottom:6px}
+.home-lottery-icon b:nth-child(1){left:4px;bottom:5px}
+.home-lottery-icon b:nth-child(2){left:14px;top:3px}
+.home-lottery-icon b:nth-child(3){right:3px;bottom:5px}
 @media(min-width:760px){
   .admin-home-grid{grid-template-columns:repeat(3,1fr)}
 }
