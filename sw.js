@@ -1,4 +1,4 @@
-const CACHE='pena-outra-mais-v14';
+const CACHE='pena-outra-mais-v15';
 const ASSETS=[
   './',
   './index.html',
