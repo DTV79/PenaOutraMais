@@ -92,7 +92,7 @@ function preparedCard(row) {
       <p class="season-prepared-help">
         ${canActivate
           ? `Ya puede activarse. Al hacerlo, ${row.anio-1} se cerrará y su saldo final pasará como arrastre inicial de ${row.anio}.`
-          : `Disponible para activar desde el ${dateEs(row.fecha_inicio)}. Hasta entonces la temporada actual seguirá funcionando sin cambios.`}
+          : `Disponible para activar a partir del ${dateEs(row.fecha_inicio)}.`}
       </p>
     </article>
   `;
