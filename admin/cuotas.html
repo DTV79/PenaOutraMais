@@ -8,49 +8,107 @@
   <title>Cuotas · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/styles.css?v=20261021-18" />
-  <link rel="stylesheet" href="css/forms.css?v=20261021-18" />
+  <link rel="stylesheet" href="css/forms.css?v=20261022-03" />
 </head>
 <body data-admin-page="cuotas">
   <div class="admin-fixed-shell">
-  <div id="adminHeader"></div>
-  <nav class="admin-top-nav-static" aria-label="Administración">
-    <a class="" href="index.html"><span>⌂</span><small>Inicio</small></a>
-    <a class="" href="socios.html"><span>◎</span><small>Socios</small></a>
-    <a class="active" href="cuotas.html"><span>€</span><small>Cuotas</small></a>
-    <a class="" href="numeros.html"><span>⑩</span><small>Números</small></a>
-    <a class="" href="sorteos.html"><span>◇</span><small>Sorteos</small></a>
-    <a class="" href="premios.html"><span>★</span><small>Premios</small></a>
-    <a class="" href="temporadas.html"><span>▦</span><small>Años</small></a>
-  </nav>
-</div>
-  <div class="admin-wrap"><main class="admin-main">
-    <header class="admin-page-title"><p class="eyebrow">APORTACIONES</p><h1>Cuotas y pagos</h1><p>Movimientos reales de cada socio por temporada.</p></header>
-    <section id="feesSummary" class="admin-kpis"></section>
-    <section class="admin-section">
-      <div class="admin-section-head">
-        <div><p class="eyebrow">FONDO DE CUOTAS</p><h2>Dinero disponible para sorteos</h2></div>
+    <div id="adminHeader"></div>
+    <nav class="admin-top-nav-static" aria-label="Administración">
+      <a href="index.html"><span>⌂</span><small>Inicio</small></a>
+      <a href="socios.html"><span>◎</span><small>Socios</small></a>
+      <a class="active" href="cuotas.html"><span>€</span><small>Cuotas</small></a>
+      <a href="numeros.html"><span>⑩</span><small>Números</small></a>
+      <a href="sorteos.html"><span>◇</span><small>Sorteos</small></a>
+      <a href="premios.html"><span>★</span><small>Premios</small></a>
+      <a href="temporadas.html"><span>▦</span><small>Años</small></a>
+    </nav>
+  </div>
+
+  <div class="admin-wrap">
+    <main class="admin-main">
+      <header class="admin-page-title">
+        <p class="eyebrow">APORTACIONES</p>
+        <h1>Cuotas y pagos</h1>
+        <p>Control de lo previsto, lo cobrado, los pendientes y los pagos adelantados.</p>
+      </header>
+
+      <section id="feesSummary" class="admin-kpis"></section>
+
+      <nav class="draw-tabs quota-tabs" aria-label="Secciones de cuotas">
+        <button class="draw-tab active" type="button" data-quota-tab="resumen">
+          <span>Resumen</span>
+        </button>
+        <button class="draw-tab" type="button" data-quota-tab="pendientes">
+          <span>Pendientes</span>
+          <small data-quota-tab-count="pendientes">0</small>
+        </button>
+        <button class="draw-tab" type="button" data-quota-tab="movimientos">
+          <span>Movimientos</span>
+          <small data-quota-tab-count="movimientos">0</small>
+        </button>
+        <button class="draw-tab" type="button" data-quota-tab="adelantos">
+          <span>Pagos adelantados</span>
+          <small data-quota-tab-count="adelantos">0</small>
+        </button>
+      </nav>
+
+      <div class="draw-tab-panels quota-tab-panels">
+        <section class="draw-tab-panel active" data-quota-panel="resumen">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">FONDO DE CUOTAS</p>
+                <h2>Dinero disponible para sorteos</h2>
+              </div>
+            </div>
+            <div id="feesFund" class="admin-kpis"></div>
+            <p id="feesFundExplanation" class="admin-form-help"></p>
+          </section>
+        </section>
+
+        <section class="draw-tab-panel" data-quota-panel="pendientes">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">TEMPORADA ACTUAL</p>
+                <h2>Cuotas pendientes de pago</h2>
+              </div>
+            </div>
+            <div id="feesPending" class="admin-loading">Calculando pendientes…</div>
+          </section>
+        </section>
+
+        <section class="draw-tab-panel" data-quota-panel="movimientos">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">HISTÓRICO DE PAGOS</p>
+                <h2>Movimientos de cuotas</h2>
+              </div>
+              <button class="admin-action" id="newQuotaMovementButton" type="button">+ Registrar movimiento</button>
+            </div>
+            <div id="feesAdmin" class="admin-loading">Cargando movimientos…</div>
+          </section>
+        </section>
+
+        <section class="draw-tab-panel" data-quota-panel="adelantos">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">PRÓXIMAS TEMPORADAS</p>
+                <h2>Pagos adelantados</h2>
+              </div>
+            </div>
+            <p class="admin-form-help quota-advance-intro">
+              Aquí se muestra el dinero que un socio ya ha pagado de más y que se descontará automáticamente de su cuota en una temporada futura.
+            </p>
+            <div id="feesFuture" class="admin-loading">Calculando pagos adelantados…</div>
+          </section>
+        </section>
       </div>
-      <div id="feesFund" class="admin-kpis"></div>
-      <p class="admin-form-help">El importe jugado en los sorteos habituales se descuenta de las cuotas cobradas, sin modificar cuánto ha pagado cada socio.</p>
-    </section>
-    <section class="admin-section">
-      <div class="admin-section-head"><div><p class="eyebrow">PENDIENTES</p><h2>Por cobrar</h2></div></div>
-      <div id="feesPending" class="admin-loading">Calculando pendientes…</div>
-    </section>
-    <section class="admin-section">
-      <div class="admin-section-head">
-        <div><p class="eyebrow">SALDOS FUTUROS</p><h2>Próximas temporadas</h2></div>
-      </div>
-      <div id="feesFuture" class="admin-loading">Calculando saldos…</div>
-    </section>
-    <section class="admin-section">
-      <div class="admin-section-head">
-        <div><p class="eyebrow">MOVIMIENTOS</p><h2>Cuotas</h2></div>
-        <button class="admin-action" id="newQuotaMovementButton" type="button">+ Registrar movimiento</button>
-      </div>
-      <div id="feesAdmin" class="admin-loading">Cargando movimientos…</div>
-    </section>
-  </main></div>
-  <script type="module" src="js/modules/cuotas/index.js?v=20261022-02"></script>
+    </main>
+  </div>
+
+  <script type="module" src="js/modules/cuotas/index.js?v=20261022-03"></script>
 </body>
 </html>
