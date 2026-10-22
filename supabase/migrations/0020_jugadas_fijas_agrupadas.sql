@@ -27,8 +27,22 @@ grant usage,select on sequence public.jugadas_fijas_id_seq to authenticated,serv
 create policy jugadas_fijas_public_read
 on public.jugadas_fijas
 for select
-to anon,authenticated
+to anon
 using (activa=true);
+
+create policy jugadas_fijas_admin_read
+on public.jugadas_fijas
+for select
+to authenticated
+using (
+  exists (
+    select 1 from public.administradores a
+    where a.user_id=(select auth.uid()) and a.activo=true
+  )
+);
+
+create index if not exists jugadas_fijas_juego_codigo_idx
+  on public.jugadas_fijas(juego_codigo);
 
 create policy jugadas_fijas_admin_insert
 on public.jugadas_fijas
@@ -143,6 +157,12 @@ alter table public.combinaciones
 alter table public.programacion_juegos
   add column if not exists jugada_fija_id bigint
     references public.jugadas_fijas(id) on delete set null;
+
+create index if not exists combinaciones_jugada_fija_rel_idx
+  on public.combinaciones(jugada_fija_id,temporada_id,juego_codigo);
+
+create index if not exists programacion_juegos_jugada_fija_id_idx
+  on public.programacion_juegos(jugada_fija_id);
 
 update public.programacion_juegos p
 set jugada_fija_id=jf.id
