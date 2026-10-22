@@ -39,7 +39,8 @@ export function renderNumbersSnapshot({ season, games, fixedPlays, combinations 
 
   const map=gameMap(games);
   const activePlays=fixedPlays.filter((row)=>row.activa);
-  const activeCombinations=combinations.filter((row)=>row.activa);
+  const activePlayIds=new Set(activePlays.map((row)=>String(row.id)));
+  const activeCombinations=combinations.filter((row)=>row.activa && activePlayIds.has(String(row.jugada_fija_id)));
   const activeGames=new Set(activePlays.map((row)=>row.juego_codigo));
 
   summary.innerHTML=`
