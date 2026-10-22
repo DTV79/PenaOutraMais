@@ -103,8 +103,8 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
 
     <div class="season-summary-strip">
       <div><small>Temporada activa</small><strong>${activeYear}</strong></div>
-      <div><small>Años jugados</small><strong>${historicalCount}</strong></div>
       <div><small>Saldo actual</small><strong>${money(currentBalance)}</strong></div>
+      <div><small>Años jugados</small><strong>${historicalCount}</strong></div>
     </div>
 
     <div class="admin-table-wrap">
