@@ -23,6 +23,55 @@ function historyLabel(row,activeYear) {
   return Number(row.anio)<Number(activeYear) ? 'Histórico' : '';
 }
 
+function todayIso() {
+  const now=new Date();
+  const local=new Date(now.getTime()-now.getTimezoneOffset()*60000);
+  return local.toISOString().slice(0,10);
+}
+
+function preparedCard(row) {
+  const stats=row.preparedStats || {};
+  const canActivate=todayIso()>=row.fecha_inicio;
+
+  return `
+    <article class="season-prepared-card">
+      <div class="season-prepared-main">
+        <div>
+          <p class="eyebrow">PRÓXIMA TEMPORADA</p>
+          <div class="season-prepared-title">
+            <h3>${row.anio}</h3>
+            <span class="admin-status pending">Preparada</span>
+          </div>
+          <p class="season-prepared-date">
+            Del ${dateEs(row.fecha_inicio)} al ${dateEs(row.fecha_fin)}
+          </p>
+        </div>
+
+        <button class="admin-action ${canActivate?'':'season-action-disabled'}"
+          type="button"
+          data-season-activate="${row.id}"
+          ${canActivate?'':'disabled'}
+          title="${canActivate?'Activar temporada':'Disponible desde '+dateEs(row.fecha_inicio)}">
+          Activar temporada
+        </button>
+      </div>
+
+      <div class="season-prepared-stats">
+        <div><small>Cuota anual</small><strong>${money(row.cuota_anual)}</strong></div>
+        <div><small>Jugadas fijas</small><strong>${stats.fixedPlays ?? 0}</strong></div>
+        <div><small>Combinaciones</small><strong>${stats.combinations ?? 0}</strong></div>
+        <div><small>Programaciones</small><strong>${stats.programs ?? 0}</strong></div>
+      </div>
+
+      <p class="season-prepared-help">
+        ${canActivate
+          ? `Ya puede activarse. Al hacerlo, ${row.anio-1} se cerrará y su saldo final pasará como arrastre inicial de ${row.anio}.`
+          : `Disponible para activar desde el ${dateEs(row.fecha_inicio)}. Hasta entonces la temporada actual seguirá funcionando sin cambios.`}
+      </p>
+    </article>
+  `;
+}
+
 export function renderSeasons(snapshot,{ onActivate }={}) {
   const container=document.querySelector('#seasonsAdmin');
   const rows=snapshot.seasons || [];
@@ -34,11 +83,33 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
     return;
   }
 
+  const preparedRows=rows.filter(
+    (row)=>!row.activa && Number(row.anio)>Number(activeYear)
+  );
+  const tableRows=rows.filter(
+    (row)=>row.activa || Number(row.anio)<Number(activeYear)
+  );
+  const historicalCount=tableRows.filter(
+    (row)=>Number(row.anio)<Number(activeYear)
+  ).length;
+  const historicalRows=tableRows.filter(
+    (row)=>Number(row.anio)<Number(activeYear)
+  );
+  const firstHistorical=historicalRows.length
+    ? Math.min(...historicalRows.map((row)=>Number(row.anio)))
+    : activeYear;
+
   container.innerHTML=`
+    ${preparedRows.length ? `
+      <div class="season-prepared-list">
+        ${preparedRows.map(preparedCard).join('')}
+      </div>
+    ` : ''}
+
     <div class="season-summary-strip">
-      <div><small>Primera temporada</small><strong>${rows[rows.length-1]?.anio || '—'}</strong></div>
+      <div><small>Primera temporada</small><strong>${firstHistorical}</strong></div>
       <div><small>Temporada activa</small><strong>${activeYear}</strong></div>
-      <div><small>Años registrados</small><strong>${rows.length}</strong></div>
+      <div><small>Años históricos</small><strong>${historicalCount}</strong></div>
     </div>
 
     <div class="admin-table-wrap">
@@ -53,11 +124,10 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
             <th>Total</th>
             <th>Salidas / cenas</th>
             <th>Saldo final</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
-          ${rows.map((row)=>{
+          ${tableRows.map((row)=>{
             const summary=row.summary;
             const state=stateOf(row,activeYear);
             const prizes=summary
@@ -66,15 +136,13 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
             const total=summary
               ? Number(summary.arrastre_inicial || 0)+Number(prizes || 0)
               : null;
-            const prepared=!row.activa && Number(row.anio)>Number(activeYear);
-            const canActivate=prepared && new Date().toISOString().slice(0,10)>=row.fecha_inicio;
             const history=historyLabel(row,activeYear);
 
             return `
               <tr class="${row.activa?'season-current-row':''}">
                 <td>
                   <strong>${row.anio}</strong>
-                  ${history ? `<small class="season-provisional" title="${summary?.observaciones || ''}">${history}</small>` : ''}
+                  ${history ? `<small class="season-provisional">Histórico</small>` : ''}
                 </td>
                 <td><span class="admin-status ${state.className}">${state.label}</span></td>
                 <td><strong>${money(row.cuota_anual)}</strong></td>
@@ -83,17 +151,6 @@ export function renderSeasons(snapshot,{ onActivate }={}) {
                 <td><strong>${money(total)}</strong></td>
                 <td>${money(summary?.gastos_salidas)}</td>
                 <td><strong>${money(summary?.saldo_final)}</strong></td>
-                <td>
-                  ${prepared ? `
-                    <button class="admin-mini-action ${canActivate?'':'season-action-disabled'}"
-                      type="button"
-                      data-season-activate="${row.id}"
-                      ${canActivate?'':'disabled'}
-                      title="${canActivate?'Activar temporada':'Disponible desde '+dateEs(row.fecha_inicio)}">
-                      Activar
-                    </button>
-                  ` : ''}
-                </td>
               </tr>
             `;
           }).join('')}
