@@ -23,3 +23,250 @@
 .form-field input{font-size:14px}
 .login-submit{font-size:12px}
 .login-back{font-size:11px}
+
+
+/* Inicio de administración · identidad Peña Outra Máis */
+.admin-home-banner{
+  position:relative;
+  isolation:isolate;
+  min-height:190px;
+  margin:4px 0 14px;
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(250px,.75fr);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;
+  background:
+    radial-gradient(circle at 72% 15%,rgba(31,126,194,.16),transparent 30%),
+    linear-gradient(135deg,#051521 0%,#08213a 46%,#0b2e4d 100%);
+  box-shadow:0 18px 42px rgba(7,26,45,.16)
+}
+.admin-home-banner:after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:260px;
+  height:260px;
+  right:-115px;
+  top:-145px;
+  border-radius:50%;
+  background:rgba(36,137,207,.08)
+}
+.admin-home-banner-art{
+  position:relative;
+  min-height:190px;
+  overflow:hidden
+}
+.admin-home-banner-art:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,transparent 0 68%,rgba(6,24,40,.72) 100%),
+    radial-gradient(ellipse at 64% 54%,rgba(255,255,255,.13),transparent 28%)
+}
+.banner-brush{
+  position:absolute;
+  display:block;
+  height:54px;
+  width:125%;
+  left:-18%;
+  background:linear-gradient(90deg,#08a6f2,#0877c9 58%,rgba(5,132,205,.12));
+  box-shadow:0 0 24px rgba(11,164,240,.12)
+}
+.banner-brush:after{
+  content:"";
+  position:absolute;
+  inset:-6px -10px;
+  border-top:4px solid rgba(10,161,234,.46);
+  border-bottom:3px solid rgba(10,161,234,.22);
+  transform:skewX(-18deg)
+}
+.banner-brush-one{top:38px;transform:rotate(33deg)}
+.banner-brush-two{bottom:5px;transform:rotate(33deg);opacity:.94}
+.banner-cathedral{
+  position:absolute;
+  z-index:1;
+  right:4%;
+  bottom:0;
+  width:52%;
+  height:86%;
+  opacity:.76;
+  filter:drop-shadow(0 5px 10px rgba(0,0,0,.35))
+}
+.cathedral-body{
+  position:absolute;
+  left:3%;
+  right:0;
+  bottom:-5px;
+  height:54%;
+  border:2px solid rgba(255,255,255,.74);
+  border-bottom:0;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 24px,rgba(255,255,255,.16) 25px 27px),
+    repeating-linear-gradient(0deg,transparent 0 18px,rgba(255,255,255,.11) 19px 21px),
+    rgba(255,255,255,.05)
+}
+.cathedral-body:before{
+  content:"";
+  position:absolute;
+  left:8%;
+  right:8%;
+  top:-22px;
+  height:22px;
+  clip-path:polygon(0 100%,6% 25%,12% 100%,19% 25%,25% 100%,32% 25%,38% 100%,45% 25%,51% 100%,58% 25%,64% 100%,71% 25%,77% 100%,84% 25%,90% 100%,96% 25%,100% 100%);
+  background:rgba(255,255,255,.65)
+}
+.cathedral-tower{
+  position:absolute;
+  bottom:48%;
+  width:18%;
+  border:2px solid rgba(255,255,255,.78);
+  border-bottom:0;
+  background:rgba(255,255,255,.06)
+}
+.cathedral-tower:before{
+  content:"";
+  position:absolute;
+  left:-2px;
+  right:-2px;
+  top:-32px;
+  height:32px;
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+  background:rgba(255,255,255,.72)
+}
+.cathedral-tower:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-45px;
+  width:2px;
+  height:16px;
+  background:rgba(255,255,255,.85)
+}
+.cathedral-tower.t1{left:9%;height:35%}
+.cathedral-tower.t2{left:42%;height:54%;width:21%}
+.cathedral-tower.t3{right:7%;height:30%;width:16%}
+.cathedral-rosette{
+  position:absolute;
+  right:20%;
+  bottom:19%;
+  width:38px;
+  height:38px;
+  border:4px double rgba(255,255,255,.76);
+  border-radius:50%;
+  box-shadow:0 0 0 4px rgba(255,255,255,.1)
+}
+.admin-home-banner-art>strong{
+  position:absolute;
+  z-index:3;
+  left:28px;
+  bottom:22px;
+  color:#fff;
+  font-size:clamp(34px,4.2vw,54px);
+  line-height:.88;
+  letter-spacing:-2.4px;
+  font-weight:950;
+  font-style:italic;
+  transform:rotate(-2deg);
+  text-shadow:3px 4px 0 rgba(0,0,0,.32)
+}
+.admin-home-banner-copy{
+  position:relative;
+  z-index:4;
+  align-self:center;
+  padding:28px 34px 28px 20px;
+  color:#fff
+}
+.admin-home-banner-copy h2{
+  margin:0;
+  font-size:27px;
+  letter-spacing:-.7px
+}
+.admin-home-banner-copy p{
+  margin:8px 0 0;
+  color:#c0cfdb;
+  font-size:11px;
+  line-height:1.5
+}
+.admin-home-banner-copy i{
+  display:block;
+  width:50px;
+  height:3px;
+  margin-top:14px;
+  border-radius:99px;
+  background:var(--gold)
+}
+.admin-home-kpis{margin-bottom:14px}
+.admin-home-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px
+}
+.admin-home-grid .admin-card{
+  min-height:128px
+}
+.home-icon{
+  width:43px;
+  height:43px;
+  border:0;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.64),0 5px 13px rgba(7,26,45,.06)
+}
+.home-icon svg{
+  width:24px;
+  height:24px;
+  fill:currentColor
+}
+.home-icon-blue{background:#e3f1ff;color:#1472ce}
+.home-icon-green{background:#dcf8e5;color:#15924d}
+.home-icon-purple{background:#eee6ff;color:#7143d6}
+.home-icon-gold{background:#fff0c6;color:#b98200}
+.home-icon-teal{background:#dff8f5;color:#159b96}
+.home-icon-orange{background:#ffe7d9;color:#ed6c2f}
+.home-lottery-icon{
+  position:relative;
+  display:block
+}
+.home-lottery-icon b{
+  position:absolute;
+  width:19px;
+  height:19px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:currentColor;
+  color:#fff;
+  font-size:8px;
+  line-height:1;
+  box-shadow:0 2px 5px rgba(55,23,125,.18)
+}
+.home-lottery-icon b:nth-child(1){left:5px;bottom:6px}
+.home-lottery-icon b:nth-child(2){left:16px;top:4px}
+.home-lottery-icon b:nth-child(3){right:4px;bottom:6px}
+@media(min-width:760px){
+  .admin-home-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:759px){
+  .admin-home-banner{
+    min-height:255px;
+    grid-template-columns:1fr;
+    grid-template-rows:165px auto
+  }
+  .admin-home-banner-art{min-height:165px}
+  .admin-home-banner-copy{
+    padding:13px 18px 18px;
+    background:rgba(5,21,33,.34)
+  }
+  .admin-home-banner-copy h2{font-size:21px}
+  .admin-home-banner-copy p{font-size:10px}
+  .banner-cathedral{width:56%;right:3%}
+  .admin-home-banner-art>strong{left:20px;bottom:18px;font-size:38px}
+  .admin-home-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:460px){
+  .admin-home-grid{grid-template-columns:1fr}
+  .admin-home-grid .admin-card{min-height:104px}
+}
