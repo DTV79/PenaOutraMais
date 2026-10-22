@@ -2,63 +2,89 @@ import { bootstrapAdmin } from './bootstrap.js';
 import { adminSelect } from '../services/admin-api.js?v=20261021-22';
 
 function money(value) {
-  if (value === null || value === undefined || value === '') return '—';
-  return Number(value).toLocaleString('es-ES',{
+  return Number(value || 0).toLocaleString('es-ES',{
     useGrouping:'always',
     minimumFractionDigits:2,
     maximumFractionDigits:2
   }) + ' €';
 }
 
-async function loadDashboard() {
-  const context = await bootstrapAdmin();
-  if (!context) return;
+async function getDashboardSnapshot() {
+  const seasons=await adminSelect(
+    'temporadas?select=id,anio,activa&activa=eq.true&limit=1'
+  );
+  const season=seasons[0] || null;
+
+  if (!season) {
+    return {
+      season:null,
+      activeMembers:0,
+      quotaCollected:0,
+      quotaSpent:0,
+      pot:0
+    };
+  }
+
+  const [members,quotaRows,balanceRows]=await Promise.all([
+    adminSelect('socios?select=id&activo=eq.true'),
+    adminSelect(
+      `resumen_cuotas_publico?select=cobrado,jugado_con_cuotas&temporada_id=eq.${season.id}&limit=1`
+    ),
+    adminSelect(
+      `resumen_anual?select=saldo_final&anio=eq.${season.anio}&limit=1`
+    )
+  ]);
+
+  return {
+    season,
+    activeMembers:members.length,
+    quotaCollected:Number(quotaRows?.[0]?.cobrado || 0),
+    quotaSpent:Number(quotaRows?.[0]?.jugado_con_cuotas || 0),
+    pot:Number(balanceRows?.[0]?.saldo_final || 0)
+  };
+}
+
+function renderDashboard(snapshot) {
+  const box=document.querySelector('#dashboardSummary');
+  if (!box) return;
+
+  if (!snapshot.season) {
+    box.innerHTML='<div class="admin-error visible">No hay una temporada activa.</div>';
+    return;
+  }
+
+  box.innerHTML=`
+    <article class="admin-kpi">
+      <small>Socios activos</small>
+      <strong>${snapshot.activeMembers}</strong>
+    </article>
+    <article class="admin-kpi">
+      <small>Cuotas ${snapshot.season.anio} (lo cobrado)</small>
+      <strong>${money(snapshot.quotaCollected)}</strong>
+    </article>
+    <article class="admin-kpi">
+      <small>Gastado (cuotas)</small>
+      <strong>${money(snapshot.quotaSpent)}</strong>
+    </article>
+    <article class="admin-kpi">
+      <small>Bote</small>
+      <strong>${money(snapshot.pot)}</strong>
+    </article>
+  `;
+}
+
+async function init() {
+  if (!await bootstrapAdmin()) return;
 
   try {
-    const [socios, seasons] = await Promise.all([
-      adminSelect('socios?select=id,fecha_baja'),
-      adminSelect('temporadas?select=id,anio,activa&order=anio.desc')
-    ]);
-
-    const activeSeason = seasons.find((row) => row.activa) || null;
-
-    const [quotaRows, summaryRows] = activeSeason
-      ? await Promise.all([
-          adminSelect(
-            `resumen_cuotas_publico?select=temporada_id,cobrado,jugado_con_cuotas&temporada_id=eq.${activeSeason.id}&limit=1`
-          ),
-          adminSelect(
-            `resumen_anual?select=anio,saldo_final&anio=eq.${activeSeason.anio}&limit=1`
-          )
-        ])
-      : [[], []];
-
-    const activeMembers = socios.filter((row) => !row.fecha_baja).length;
-    const quota = quotaRows[0] || null;
-    const summary = summaryRows[0] || null;
-
-    document.querySelector('[data-kpi-socios]').textContent = activeMembers;
-
-    const quotaLabel = document.querySelector('[data-kpi-cuotas-label]');
-    if (quotaLabel) {
-      quotaLabel.textContent = activeSeason
-        ? `Cuotas ${activeSeason.anio} (lo cobrado)`
-        : 'Cuotas (lo cobrado)';
+    const snapshot=await getDashboardSnapshot();
+    renderDashboard(snapshot);
+  } catch(error) {
+    const box=document.querySelector('#dashboardSummary');
+    if (box) {
+      box.innerHTML=`<div class="admin-error visible">${error?.message || error}</div>`;
     }
-
-    document.querySelector('[data-kpi-cuotas]').textContent =
-      quota ? money(quota.cobrado) : '—';
-
-    document.querySelector('[data-kpi-gastado]').textContent =
-      quota ? money(quota.jugado_con_cuotas) : '—';
-
-    document.querySelector('[data-kpi-bote]').textContent =
-      summary ? money(summary.saldo_final) : '—';
-  } catch (error) {
-    const box = document.querySelector('#dashboardError');
-    box.textContent = error.message;
-    box.classList.add('visible');
   }
 }
 
-loadDashboard();
+init();
