@@ -11,7 +11,7 @@ function money(value) {
 
 async function getDashboardSnapshot() {
   const seasons=await adminSelect(
-    'temporadas?select=id,anio,activa&activa=eq.true&limit=1'
+    'temporadas?select=id,anio,fecha_inicio,fecha_fin,cuota_semanal,numero_semanas,activa&activa=eq.true&limit=1'
   );
   const season=seasons[0] || null;
 
@@ -35,11 +35,25 @@ async function getDashboardSnapshot() {
     )
   ]);
 
+  const activeMembers=members.filter((row)=>!row.fecha_baja).length;
+  const weeklyFee=Number(season.cuota_semanal || 0);
+  const maxWeeks=Number(season.numero_semanas || 52);
+  const start=new Date(`${season.fecha_inicio}T00:00:00`);
+  const end=new Date(`${season.fecha_fin}T23:59:59`);
+  const now=new Date();
+  const effectiveDate=now<start ? null : (now>end ? end : now);
+  const elapsedWeeks=effectiveDate
+    ? Math.min(
+        maxWeeks,
+        Math.max(0,Math.ceil((effectiveDate-start+86400000)/604800000))
+      )
+    : 0;
+
   return {
     season,
-    activeMembers:members.filter((row)=>!row.fecha_baja).length,
+    activeMembers,
     quotaCollected:Number(quotaRows?.[0]?.cobrado || 0),
-    quotaSpent:Number(quotaRows?.[0]?.jugado_con_cuotas || 0),
+    quotaSpent:elapsedWeeks * weeklyFee * activeMembers,
     pot:Number(balanceRows?.[0]?.saldo_final || 0)
   };
 }
@@ -63,7 +77,7 @@ function renderDashboard(snapshot) {
       <strong>${money(snapshot.quotaCollected)}</strong>
     </article>
     <article class="admin-kpi">
-      <small>Gastado</small>
+      <small>Gastado cuotas</small>
       <strong>${money(snapshot.quotaSpent)}</strong>
     </article>
     <article class="admin-kpi">
