@@ -7,46 +7,104 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Administración · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261022-13" />
+  <link rel="stylesheet" href="css/styles.css?v=20261022-14" />
   <link rel="stylesheet" href="css/forms.css?v=20261022-13" />
 </head>
 <body data-admin-page="inicio">
   <div class="admin-fixed-shell">
-  <div id="adminHeader"></div>
-  <nav class="admin-top-nav-static" aria-label="Administración">
-    <a class="active" href="index.html"><span>⌂</span><small>Inicio</small></a>
-    <a class="" href="socios.html"><span>◎</span><small>Socios</small></a>
-    <a class="" href="cuotas.html"><span>€</span><small>Cuotas</small></a>
-    <a class="" href="numeros.html"><span>⑩</span><small>Números</small></a>
-    <a class="" href="sorteos.html"><span>◇</span><small>Sorteos</small></a>
-    <a class="" href="premios.html"><span>★</span><small>Premios</small></a>
-    <a class="" href="temporadas.html"><span>▦</span><small>Años</small></a>
-  </nav>
-</div>
+    <div id="adminHeader"></div>
+    <nav class="admin-top-nav-static" aria-label="Administración">
+      <a class="active" href="index.html"><span>⌂</span><small>Inicio</small></a>
+      <a href="socios.html"><span>◎</span><small>Socios</small></a>
+      <a href="cuotas.html"><span>€</span><small>Cuotas</small></a>
+      <a href="numeros.html"><span>⑩</span><small>Números</small></a>
+      <a href="sorteos.html"><span>◇</span><small>Sorteos</small></a>
+      <a href="premios.html"><span>★</span><small>Premios</small></a>
+      <a href="temporadas.html"><span>▦</span><small>Años</small></a>
+    </nav>
+  </div>
+
   <div class="admin-wrap">
     <main class="admin-main">
-      <header class="admin-page-title">
+      <header class="admin-page-title dashboard-title">
         <p class="eyebrow">GESTIÓN</p>
         <h1>Panel de administración</h1>
         <p>Control de socios, cuotas, números, sorteos, premios y temporadas.</p>
       </header>
+
       <div id="dashboardError" class="admin-error"></div>
-      <section class="admin-kpis">
-        <article class="admin-kpi"><small>Socios activos</small><strong data-kpi-socios>—</strong></article>
-        <article class="admin-kpi"><small>Temporada</small><strong data-kpi-temporada>—</strong></article>
-        <article class="admin-kpi"><small>Combinaciones</small><strong data-kpi-combinaciones>—</strong></article>
-        <article class="admin-kpi"><small>Bote</small><strong data-kpi-bote>—</strong></article>
+
+      <section class="admin-brand-banner" aria-label="Peña Outra Máis">
+        <div class="admin-brand-banner-art" aria-hidden="true"></div>
+        <div class="admin-brand-banner-copy">
+          <p>PEÑA OUTRA MÁIS</p>
+          <h2>Peña Outra Máis</h2>
+          <span>Gestión de socios, cuotas, sorteos y premios.</span>
+          <i></i>
+        </div>
       </section>
-      <section class="admin-grid">
-        <a class="admin-card" href="socios.html"><span class="admin-card-icon">◎</span><strong>Socios</strong><small>Datos, altas y bajas.</small></a>
-        <a class="admin-card" href="cuotas.html"><span class="admin-card-icon">€</span><strong>Cuotas</strong><small>Pagos, ajustes y saldos.</small></a>
-        <a class="admin-card" href="numeros.html"><span class="admin-card-icon">⑩</span><strong>Números</strong><small>Combinaciones de la temporada.</small></a>
-        <a class="admin-card" href="premios.html"><span class="admin-card-icon">★</span><strong>Premios y bote</strong><small>Entradas, gastos y saldo.</small></a>
-        <a class="admin-card" href="temporadas.html"><span class="admin-card-icon">▦</span><strong>Temporadas</strong><small>Cuota anual y configuración.</small></a>
-        <a class="admin-card" href="sorteos.html"><span class="admin-card-icon">◇</span><strong>Sorteos y apuestas</strong><small>Comprobación SELAE y jugadas especiales.</small></a>
+
+      <section class="admin-kpis dashboard-kpis">
+        <article class="admin-kpi">
+          <small>Socios activos</small>
+          <strong data-kpi-socios>—</strong>
+        </article>
+        <article class="admin-kpi">
+          <small data-kpi-cuotas-label>Cuotas (lo cobrado)</small>
+          <strong data-kpi-cuotas>—</strong>
+        </article>
+        <article class="admin-kpi">
+          <small>Gastado (cuotas)</small>
+          <strong data-kpi-gastado>—</strong>
+        </article>
+        <article class="admin-kpi">
+          <small>Bote</small>
+          <strong data-kpi-bote>—</strong>
+        </article>
+      </section>
+
+      <section class="admin-grid dashboard-links">
+        <a class="admin-card" href="socios.html">
+          <span class="admin-card-icon icon-socios" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-3.7-5.5A4.5 4.5 0 0 1 14 9c0 .7-.2 1.4-.5 2H16Zm-8 0a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.1 0-6 2.1-6 4.3V19h12v-1.7C14 15.1 12.1 13 8 13Zm8.3.3c-.8 0-1.5.1-2.1.3 1.2 1 1.8 2.3 1.8 3.7V19h6v-1.4c0-2.1-1.8-4.3-5.7-4.3Z"/></svg>
+          </span>
+          <strong>Socios</strong><small>Datos, altas y bajas.</small>
+        </a>
+
+        <a class="admin-card" href="cuotas.html">
+          <span class="admin-card-icon icon-cuotas" aria-hidden="true">€</span>
+          <strong>Cuotas</strong><small>Pagos, ajustes y saldos.</small>
+        </a>
+
+        <a class="admin-card" href="numeros.html">
+          <span class="admin-card-icon icon-numeros" aria-hidden="true"><b>1</b><b>2</b><b>3</b></span>
+          <strong>Números</strong><small>Combinaciones de la temporada.</small>
+        </a>
+
+        <a class="admin-card" href="premios.html">
+          <span class="admin-card-icon icon-premios" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 3h10v3h3v2c0 3.2-1.7 5.3-4.7 5.9A5.3 5.3 0 0 1 13 16.7V19h4v2H7v-2h4v-2.3a5.3 5.3 0 0 1-2.3-2.8C5.7 13.3 4 11.2 4 8V6h3V3Zm0 5H6c0 1.8.7 3 2 3.6A8.8 8.8 0 0 1 7 8Zm10 0c0 1.4-.3 2.6-1 3.6 1.3-.6 2-1.8 2-3.6h-1Z"/></svg>
+          </span>
+          <strong>Premios y bote</strong><small>Entradas, gastos y saldo.</small>
+        </a>
+
+        <a class="admin-card" href="temporadas.html">
+          <span class="admin-card-icon icon-temporadas" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2Zm11 8H6v10h12V10ZM6 6v2h12V6H6Zm2 6h3v3H8v-3Zm5 0h3v3h-3v-3Zm-5 5h3v2H8v-2Zm5 0h3v2h-3v-2Z"/></svg>
+          </span>
+          <strong>Temporadas</strong><small>Cuota anual y configuración.</small>
+        </a>
+
+        <a class="admin-card" href="sorteos.html">
+          <span class="admin-card-icon icon-sorteos" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 7.5 7.5 3H21v13.5L16.5 21H3V7.5Zm5.3-2.5L5 8.3V19h10.7l3.3-3.3V5H8.3ZM9 8h6v2H9V8Zm0 4h6v2H9v-2Zm0 4h3v2H9v-2Z"/></svg>
+          </span>
+          <strong>Sorteos y apuestas</strong><small>Comprobación SELAE y jugadas especiales.</small>
+        </a>
       </section>
     </main>
   </div>
-  <script type="module" src="js/app/dashboard.js?v=20261022-02"></script>
+
+  <script type="module" src="js/app/dashboard.js?v=20261022-14"></script>
 </body>
 </html>
