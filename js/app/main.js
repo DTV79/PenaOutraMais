@@ -10,7 +10,7 @@ import {
 } from '../modules/premios.js?v=20261022-06';
 import { renderPublicPrograms, renderPublicDraws } from '../modules/sorteos.js?v=20261022-06';
 import { renderHistory } from '../modules/historico.js?v=20261022-06';
-import { renderRules } from '../modules/normas.js?v=20261022-06';
+import { renderRules } from '../modules/normas.js?v=20261023-12';
 import { applySeason } from '../modules/temporada.js?v=20261022-06';
 
 function renderFallbacks() {
