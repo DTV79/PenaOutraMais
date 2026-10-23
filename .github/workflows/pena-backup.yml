@@ -1,0 +1,117 @@
+name: Copia cifrada Pena Outra Mais
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 7 1,16 * *'
+      timezone: 'Europe/Madrid'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pena-outra-mais-backup
+  cancel-in-progress: false
+
+jobs:
+  respaldo:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Obtener scripts
+        uses: actions/checkout@v4
+
+      - name: Instalar rclone
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq rclone
+
+      - name: Comprobar credenciales
+        shell: bash
+        env:
+          PG_PASSWORD: ${{ secrets.PENA_DB_PASSWORD }}
+          SERVICE_KEY: ${{ secrets.PENA_SUPABASE_SERVICE_ROLE }}
+          RCLONE_CONFIG_B64: ${{ secrets.PENA_RCLONE_CONFIG_B64 }}
+        run: |
+          set -euo pipefail
+          for variable in PG_PASSWORD SERVICE_KEY RCLONE_CONFIG_B64; do
+            if [ -z "${!variable}" ]; then
+              echo "::error::Falta configurar el secreto de ${variable} en GitHub Actions"
+              exit 1
+            fi
+          done
+
+      - name: Respaldar PostgreSQL 17 y todos los buckets de Storage
+        shell: bash
+        env:
+          PGPASSWORD: ${{ secrets.PENA_DB_PASSWORD }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.PENA_SUPABASE_SERVICE_ROLE }}
+        run: |
+          set -euo pipefail
+          umask 077
+          DIR="$RUNNER_TEMP/pena"
+          mkdir -p "$DIR/storage"
+          HOST="aws-0-eu-west-1.pooler.supabase.com"
+          USER="postgres.djrmbdbtfsgzwwcsatll"
+
+          # Archivo personalizado PostgreSQL; nunca se sube a GitHub.
+          docker run --rm --user "$(id -u):$(id -g)" -e PGPASSWORD -v "$DIR:/backup" postgres:17 pg_dump -h "$HOST" -p 5432 -U "$USER" -d postgres -Fc --no-owner --no-acl -f /backup/base.dump
+          test -s "$DIR/base.dump"
+          docker run --rm --user "$(id -u):$(id -g)" -v "$DIR:/backup" postgres:17 pg_restore --list /backup/base.dump > /dev/null
+
+          # Incluir todos los buckets del proyecto; también los futuros.
+          mapfile -t BUCKETS < <(docker run --rm -e PGPASSWORD postgres:17 psql -h "$HOST" -p 5432 -U "$USER" -d postgres -Atc "SELECT id FROM storage.buckets ORDER BY id")
+          EXPECTED="$(docker run --rm -e PGPASSWORD postgres:17 psql -h "$HOST" -p 5432 -U "$USER" -d postgres -Atc "SELECT count(*) FROM storage.objects")"
+          python3 scripts/backup-storage.py "$DIR/storage" "${BUCKETS[@]}"
+          ACTUAL="$(find "$DIR/storage" -type f | wc -l | tr -d ' ')"
+          echo "Objetos Storage esperados: $EXPECTED; descargados: $ACTUAL"
+          test "$EXPECTED" = "$ACTUAL"
+
+          # Manifiesto con hash para comprobar todos los archivos durante la restauración.
+          python3 - <<'PY'
+          import datetime as dt
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "pena"
+          files = []
+          for path in root.rglob("*"):
+              if not path.is_file():
+                  continue
+              h = hashlib.sha256()
+              with path.open("rb") as src:
+                  for chunk in iter(lambda: src.read(1024 * 1024), b""):
+                      h.update(chunk)
+              files.append({"name": str(path.relative_to(root)), "bytes": path.stat().st_size, "sha256": h.hexdigest()})
+          assert any(f["name"] == "base.dump" for f in files)
+          (root / "manifest.json").write_text(json.dumps({
+              "created_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+              "project_ref": "djrmbdbtfsgzwwcsatll",
+              "files": files
+          }, indent=2), encoding="utf-8")
+          print("Archivos comprobables en la copia:", len(files))
+          PY
+
+      - name: Subir cifrado a Google Drive y verificar descarga
+        shell: bash
+        env:
+          RCLONE_CONFIG_B64: ${{ secrets.PENA_RCLONE_CONFIG_B64 }}
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$RCLONE_CONFIG_B64" | base64 -d > "$RUNNER_TEMP/rclone.conf"
+          unset RCLONE_CONFIG_B64
+          export RCLONE_CONFIG="$RUNNER_TEMP/rclone.conf"
+          FECHA="$(date -u +%Y-%m-%d_%H-%M-%S)"
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            DESTINO="cofradia_cifrado:PenaOutraMais/manuales/backup_$FECHA"
+          else
+            DESTINO="cofradia_cifrado:PenaOutraMais/automaticas/backup_$FECHA"
+          fi
+          rclone copy "$RUNNER_TEMP/pena" "$DESTINO" --stats-one-line
+          rclone check "$RUNNER_TEMP/pena" "$DESTINO" --one-way --download
+          echo "RESPALDO_VERIFICADO: $DESTINO"
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            python3 scripts/retencion-backups.py
+          fi
