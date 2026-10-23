@@ -94,3 +94,9 @@ La web utiliza únicamente la **publishable key** de Supabase. Nunca debe inclui
 ## Regla para futuros cambios
 
 Cuando se añada una nueva función, debe ir en su módulo correspondiente o en un módulo nuevo. No se añadirá lógica extensa directamente a `index.html` ni a `main.js`.
+
+## Copias de seguridad
+
+Respaldo cifrado de PostgreSQL y Supabase Storage programado los días 1 y 16 de cada mes a las 07:30 (Europe/Madrid). Requiere configurar previamente los tres secretos de GitHub Actions; no se almacena ningún dato privado en este repositorio.
+
+Véase [configuración, comprobación y restauración](docs/COPIAS_AUTOMATICAS.md).
