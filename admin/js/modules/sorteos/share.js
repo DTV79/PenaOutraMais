@@ -135,7 +135,7 @@ async function loadImage(src) {
 export async function createShareCard(data) {
   const canvas=document.createElement('canvas');
   canvas.width=1080;
-  canvas.height=1350;
+  canvas.height=1190;
   const ctx=canvas.getContext('2d');
 
   const navy='#071a2d';
@@ -150,37 +150,23 @@ export async function createShareCard(data) {
   ctx.fillStyle=gradient;
   ctx.fillRect(0,0,1080,1350);
 
-  // Cabecera de marca
-  roundedRect(ctx,55,55,970,350,42);
-  const head=ctx.createLinearGradient(55,55,1025,405);
-  head.addColorStop(0,navy);
-  head.addColorStop(1,navy2);
-  ctx.fillStyle=head;
-  ctx.fill();
-
-  // Franjas azules
-  ctx.save();
-  ctx.translate(60,20);
-  ctx.rotate(-0.18);
-  ctx.fillStyle=blue;
-  ctx.fillRect(-120,105,830,62);
-  ctx.globalAlpha=.62;
-  ctx.fillRect(-90,200,700,34);
-  ctx.restore();
-
-  // Banner/catedral si está disponible
+  // Banner de marca: sin marco adicional ni fondo alrededor
   try {
     const img=await loadImage('assets/pena-banner-final-crisp.webp?v=20261023-10');
+    const bannerX=55;
+    const bannerY=55;
+    const bannerW=970;
+    const bannerH=Math.round(bannerW * (417 / 2043));
+
     ctx.save();
-    roundedRect(ctx,55,55,970,350,42);
+    roundedRect(ctx,bannerX,bannerY,bannerW,bannerH,34);
     ctx.clip();
-    ctx.globalAlpha=.72;
-    ctx.drawImage(img,55,55,970,350);
+    ctx.drawImage(img,bannerX,bannerY,bannerW,bannerH);
     ctx.restore();
   } catch (_) {}
 
   // Tarjeta principal
-  roundedRect(ctx,75,455,930,650,38);
+  roundedRect(ctx,75,295,930,650,38);
   ctx.fillStyle='#fff';
   ctx.fill();
   ctx.strokeStyle='#dce5ec';
@@ -189,47 +175,47 @@ export async function createShareCard(data) {
 
   ctx.fillStyle=navy;
   ctx.font='900 48px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('PRIMITIVA SELLADA',125,535);
+  ctx.fillText('PRIMITIVA SELLADA',125,375);
 
   ctx.fillStyle=muted;
   ctx.font='650 27px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('SORTEOS',125,590);
+  ctx.fillText('SORTEOS',125,430);
 
   ctx.fillStyle=navy;
   fitText(ctx,data.datesText,820,43,30);
-  ctx.fillText(data.datesText,125,645);
+  ctx.fillText(data.datesText,125,485);
 
   ctx.strokeStyle='#e6edf2';
   ctx.lineWidth=2;
   ctx.beginPath();
-  ctx.moveTo(125,690);
-  ctx.lineTo(955,690);
+  ctx.moveTo(125,530);
+  ctx.lineTo(955,530);
   ctx.stroke();
 
   ctx.fillStyle=muted;
   ctx.font='700 28px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('PREMIO SEMANA ANTERIOR',125,775);
+  ctx.fillText('PREMIO SEMANA ANTERIOR',125,615);
 
   ctx.fillStyle='#16834c';
   ctx.font='900 70px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText(data.prizeText,125,860);
+  ctx.fillText(data.prizeText,125,700);
 
   ctx.fillStyle=muted;
   ctx.font='700 28px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('BOTE ACUMULADO',125,950);
+  ctx.fillText('BOTE ACUMULADO',125,790);
 
   ctx.fillStyle=navy;
   ctx.font='900 78px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText(data.potText,125,1040);
+  ctx.fillText(data.potText,125,880);
 
   // Pie
-  roundedRect(ctx,75,1150,930,125,32);
+  roundedRect(ctx,75,990,930,125,32);
   ctx.fillStyle=navy;
   ctx.fill();
 
   ctx.fillStyle='#fff';
   ctx.font='800 43px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('Suerte 😉',125,1230);
+  ctx.fillText('Suerte 😉',125,1070);
 
   return new Promise((resolve,reject)=>{
     canvas.toBlob((blob)=>{
