@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>Herramientas · Peña Outra Máis</title>
   <link rel="icon" href="../icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261023-13" />
+  <link rel="stylesheet" href="css/styles.css?v=20261023-14" />
   <link rel="stylesheet" href="css/forms.css?v=20261023-12" />
 </head>
 <body data-admin-page="herramientas">
@@ -26,8 +26,33 @@
       <section class="admin-section tools-section" id="copias">
         <div class="admin-section-head">
           <div>
+            <p class="eyebrow">COPIAS AUTOMÁTICAS</p>
+            <h2>Respaldo cifrado en Google Drive</h2>
+          </div>
+          <span class="tools-icon tools-icon-backup" aria-hidden="true">⤓</span>
+        </div>
+
+        <p class="tools-copy">
+          Programadas para los días 1 y 16 de cada mes a las 7:30 (hora de Galicia).
+          Incluyen la base de datos y los documentos de Supabase Storage.
+          Se conservan las 8 copias automáticas más recientes.
+        </p>
+
+        <div class="tools-info-grid">
+          <div><small>Frecuencia</small><strong>1 y 16 de cada mes</strong></div>
+          <div><small>Estado</small><strong id="automaticBackupStatus">Comprobando…</strong></div>
+          <div><small>Última copia verificada</small><strong id="automaticBackupDate">—</strong></div>
+        </div>
+
+        <p class="tools-copy">Se consulta el resultado de GitHub Actions. La copia solo se considera verificada cuando el proceso finaliza correctamente.</p>
+        <a class="admin-action secondary" href="https://github.com/DTV79/PenaOutraMais/actions/workflows/pena-backup.yml" target="_blank" rel="noopener noreferrer">Ver copias automáticas</a>
+      </section>
+
+      <section class="admin-section tools-section" id="copia-manual">
+        <div class="admin-section-head">
+          <div>
             <p class="eyebrow">COPIAS DE SEGURIDAD</p>
-            <h2>Guardar una copia completa</h2>
+            <h2>Descargar una copia manual</h2>
           </div>
           <span class="tools-icon tools-icon-backup" aria-hidden="true">⤓</span>
         </div>
@@ -40,7 +65,7 @@
         <div class="tools-info-grid">
           <div><small>Incluye</small><strong>13 tablas</strong></div>
           <div><small>Formato</small><strong>JSON</strong></div>
-          <div><small>Última copia</small><strong id="lastBackup">—</strong></div>
+          <div><small>Última descarga en este dispositivo</small><strong id="lastBackup">—</strong></div>
         </div>
 
         <div id="backupMessage" class="tools-message" hidden></div>
@@ -94,6 +119,6 @@
     </main>
   </div>
 
-  <script type="module" src="js/modules/herramientas/index.js?v=20261023-13"></script>
+  <script type="module" src="js/modules/herramientas/index.js?v=20261023-14"></script>
 </body>
 </html>
