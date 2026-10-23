@@ -1,0 +1,17 @@
+{
+  "name": "Peña Outra Máis · Administración",
+  "short_name": "OutraMáis Admin",
+  "start_url": "./acceso.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071a2d",
+  "theme_color": "#071a2d",
+  "icons": [
+    {
+      "src": "./apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
