@@ -149,3 +149,31 @@ export async function adminFunction(functionName, payload = {}) {
 
   return data;
 }
+
+
+export async function adminFunctionForm(functionName, formData) {
+  const session = await getValidSession();
+  if (!session) throw new Error('La sesión ha caducado. Vuelve a iniciar sesión.');
+
+  const response = await safeFetch(
+    `${SUPABASE_CONFIG.url}/functions/v1/${encodeURIComponent(functionName)}`,
+    {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_CONFIG.publishableKey,
+        Authorization: `Bearer ${session.access_token}`
+      },
+      body: formData
+    }
+  );
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(
+      friendlyMessage(data?.error || data?.message, response.status)
+    );
+  }
+
+  return data;
+}
