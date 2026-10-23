@@ -349,3 +349,79 @@
     bottom:4px
   }
 }
+
+
+/* Banner inicio · mensaje no repetitivo v4 */
+.admin-brand-banner{
+  position:relative;
+  overflow:hidden
+}
+.admin-brand-banner-copy{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:34%;
+  min-width:250px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:18px 24px;
+  background:
+    linear-gradient(90deg,rgba(7,26,45,.12) 0%,rgba(7,26,45,.88) 18%,rgba(9,45,73,.98) 100%);
+  color:#fff
+}
+.admin-brand-banner-copy small{
+  color:#e5ba3a;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px
+}
+.admin-brand-banner-copy strong{
+  margin-top:6px;
+  font-size:24px;
+  line-height:1.08
+}
+.admin-brand-banner-copy span{
+  margin-top:8px;
+  color:#c9d7e2;
+  font-size:11px
+}
+.admin-brand-banner-copy:after{
+  content:"";
+  width:46px;
+  height:3px;
+  margin-top:13px;
+  border-radius:99px;
+  background:#e5ba3a
+}
+
+@media(max-width:759px){
+  .admin-brand-banner-copy{
+    width:42%;
+    min-width:0;
+    padding:12px 14px
+  }
+  .admin-brand-banner-copy small{
+    font-size:8px
+  }
+  .admin-brand-banner-copy strong{
+    font-size:17px
+  }
+  .admin-brand-banner-copy span{
+    font-size:9px;
+    line-height:1.25
+  }
+}
+
+@media(max-width:520px){
+  .admin-brand-banner-copy{
+    width:45%
+  }
+  .admin-brand-banner-copy strong{
+    font-size:15px
+  }
+  .admin-brand-banner-copy span{
+    display:none
+  }
+}
