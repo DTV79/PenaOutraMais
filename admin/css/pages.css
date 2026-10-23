@@ -351,78 +351,162 @@
 }
 
 
-/* Banner inicio · mensaje no repetitivo v4 */
+
+
+/* Banner inicio · mensaje integrado v5 */
 .admin-brand-banner{
   position:relative;
   overflow:hidden
 }
+
+.admin-brand-banner-image{
+  position:relative;
+  z-index:1
+}
+
 .admin-brand-banner-copy{
   position:absolute;
+  inset:0;
   z-index:3;
-  top:0;
-  right:0;
-  bottom:0;
-  width:34%;
-  min-width:250px;
   display:flex!important;
-  flex-direction:column;
-  justify-content:center;
-  padding:18px 24px;
+  align-items:center;
+  justify-content:flex-end;
+  padding:0 34px;
   background:
-    linear-gradient(90deg,#092d49 0%,#092d49 100%);
-  color:#fff
+    linear-gradient(
+      90deg,
+      rgba(7,26,45,0) 0%,
+      rgba(7,26,45,.08) 38%,
+      rgba(7,26,45,.50) 58%,
+      rgba(9,45,73,.82) 76%,
+      rgba(9,45,73,.96) 100%
+    );
+  color:#fff;
+  pointer-events:none
 }
+
+.admin-brand-banner-copy-inner{
+  width:min(38%,390px);
+  min-width:300px;
+  text-align:left
+}
+
 .admin-brand-banner-copy small{
-  color:#e5ba3a;
-  font-size:10px;
+  display:block;
+  margin:0 0 8px;
+  color:#f3c64d;
+  font-size:12px;
   font-weight:900;
-  letter-spacing:1px
+  letter-spacing:1.2px
 }
+
 .admin-brand-banner-copy strong{
-  margin-top:6px;
-  font-size:24px;
-  line-height:1.08
+  display:block;
+  margin:0;
+  color:#fff;
+  font-size:34px;
+  line-height:1.04;
+  letter-spacing:-1px;
+  font-weight:900;
+  text-wrap:balance
 }
+
 .admin-brand-banner-copy span{
-  margin-top:8px;
-  color:#c9d7e2;
-  font-size:11px
+  display:block;
+  margin-top:9px;
+  color:rgba(255,255,255,.90);
+  font-size:14px;
+  line-height:1.35
 }
-.admin-brand-banner-copy:after{
-  content:"";
-  width:46px;
+
+.admin-brand-banner-copy i{
+  display:block;
+  width:48px;
   height:3px;
-  margin-top:13px;
-  border-radius:99px;
-  background:#e5ba3a
+  margin-top:14px;
+  border-radius:999px;
+  background:#f3c64d
 }
 
 @media(max-width:759px){
+  .admin-brand-banner{
+    min-height:176px
+  }
+
+  .admin-brand-banner-image{
+    width:142%;
+    max-width:none;
+    height:176px;
+    aspect-ratio:auto;
+    object-fit:cover;
+    object-position:left center;
+    transform:translateX(-2%)
+  }
+
   .admin-brand-banner-copy{
-    width:42%;
+    align-items:flex-end;
+    justify-content:flex-start;
+    padding:18px 18px 16px;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(7,26,45,.05) 0%,
+        rgba(7,26,45,.12) 30%,
+        rgba(7,26,45,.58) 62%,
+        rgba(9,45,73,.96) 100%
+      )
+  }
+
+  .admin-brand-banner-copy-inner{
+    width:100%;
     min-width:0;
-    padding:12px 14px
+    max-width:none
   }
+
   .admin-brand-banner-copy small{
-    font-size:8px
+    margin-bottom:5px;
+    font-size:10px
   }
+
   .admin-brand-banner-copy strong{
-    font-size:17px
+    max-width:88%;
+    font-size:27px;
+    line-height:1.05;
+    letter-spacing:-.6px
   }
+
   .admin-brand-banner-copy span{
-    font-size:9px;
-    line-height:1.25
+    margin-top:6px;
+    font-size:12px
+  }
+
+  .admin-brand-banner-copy i{
+    width:36px;
+    margin-top:9px
   }
 }
 
-@media(max-width:520px){
+@media(max-width:420px){
+  .admin-brand-banner{
+    min-height:164px
+  }
+
+  .admin-brand-banner-image{
+    width:150%;
+    height:164px;
+    transform:translateX(-3%)
+  }
+
   .admin-brand-banner-copy{
-    width:45%
+    padding:15px 15px 14px
   }
+
   .admin-brand-banner-copy strong{
-    font-size:15px
+    max-width:92%;
+    font-size:24px
   }
+
   .admin-brand-banner-copy span{
-    display:none
+    font-size:11px
   }
 }
