@@ -1,4 +1,4 @@
-import { bootstrapAdmin } from './bootstrap.js?v=20261022-24';
+import { bootstrapAdmin } from './bootstrap.js?v=20261023-13';
 import { adminSelect } from '../services/admin-api.js?v=20261021-22';
 
 function money(value) {
