@@ -10,7 +10,7 @@
   <title>Peña Outra Máis</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/styles.css?v=20261022-13" />
+  <link rel="stylesheet" href="css/styles.css?v=20261023-12" />
 </head>
 <body>
 <div class="app-shell">
@@ -170,15 +170,21 @@
     </section>
 
     <section class="view" id="normas">
-      <div class="page-title"><p class="eyebrow">FUNCIONAMIENTO</p><h2>Normas de la peña</h2><p>Resumen de los estatutos que actualmente están en el Excel.</p></div>
+      <div class="page-title"><p class="eyebrow">FUNCIONAMIENTO</p><h2>Estatutos de la peña</h2><p>Consulta el PDF vigente y el resumen de funcionamiento.</p></div>
+      <article class="section-card compact" id="statutesPdfCard" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">DOCUMENTO VIGENTE</p><h2>Estatutos en PDF</h2></div>
+        </div>
+        <p class="muted">Versión publicada por la administración de la peña.</p>
+        <a class="primary-button statutes-pdf-link" id="statutesPdfLink" href="#" target="_blank" rel="noopener">Abrir estatutos PDF</a>
+      </article>
       <div id="rules" class="rules-list"></div>
-      <article class="section-card compact"><div class="notice info"><span>i</span><p>En la versión definitiva guardaremos los estatutos con versión y fecha, para que cualquier cambio quede registrado.</p></div></article>
     </section>
 
     <section class="view" id="mas">
       <div class="page-title"><p class="eyebrow">PEÑA OUTRA MÁIS</p><h2>Todo a mano</h2><p>Información general y accesos secundarios.</p></div>
       <article class="menu-card" data-go="historico"><span class="menu-icon">↗</span><div><strong>Histórico</strong><small>Premios, gastos y saldo por año</small></div><b>›</b></article>
-      <article class="menu-card" data-go="normas"><span class="menu-icon">§</span><div><strong>Normas de la peña</strong><small>Estatutos y funcionamiento</small></div><b>›</b></article>
+      <article class="menu-card" data-go="normas"><span class="menu-icon">§</span><div><strong>Estatutos</strong><small>PDF vigente y funcionamiento</small></div><b>›</b></article>
       <article class="section-card compact">
         <div class="section-heading">
           <div><p class="eyebrow">JUGADAS ESPECIALES</p><h2>Décimos y apuestas extraordinarias</h2></div>
@@ -212,7 +218,7 @@
     <button class="nav-item" data-go="mas"><span>•••</span><small>Más</small></button>
   </nav>
 </div>
-<script type="module" src="js/app/main.js?v=20261022-06"></script>
+<script type="module" src="js/app/main.js?v=20261023-12"></script>
 <script src="js/pwa.js" defer></script>
 </body>
 </html>
