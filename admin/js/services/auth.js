@@ -161,3 +161,41 @@ export async function bootstrapFirstAdmin(session) {
   const rows = await response.json().catch(() => []);
   return rows?.[0] ?? null;
 }
+
+
+export async function updatePassword(newPassword) {
+  const session = await getValidSession();
+  if (!session?.access_token) {
+    throw new Error('La sesión ha caducado. Vuelve a iniciar sesión.');
+  }
+
+  const response = await fetch(`${SUPABASE_CONFIG.url}/auth/v1/user`, {
+    method: 'PUT',
+    headers: {
+      apikey: SUPABASE_CONFIG.publishableKey,
+      Authorization: `Bearer ${session.access_token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ password: newPassword })
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const raw = String(
+      data?.msg ||
+      data?.message ||
+      data?.error_description ||
+      data?.error ||
+      'No se pudo cambiar la contraseña.'
+    );
+
+    if (/weak password/i.test(raw)) {
+      throw new Error('La nueva contraseña no cumple los requisitos de seguridad.');
+    }
+
+    throw new Error(raw);
+  }
+
+  return data;
+}
