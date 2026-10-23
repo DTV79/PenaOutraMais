@@ -1111,3 +1111,29 @@
     white-space:nowrap
   }
 }
+
+
+/* Sorteos · botones secundarios visibles v44 */
+.draw-share-actions [data-draw-card]{
+  background:#dbeafe;
+  border-color:#93c5fd;
+  color:#123b67;
+  box-shadow:0 4px 10px rgba(37,99,235,.10)
+}
+.draw-share-actions [data-draw-card]:hover:not(:disabled){
+  background:#cfe3fb;
+  border-color:#7eb4ef;
+  color:#0b2f58
+}
+
+.draw-admin-actions [data-draw-refund]{
+  background:#ede9fe;
+  border-color:#c4b5fd;
+  color:#5b21b6;
+  box-shadow:0 4px 10px rgba(109,40,217,.08)
+}
+.draw-admin-actions [data-draw-refund]:hover:not(:disabled){
+  background:#e4ddfd;
+  border-color:#ad96f4;
+  color:#4c1d95
+}
