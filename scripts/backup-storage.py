@@ -11,7 +11,10 @@ BASE = "https://djrmbdbtfsgzwwcsatll.supabase.co/storage/v1"
 KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 ROOT = Path(sys.argv[1])
 BUCKETS = sys.argv[2:]
-HEADERS = {"Authorization": "Bearer " + KEY, "apikey": KEY, "Content-Type": "application/json"}
+# La clave moderna sb_secret_ se autentica con apikey; la legacy JWT también admite Bearer.
+HEADERS = {"apikey": KEY, "Content-Type": "application/json"}
+if not KEY.startswith("sb_secret_"):
+    HEADERS["Authorization"] = "Bearer " + KEY
 
 def request(url, body=None):
     req = Request(url, data=body, headers=HEADERS, method="POST" if body is not None else "GET")
