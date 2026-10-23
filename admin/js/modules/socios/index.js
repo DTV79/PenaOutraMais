@@ -7,11 +7,50 @@ import {
   deactivateMember,
   reactivateMember
 } from './service.js?v=20261021-24';
-import { renderMembers } from './list.js?v=20261021-24';
+import { renderMembers } from './list.js?v=20261023-11';
 import { openMemberForm } from './form.js?v=20261021-24';
 
 let members = [];
 const container = document.querySelector('#membersAdmin');
+const searchInput = document.querySelector('#memberSearch');
+const searchResult = document.querySelector('#memberSearchResult');
+
+function normalizeSearch(value = '') {
+  return String(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+function applyMemberSearch() {
+  const query = normalizeSearch(searchInput?.value);
+  const cards = [...container.querySelectorAll('.member-admin-card')];
+  let visible = 0;
+
+  cards.forEach((card) => {
+    const matches = !query || normalizeSearch(card.dataset.memberSearch).includes(query);
+    card.hidden = !matches;
+    if (matches) visible += 1;
+  });
+
+  let empty = container.querySelector('.member-search-empty');
+  if (!empty && cards.length) {
+    empty = document.createElement('div');
+    empty.className = 'admin-empty member-search-empty';
+    empty.innerHTML = '<span>⌕</span><strong>No se encontraron socios</strong><p>Prueba con otro nombre, apellido o alias.</p>';
+    container.append(empty);
+  }
+
+  if (empty) empty.hidden = !query || visible > 0;
+
+  if (searchResult) {
+    searchResult.hidden = !query;
+    searchResult.textContent = query
+      ? `${visible} de ${cards.length} ${cards.length === 1 ? 'socio' : 'socios'}`
+      : '';
+  }
+}
 
 function todayIso() {
   const now = new Date();
@@ -27,6 +66,7 @@ async function refreshMembers() {
     members = await getMembers();
     container.className = '';
     renderMembers(container, members);
+    applyMemberSearch();
   } catch (error) {
     container.className = '';
     container.innerHTML = `<div class="admin-error visible">${error.message}</div>`;
@@ -127,6 +167,7 @@ async function init() {
   if (!await bootstrapAdmin()) return;
 
   document.querySelector('#newMemberButton')?.addEventListener('click', openCreate);
+  searchInput?.addEventListener('input', applyMemberSearch);
 
   container.addEventListener('click', (event) => {
     const edit = event.target.closest('[data-member-edit]');
