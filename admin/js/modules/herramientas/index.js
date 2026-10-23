@@ -6,6 +6,10 @@ const BACKUP_KEY = 'pena_outra_mais_last_backup';
 const backupButton = document.querySelector('#createBackupButton');
 const lastBackup = document.querySelector('#lastBackup');
 const backupMessage = document.querySelector('#backupMessage');
+const automaticBackupStatus = document.querySelector('#automaticBackupStatus');
+const automaticBackupDate = document.querySelector('#automaticBackupDate');
+const BACKUP_RUNS_URL = 'https://api.github.com/repos/DTV79/PenaOutraMais/actions/workflows/pena-backup.yml/runs?per_page=30';
+
 
 const statutesFile = document.querySelector('#statutesFile');
 const statutesFileName = document.querySelector('#statutesFileName');
@@ -83,6 +87,39 @@ async function createBackup() {
   } finally {
     backupButton.disabled = false;
     backupButton.textContent = 'Crear y descargar copia';
+  }
+}
+
+async function loadAutomaticBackupStatus() {
+  if (!automaticBackupStatus || !automaticBackupDate) return;
+
+  try {
+    const response = await fetch(BACKUP_RUNS_URL, {
+      headers: { Accept: 'application/vnd.github+json' },
+      cache: 'no-store'
+    });
+    if (!response.ok) throw new Error('No se puede consultar GitHub');
+    const { workflow_runs: runs } = await response.json();
+    if (!Array.isArray(runs)) throw new Error('Respuesta no válida de GitHub');
+
+    const latest = runs[0];
+    const latestSuccess = runs.find((run) => run.status === 'completed' && run.conclusion === 'success');
+    automaticBackupDate.textContent = latestSuccess
+      ? formatDateTime(latestSuccess.updated_at || latestSuccess.created_at)
+      : 'Todavía ninguna';
+
+    if (!latest) {
+      automaticBackupStatus.textContent = 'Pendiente de primera copia';
+    } else if (latest.status !== 'completed') {
+      automaticBackupStatus.textContent = 'Copia en curso';
+    } else if (latest.conclusion === 'success') {
+      automaticBackupStatus.textContent = 'Correcta';
+    } else {
+      automaticBackupStatus.textContent = 'Revisar ejecución';
+    }
+  } catch {
+    automaticBackupStatus.textContent = 'Consultar GitHub';
+    automaticBackupDate.textContent = '—';
   }
 }
 
@@ -171,6 +208,7 @@ async function init() {
   lastBackup.textContent = storedBackup ? formatDateTime(storedBackup) : '—';
 
   backupButton?.addEventListener('click', createBackup);
+  await loadAutomaticBackupStatus();
 
   statutesFile?.addEventListener('change', () => {
     const file = statutesFile.files?.[0];
