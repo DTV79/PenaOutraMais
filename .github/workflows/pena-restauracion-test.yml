@@ -1,0 +1,92 @@
+name: Prueba restauracion Pena Outra Mais
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  restauracion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Instalar rclone
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq rclone
+
+      - name: Recuperar ultima copia cifrada
+        shell: bash
+        env:
+          RCLONE_CONFIG_B64: ${{ secrets.PENA_RCLONE_CONFIG_B64 }}
+        run: |
+          set -euo pipefail
+          umask 077
+          test -n "$RCLONE_CONFIG_B64"
+          printf '%s' "$RCLONE_CONFIG_B64" | base64 -d > "$RUNNER_TEMP/rclone.conf"
+          unset RCLONE_CONFIG_B64
+          export RCLONE_CONFIG="$RUNNER_TEMP/rclone.conf"
+          ROOT="cofradia_cifrado:PenaOutraMais"
+          ORIGEN=""
+          # Preferir la última copia automática, y usar una manual si no hay ninguna.
+          for CARPETA in automaticas manuales; do
+            ULTIMA="$(rclone lsf "$ROOT/$CARPETA" --dirs-only 2>/dev/null | grep -E '^backup_[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}/$' | sort | tail -n 1 || true)"
+            if [ -n "$ULTIMA" ]; then
+              ORIGEN="$ROOT/$CARPETA/${ULTIMA%/}"
+              break
+            fi
+          done
+          test -n "$ORIGEN" || { echo "::error::No hay copias disponibles"; exit 1; }
+          mkdir -p "$RUNNER_TEMP/recuperada"
+          rclone copy "$ORIGEN" "$RUNNER_TEMP/recuperada"
+          test -s "$RUNNER_TEMP/recuperada/base.dump"
+          test -s "$RUNNER_TEMP/recuperada/manifest.json"
+
+      - name: Verificar integridad SHA-256 y archivos
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "recuperada"
+          manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+          assert manifest["project_ref"] == "djrmbdbtfsgzwwcsatll"
+          expected = manifest["files"]
+          assert expected, "Manifiesto sin archivos"
+          for record in expected:
+              p = root / record["name"]
+              assert p.resolve().is_relative_to(root.resolve()), "Ruta fuera del respaldo"
+              assert p.is_file(), "Falta archivo: " + record["name"]
+              assert p.stat().st_size == record["bytes"], "Tamaño incorrecto: " + record["name"]
+              h = hashlib.sha256()
+              with p.open("rb") as src:
+                  for chunk in iter(lambda: src.read(1024 * 1024), b""):
+                      h.update(chunk)
+              assert h.hexdigest() == record["sha256"], "Hash incorrecto: " + record["name"]
+          actual = {str(p.relative_to(root)) for p in root.rglob("*") if p.is_file() and p.name != "manifest.json"}
+          assert actual == {record["name"] for record in expected}, "Archivos sobrantes o faltantes"
+          print("INTEGRIDAD_OK:", len(expected), "archivos comprobados")
+          PY
+
+      - name: Probar restauracion de socios en PostgreSQL aislado
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run -d --name pena-test -e POSTGRES_PASSWORD=temporal -e POSTGRES_DB=pena_prueba postgres:17
+          trap 'docker rm -f pena-test >/dev/null 2>&1 || true' EXIT
+          for i in $(seq 1 45); do
+            if docker exec pena-test psql -U postgres -d pena_prueba -Atc 'select 1' >/dev/null 2>&1; then break; fi
+            sleep 1
+          done
+          sleep 5
+          docker exec pena-test psql -U postgres -d pena_prueba -Atc 'select 1'
+          docker cp "$RUNNER_TEMP/recuperada/base.dump" pena-test:/tmp/base.dump
+          docker exec pena-test pg_restore --list /tmp/base.dump >/dev/null
+          docker exec pena-test pg_restore -U postgres -d pena_prueba --no-owner --no-acl --section=pre-data --table=socios /tmp/base.dump
+          docker exec pena-test pg_restore -U postgres -d pena_prueba --no-owner --no-acl --data-only --table=socios /tmp/base.dump
+          CANTIDAD="$(docker exec pena-test psql -U postgres -d pena_prueba -Atc 'select count(*) from public.socios')"
+          test "$CANTIDAD" -gt 0
+          echo "RESTAURACION_TABLA_OK: socios recuperados: $CANTIDAD"
+          # No modifica la base de datos real; no constituye ensayo integral de todo Supabase.
