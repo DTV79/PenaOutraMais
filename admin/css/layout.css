@@ -167,3 +167,140 @@ body{
     padding:18px 12px calc(28px + env(safe-area-inset-bottom))
   }
 }
+
+
+/* Menú de usuario en cabecera · v13 */
+.admin-user-menu-wrap{
+  position:relative
+}
+
+.admin-user-trigger{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 7px 4px 10px;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  color:var(--navy);
+  font:inherit;
+  cursor:pointer
+}
+
+.admin-user-trigger:hover,
+.admin-user-trigger[aria-expanded="true"]{
+  background:#f1f4f6
+}
+
+.admin-user-trigger-copy{
+  display:block;
+  text-align:right
+}
+
+.admin-user-trigger-copy strong,
+.admin-user-trigger-copy small{
+  display:block
+}
+
+.admin-user-trigger-copy strong{
+  font-size:12px;
+  line-height:1.1
+}
+
+.admin-user-trigger-copy small{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1
+}
+
+.admin-user-caret{
+  color:#6f7b86;
+  font-size:10px;
+  transition:transform .16s ease
+}
+
+.admin-user-trigger[aria-expanded="true"] .admin-user-caret{
+  transform:rotate(180deg)
+}
+
+.admin-user-dropdown{
+  position:absolute;
+  z-index:120;
+  top:calc(100% + 7px);
+  right:0;
+  width:205px;
+  overflow:hidden;
+  border:1px solid #dfe5ea;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 16px 38px rgba(7,26,45,.17)
+}
+
+.admin-user-dropdown[hidden]{
+  display:none!important
+}
+
+.admin-user-dropdown button{
+  width:100%;
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:10px 12px;
+  border:0;
+  border-bottom:1px solid #edf1f4;
+  background:#fff;
+  color:var(--navy);
+  font:inherit;
+  text-align:left;
+  cursor:pointer
+}
+
+.admin-user-dropdown button:last-child{
+  border-bottom:0
+}
+
+.admin-user-dropdown button:hover{
+  background:#f8fafb
+}
+
+.admin-user-dropdown button span{
+  width:20px;
+  flex:0 0 20px;
+  text-align:center;
+  font-size:13px
+}
+
+.admin-user-dropdown button strong{
+  font-size:11px
+}
+
+@media(max-width:759px){
+  .admin-user-trigger{
+    min-height:38px;
+    max-width:96px;
+    padding:3px 6px 3px 8px
+  }
+
+  .admin-user-trigger-copy{
+    min-width:0
+  }
+
+  .admin-user-trigger-copy strong{
+    max-width:66px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:11px
+  }
+
+  .admin-user-trigger-copy small{
+    display:none
+  }
+
+  .admin-user-dropdown{
+    width:190px
+  }
+}
