@@ -156,7 +156,7 @@ export function mountAdminShell(admin) {
               </div>
             </div>
 
-            <a class="admin-logout admin-home-button" href="index.html?v=20261022-24" aria-label="Ir al inicio">
+            <a class="admin-logout admin-home-button" href="index.html" aria-label="Ir al inicio">
               <span>⌂</span>
               <strong>Inicio</strong>
             </a>
