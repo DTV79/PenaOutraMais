@@ -1,4 +1,4 @@
-import { bootstrapAdmin } from '../../app/bootstrap.js?v=20261022-24';
+import { bootstrapAdmin } from '../../app/bootstrap.js?v=20261023-13';
 import { adminFunction, adminFunctionForm } from '../../services/admin-api.js?v=20261023-12';
 import { confirmModal } from '../../ui/modal.js';
 
