@@ -38,7 +38,7 @@ export function renderMembers(container, rows) {
 
     <div class="member-admin-list">
       ${rows.map((row) => `
-        <article class="member-admin-card">
+        <article class="member-admin-card" data-member-search="${escapeHtml([row.alias, row.nombre, row.apellidos].filter(Boolean).join(' '))}">
           <div class="member-admin-top">
             <span class="member-admin-avatar">${escapeHtml(row.alias?.slice(0, 2).toUpperCase() || '—')}</span>
             <div class="member-admin-name">
