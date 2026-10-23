@@ -170,7 +170,7 @@ export async function createShareCard(data) {
 
   // Banner/catedral si está disponible
   try {
-    const img=await loadImage('assets/pena-banner-approved.webp?v=20261022-19');
+    const img=await loadImage('assets/pena-banner-final-crisp.webp?v=20261023-10');
     ctx.save();
     roundedRect(ctx,55,55,970,350,42);
     ctx.clip();
@@ -249,8 +249,7 @@ export async function shareCard(data) {
 
   if (navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))) {
     await navigator.share({
-      files:[file],
-      title:'Primitiva sellada'
+      files:[file]
     });
     return { shared:true };
   }
