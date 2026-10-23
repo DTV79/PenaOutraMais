@@ -355,240 +355,38 @@
 
 
 
-/* Banner inicio · versión limpia definitiva v6 */
-.admin-brand-banner.admin-brand-banner-clean{
-  position:relative!important;
+
+
+/* Banner inicio · imagen aprobada exacta v8 */
+.admin-brand-banner.admin-brand-banner-final{
   display:block!important;
-  width:100%;
-  aspect-ratio:928 / 238;
   min-height:0!important;
   margin:0 0 14px;
   overflow:hidden;
   border:0;
   border-radius:22px;
-  background:
-    radial-gradient(circle at 92% 28%,rgba(17,113,178,.16),transparent 28%),
-    linear-gradient(135deg,#071a2d 0%,#082a47 58%,#0a3558 100%);
+  background:none;
   box-shadow:0 18px 38px rgba(7,26,45,.18)
 }
 
-.admin-brand-banner-clean .admin-brand-banner-left{
-  position:absolute;
-  z-index:1;
-  inset:0 34% 0 0;
-  background-image:url('../assets/pena-banner-approved.webp?v=20261022-19');
-  background-repeat:no-repeat;
-  background-position:left center;
-  background-size:151.52% 100%
-}
-
-/* Funde la foto izquierda con la zona nueva sin crear una caja */
-.admin-brand-banner-clean .admin-brand-banner-left:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    90deg,
-    rgba(7,26,45,0) 0%,
-    rgba(7,26,45,0) 72%,
-    rgba(7,32,53,.20) 82%,
-    rgba(8,42,71,.72) 94%,
-    rgba(8,42,71,1) 100%
-  )
-}
-
-/* pincel azul que continúa visualmente el diseño original */
-.admin-brand-banner-clean:before{
-  content:"";
-  position:absolute;
-  z-index:2;
-  width:46%;
-  height:19%;
-  right:-5%;
-  bottom:8%;
-  transform:rotate(-8deg);
-  background:linear-gradient(
-    90deg,
-    rgba(0,157,234,0),
-    rgba(0,157,234,.38) 30%,
-    rgba(0,157,234,.14) 72%,
-    rgba(0,157,234,0)
-  );
-  filter:blur(.2px);
-  pointer-events:none
-}
-
-/* trébol sutil en el fondo, como en el diseño aprobado */
-.admin-brand-banner-clean:after{
-  content:"";
-  position:absolute;
-  z-index:2;
-  right:2.5%;
-  top:8%;
-  width:18%;
-  aspect-ratio:1;
-  opacity:.11;
-  background:
-    radial-gradient(circle at 35% 35%,#2b98df 0 24%,transparent 25%),
-    radial-gradient(circle at 65% 35%,#2b98df 0 24%,transparent 25%),
-    radial-gradient(circle at 35% 65%,#2b98df 0 24%,transparent 25%),
-    radial-gradient(circle at 65% 65%,#2b98df 0 24%,transparent 25%);
-  transform:rotate(15deg);
-  pointer-events:none
-}
-
-.admin-brand-banner-clean .admin-brand-banner-right{
-  position:absolute!important;
-  z-index:4;
-  top:0;
-  right:0;
-  bottom:0;
-  width:43%;
-  min-width:0;
-  display:flex!important;
-  flex-direction:column;
-  justify-content:center;
-  align-items:flex-start;
-  padding:5% 4.2% 4.5% 4.8%;
-  background:linear-gradient(
-    90deg,
-    rgba(8,42,71,0) 0%,
-    rgba(8,42,71,.42) 14%,
-    rgba(8,42,71,.78) 28%,
-    rgba(8,42,71,.18) 100%
-  );
-  color:#fff;
-  pointer-events:none
-}
-
-.admin-brand-banner-clean .admin-brand-banner-right small{
+.admin-brand-banner-final picture,
+.admin-brand-banner-final img{
   display:block;
-  margin:0 0 3.4%;
-  color:#f0bd2d;
-  font-size:clamp(10px,1.05vw,16px);
-  font-weight:950;
-  letter-spacing:.18em
+  width:100%;
+  height:auto
 }
 
-.admin-brand-banner-clean .admin-brand-banner-right strong{
-  display:block;
-  max-width:100%;
-  margin:0;
-  color:#fff;
-  font-size:clamp(27px,3.05vw,48px);
-  line-height:.98;
-  letter-spacing:-.04em;
-  font-weight:950;
-  font-style:italic;
-  text-shadow:0 3px 12px rgba(0,0,0,.22)
-}
-
-.admin-brand-banner-clean .admin-brand-banner-right span{
-  display:block;
-  margin-top:4%;
-  color:rgba(255,255,255,.92);
-  font-size:clamp(10px,1.18vw,17px);
-  letter-spacing:.11em;
-  white-space:nowrap
-}
-
-.admin-brand-banner-clean .admin-brand-banner-right i{
-  order:2;
-  display:block;
-  width:54%;
-  height:4px;
-  margin-top:3.5%;
-  border-radius:999px;
-  background:linear-gradient(90deg,#f0bd2d,#f6c93d 72%,transparent)
+.admin-brand-banner-final img{
+  border-radius:22px
 }
 
 @media(max-width:759px){
-  .admin-brand-banner.admin-brand-banner-clean{
-    aspect-ratio:auto;
-    height:154px;
+  .admin-brand-banner.admin-brand-banner-final{
+    margin-bottom:12px;
     border-radius:18px
   }
 
-  .admin-brand-banner-clean .admin-brand-banner-left{
-    inset:0 40% 0 0;
-    /* La imagen original ocupa todo el alto: izquierda idéntica, solo recortada */
-    background-size:auto 100%;
-    background-position:left center
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-left:after{
-    background:linear-gradient(
-      90deg,
-      rgba(7,26,45,0) 0%,
-      rgba(7,26,45,0) 66%,
-      rgba(7,32,53,.32) 78%,
-      rgba(8,42,71,.84) 94%,
-      rgba(8,42,71,1) 100%
-    )
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right{
-    width:49%;
-    padding:14px 12px 13px 10px;
-    background:linear-gradient(
-      90deg,
-      rgba(8,42,71,0) 0%,
-      rgba(8,42,71,.58) 15%,
-      rgba(8,42,71,.90) 32%,
-      rgba(8,42,71,.30) 100%
-    )
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right small{
-    margin-bottom:6px;
-    font-size:8px;
-    letter-spacing:.14em
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right strong{
-    font-size:clamp(17px,5.1vw,24px);
-    line-height:1.02
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right span{
-    margin-top:7px;
-    font-size:8.5px;
-    letter-spacing:.04em;
-    white-space:normal
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right i{
-    width:48%;
-    height:3px;
-    margin-top:7px
-  }
-
-  .admin-brand-banner-clean:after{
-    width:25%;
-    right:-1%;
-    top:12%
-  }
-}
-
-@media(max-width:420px){
-  .admin-brand-banner.admin-brand-banner-clean{
-    height:142px
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-left{
-    inset:0 41% 0 0
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right{
-    width:50%;
-    padding-right:10px
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right strong{
-    font-size:18px
-  }
-
-  .admin-brand-banner-clean .admin-brand-banner-right span{
-    font-size:8px
+  .admin-brand-banner-final img{
+    border-radius:18px
   }
 }
