@@ -135,7 +135,7 @@ async function loadImage(src) {
 export async function createShareCard(data) {
   const canvas=document.createElement('canvas');
   canvas.width=1080;
-  canvas.height=1260;
+  canvas.height=1330;
   const ctx=canvas.getContext('2d');
 
   const navy='#071a2d';
@@ -156,7 +156,7 @@ export async function createShareCard(data) {
     const bannerX=55;
     const bannerY=55;
     const bannerW=970;
-    const bannerH=250;
+    const bannerH=320;
 
     ctx.save();
     roundedRect(ctx,bannerX,bannerY,bannerW,bannerH,34);
@@ -166,7 +166,7 @@ export async function createShareCard(data) {
   } catch (_) {}
 
   // Tarjeta principal
-  roundedRect(ctx,75,365,930,650,38);
+  roundedRect(ctx,75,435,930,650,38);
   ctx.fillStyle='#fff';
   ctx.fill();
   ctx.strokeStyle='#dce5ec';
@@ -175,47 +175,47 @@ export async function createShareCard(data) {
 
   ctx.fillStyle=navy;
   ctx.font='900 48px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('PRIMITIVA SELLADA',125,445);
+  ctx.fillText('PRIMITIVA SELLADA',125,515);
 
   ctx.fillStyle=muted;
   ctx.font='650 27px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('SORTEOS',125,500);
+  ctx.fillText('SORTEOS',125,570);
 
   ctx.fillStyle=navy;
   fitText(ctx,data.datesText,820,43,30);
-  ctx.fillText(data.datesText,125,555);
+  ctx.fillText(data.datesText,125,625);
 
   ctx.strokeStyle='#e6edf2';
   ctx.lineWidth=2;
   ctx.beginPath();
-  ctx.moveTo(125,600);
-  ctx.lineTo(955,600);
+  ctx.moveTo(125,670);
+  ctx.lineTo(955,670);
   ctx.stroke();
 
   ctx.fillStyle=muted;
   ctx.font='700 28px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('PREMIO SEMANA ANTERIOR',125,685);
+  ctx.fillText('PREMIO SEMANA ANTERIOR',125,755);
 
   ctx.fillStyle='#16834c';
   ctx.font='900 70px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText(data.prizeText,125,770);
+  ctx.fillText(data.prizeText,125,840);
 
   ctx.fillStyle=muted;
   ctx.font='700 28px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('BOTE ACUMULADO',125,860);
+  ctx.fillText('BOTE ACUMULADO',125,930);
 
   ctx.fillStyle=navy;
   ctx.font='900 78px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText(data.potText,125,950);
+  ctx.fillText(data.potText,125,1020);
 
   // Pie
-  roundedRect(ctx,75,1060,930,125,32);
+  roundedRect(ctx,75,1130,930,125,32);
   ctx.fillStyle=navy;
   ctx.fill();
 
   ctx.fillStyle='#fff';
   ctx.font='800 43px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText('Suerte 😉',125,1140);
+  ctx.fillText('Suerte 😉',125,1210);
 
   return new Promise((resolve,reject)=>{
     canvas.toBlob((blob)=>{
