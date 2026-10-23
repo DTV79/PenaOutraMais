@@ -1,4 +1,4 @@
-const CACHE='pena-outra-mais-v17';
+const CACHE='pena-outra-mais-v18';
 const ASSETS=[
   './',
   './index.html',
@@ -24,7 +24,7 @@ const ASSETS=[
   './js/utils/format.js',
   './js/pwa.js',
   './manifest.webmanifest',
-  './icon.svg'
+  './icon-public.png'
 ];
 
 self.addEventListener('install',event=>{
