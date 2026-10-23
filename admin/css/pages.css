@@ -395,3 +395,69 @@
     border-radius:18px
   }
 }
+
+
+/* Socios · buscador v11 */
+.member-search-bar{
+  display:grid;
+  grid-template-columns:auto minmax(220px,360px);
+  align-items:center;
+  justify-content:end;
+  gap:10px;
+  margin:2px 0 12px
+}
+.member-search-bar label{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:850
+}
+.member-search-bar input{
+  width:100%;
+  height:40px;
+  padding:0 13px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#f8fafb;
+  color:var(--ink);
+  font:inherit;
+  font-size:12px;
+  outline:none;
+  -webkit-appearance:none;
+  appearance:none
+}
+.member-search-bar input:focus{
+  border-color:#8fa9be;
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(35,105,160,.08)
+}
+.member-search-result{
+  margin:-5px 2px 10px;
+  color:var(--muted);
+  font-size:10px;
+  text-align:right
+}
+.member-admin-card[hidden],
+.member-search-empty[hidden],
+.member-search-result[hidden]{
+  display:none!important
+}
+
+@media(max-width:599px){
+  .member-search-bar{
+    grid-template-columns:1fr;
+    gap:6px;
+    margin-top:4px
+  }
+  .member-search-bar label{
+    font-size:11px
+  }
+  .member-search-bar input{
+    height:44px;
+    font-size:13px
+  }
+  .member-search-result{
+    margin-top:-4px;
+    text-align:left;
+    font-size:10px
+  }
+}
