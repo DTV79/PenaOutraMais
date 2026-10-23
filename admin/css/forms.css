@@ -1065,3 +1065,49 @@
     font-size:10px
   }
 }
+
+
+/* Sorteos · botones uniformes v43 */
+.draw-share-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr))
+}
+.draw-share-actions .admin-action{
+  width:100%
+}
+.draw-share-actions .admin-action.secondary{
+  background:#eef4ff;
+  border-color:#c9d9f2;
+  color:#0b2342
+}
+.draw-share-actions .admin-action.secondary:hover:not(:disabled){
+  background:#e4eefc;
+  border-color:#b8cce8
+}
+
+.draw-admin-actions{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:8px
+}
+.draw-admin-actions .admin-action{
+  width:100%;
+  justify-content:center
+}
+.draw-admin-actions .draw-selae-link{
+  grid-column:1/-1
+}
+
+@media(max-width:599px){
+  .draw-share-actions,
+  .draw-admin-actions{
+    gap:7px
+  }
+
+  .draw-admin-actions .admin-action{
+    min-height:42px;
+    padding:9px 7px;
+    font-size:9px;
+    white-space:nowrap
+  }
+}
