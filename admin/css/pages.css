@@ -461,3 +461,212 @@
     font-size:10px
   }
 }
+
+
+/* Herramientas · copias y estatutos v12 */
+.admin-card-wide{
+  grid-column:1/-1
+}
+.home-icon-tools{
+  background:#e7eef6;
+  color:#315d86
+}
+.home-icon-tools svg{
+  width:24px;
+  height:24px;
+  fill:currentColor
+}
+.admin-tools-card{
+  display:grid;
+  grid-template-columns:44px minmax(0,1fr);
+  grid-template-rows:auto auto;
+  column-gap:12px;
+  align-items:center
+}
+.admin-tools-card .admin-card-icon{
+  grid-column:1;
+  grid-row:1/3
+}
+.admin-tools-card strong,
+.admin-tools-card small{
+  grid-column:2;
+  margin-top:0
+}
+.admin-tools-card strong{align-self:end}
+.admin-tools-card small{align-self:start}
+
+.tools-section{
+  max-width:100%
+}
+.tools-copy{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55
+}
+.tools-icon{
+  min-width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  font-size:16px;
+  font-weight:950
+}
+.tools-icon-backup{
+  background:#e7eef6;
+  color:#315d86;
+  font-size:24px
+}
+.tools-icon-pdf{
+  background:#ffe8e8;
+  color:#bd3e45;
+  font-size:10px;
+  letter-spacing:.4px
+}
+.tools-info-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:0 0 14px
+}
+.tools-info-grid>div{
+  min-width:0;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#f8fafb
+}
+.tools-info-grid small,
+.tools-info-grid strong{
+  display:block
+}
+.tools-info-grid small{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.5px
+}
+.tools-info-grid strong{
+  margin-top:5px;
+  font-size:14px
+}
+.tools-primary-action{
+  min-width:210px
+}
+.tools-message{
+  margin:0 0 12px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:var(--greensoft);
+  color:var(--green);
+  font-size:11px;
+  font-weight:750
+}
+.tools-message.error{
+  background:var(--redsoft);
+  color:var(--red)
+}
+.statutes-status-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 12px;
+  padding:12px 13px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#f8fafb
+}
+.statutes-status-card small,
+.statutes-status-card strong,
+.statutes-status-card span{
+  display:block
+}
+.statutes-status-card small{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.5px
+}
+.statutes-status-card strong{
+  margin-top:3px;
+  font-size:14px
+}
+.statutes-status-card strong.ok{
+  color:var(--green)
+}
+.statutes-status-card span{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:10px
+}
+.statutes-file-picker{
+  display:block;
+  margin:0 0 12px;
+  padding:13px;
+  border:1px dashed #b9c8d3;
+  border-radius:14px;
+  background:#fbfcfd;
+  cursor:pointer
+}
+.statutes-file-picker span,
+.statutes-file-picker strong{
+  display:block
+}
+.statutes-file-picker span{
+  color:var(--navy);
+  font-size:11px;
+  font-weight:850
+}
+.statutes-file-picker strong{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:650;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+.statutes-file-picker input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none
+}
+.tools-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px
+}
+
+@media(max-width:599px){
+  .admin-card-wide{
+    grid-column:auto
+  }
+  .tools-info-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px
+  }
+  .tools-info-grid>div{
+    padding:10px 8px
+  }
+  .tools-info-grid small{
+    font-size:8px
+  }
+  .tools-info-grid strong{
+    font-size:12px
+  }
+  .tools-primary-action,
+  .tools-actions .admin-action{
+    width:100%
+  }
+  .statutes-status-card{
+    align-items:flex-start;
+    flex-direction:column
+  }
+  .statutes-status-card .admin-action{
+    width:100%
+  }
+}
