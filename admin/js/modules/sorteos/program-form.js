@@ -169,7 +169,7 @@ export function openProgramForm({
                 </option>
               `).join('')}
             </select>
-            <small class="field-note">Ese día se crearán y mostrarán los sorteos programados que correspondan hasta el domingo de esa semana de juego.</small>
+            <small class="field-note">Ese día se crearán y mostrarán los sorteos programados que correspondan durante los siguientes 7 días.</small>
           </div>
 
           <div id="programTemplateFields" class="admin-form-wide"></div>
