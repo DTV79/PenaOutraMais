@@ -188,7 +188,7 @@ function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
   `;
 }
 
-export function renderDraws({ season, games, draws, bets, programs=[], fixedPlays=[] }) {
+export function renderDraws({ season, games, draws, bets, programs=[], fixedPlays=[], prizeMovements=[] }) {
   const summary=document.querySelector('#drawsSummary');
   const activeBox=document.querySelector('#drawsActive');
   const historyBox=document.querySelector('#drawsHistory');
@@ -214,7 +214,7 @@ export function renderDraws({ season, games, draws, bets, programs=[], fixedPlay
   if (activeBadge) activeBadge.textContent=active.length;
   if (historyBadge) historyBadge.textContent=history.length;
 
-  const totalPrize=bets.reduce((sum,bet)=>sum+Number(bet.premio || 0),0);
+  const totalPrize=prizeMovements.reduce((sum,movement)=>sum+Number(movement.importe || 0),0);
   summary.innerHTML=`
     <article class="admin-kpi"><small>Temporada</small><strong>${season?.anio || '—'}</strong></article>
     <article class="admin-kpi"><small>Sorteos activos</small><strong>${active.length}</strong></article>
