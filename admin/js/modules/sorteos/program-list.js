@@ -67,6 +67,7 @@ export function renderPrograms({
       ${programs.map((program)=>{
         const game=gameMap.get(program.juego_codigo);
         const days=(program.dias_semana || []).map((day)=>DAY_LABELS[day]).join(' · ');
+        const showDay=DAY_LABELS[Number(program.mostrar_desde_dia || 1)] || 'Lun';
         const weekly=Number(program.importe_total || 0)*(program.dias_semana || []).length;
 
         return `
@@ -75,7 +76,7 @@ export function renderPrograms({
               <div>
                 <p class="eyebrow">${esc(game?.nombre || program.juego_codigo)}</p>
                 <h3>${esc(program.nombre)}</h3>
-                <small>${days || 'Sin días'} · ${program.fuente_fondos==='bote'?'Bote':'Cuotas'}</small>
+                <small>${days || 'Sin días'} · ${program.fuente_fondos==='bote'?'Bote':'Cuotas'} · En juego desde ${showDay}</small>
               </div>
               <span class="draw-status ${program.activa?'ok':'review'}">
                 ${program.activa?'Activa':'Desactivada'}
