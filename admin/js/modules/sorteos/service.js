@@ -25,7 +25,7 @@ export async function getDrawsSnapshot() {
       `sorteos?select=id,temporada_id,juego_codigo,fecha,nombre,estado,resultado,fuente_url,comprobado_at,error_comprobacion,automatico,movimiento_bote_id,movimiento_gasto_bote_id,programacion_id&temporada_id=eq.${season.id}&order=fecha.desc,id.desc`
     ),
     adminSelect(
-      `programacion_juegos?select=id,temporada_id,juego_codigo,nombre,activa,dias_semana,importe_por_apuesta,importe_total,fuente_fondos,usar_combinaciones_fijas,jugada_fija_id,datos_apuesta,observaciones&temporada_id=eq.${season.id}&order=id.asc`
+      `programacion_juegos?select=id,temporada_id,juego_codigo,nombre,activa,dias_semana,mostrar_desde_dia,importe_por_apuesta,importe_total,fuente_fondos,usar_combinaciones_fijas,jugada_fija_id,datos_apuesta,observaciones&temporada_id=eq.${season.id}&order=id.asc`
     ),
     adminSelect(
       `jugadas_fijas?select=id,temporada_id,nombre,juego_codigo,activa,observaciones&temporada_id=eq.${season.id}&order=id.asc`
@@ -118,6 +118,7 @@ function normalizeProgramPayload(payload,fixedCombinations=[]) {
     nombre:payload.nombre,
     activa:Boolean(payload.activa),
     dias_semana:payload.dias_semana,
+    mostrar_desde_dia:Number(payload.mostrar_desde_dia || 1),
     importe_total:total,
     importe_por_apuesta:useFixed
       ? Number((total/count).toFixed(2))
