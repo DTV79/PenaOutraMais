@@ -10,10 +10,10 @@ import {
   checkDraw,
   updateDrawRefund,
   deleteDraw
-} from './service.js?v=20261023-40';
+} from './service.js?v=20261025-1';
 import { openSpecialBetForm, openRefundForm } from './form.js?v=20261022-26';
-import { openProgramForm } from './program-form.js?v=20261022-04';
-import { renderPrograms } from './program-list.js?v=20261022-04';
+import { openProgramForm } from './program-form.js?v=20261025-1';
+import { renderPrograms } from './program-list.js?v=20261025-1';
 import { renderDraws } from './list.js?v=20261024-1';
 import { getShareData, shareWhatsApp, shareCard } from './share.js?v=20261023-48';
 
