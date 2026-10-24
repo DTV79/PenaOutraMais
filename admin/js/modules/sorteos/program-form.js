@@ -160,6 +160,18 @@ export function openProgramForm({
             </div>
           </div>
 
+          <div class="admin-form-field admin-form-wide">
+            <label for="program-show-day">Mostrar en “En Juego” desde *</label>
+            <select id="program-show-day" name="mostrar_desde_dia" required>
+              ${DAYS.map(([value,label])=>`
+                <option value="${value}" ${Number(program?.mostrar_desde_dia || 1)===value?'selected':''}>
+                  ${label}
+                </option>
+              `).join('')}
+            </select>
+            <small class="field-note">Ese día se crearán y mostrarán los sorteos programados que correspondan hasta el domingo de esa semana de juego.</small>
+          </div>
+
           <div id="programTemplateFields" class="admin-form-wide"></div>
 
           <label class="admin-check-row admin-form-wide">
@@ -346,6 +358,7 @@ export function openProgramForm({
         nombre:name,
         activa:active,
         dias_semana:days,
+        mostrar_desde_dia:Number(data.get('mostrar_desde_dia') || 1),
         importe_total:Number(data.get('importe_total') || 0),
         fuente_fondos:String(data.get('fuente_fondos') || 'cuotas'),
         usar_combinaciones_fijas:useFixed,
