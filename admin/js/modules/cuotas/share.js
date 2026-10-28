@@ -271,9 +271,10 @@ export async function createGeneralCard(data) {
   ctx.fillStyle=muted;
   ctx.font='700 19px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
   ctx.fillText('SOCIO',85,575);
-  ctx.fillText('PAGADO',470,575);
-  ctx.fillText('DEUDA',665,575);
-  ctx.fillText(`ACUM. ${Number(data.season.anio)+1}`,820,575);
+  ctx.fillText('ACUM. ANT.',385,575);
+  ctx.fillText('PAGADO',555,575);
+  ctx.fillText('DEUDA',720,575);
+  ctx.fillText(`ACUM. ${Number(data.season.anio)+1}`,855,575);
 
   data.rows.forEach((row,index)=>{
     const y=startY+(index*rowH)+48;
@@ -287,18 +288,21 @@ export async function createGeneralCard(data) {
     }
 
     ctx.fillStyle=navy;
-    fitText(ctx,row.alias,330,27,21,800);
+    fitText(ctx,row.alias,275,26,20,800);
     ctx.fillText(row.alias,85,y);
 
+    ctx.font='800 22px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+    ctx.fillStyle=row.carryIn>0.004?navy:muted;
+    ctx.fillText(money(row.carryIn),385,y);
+
     ctx.fillStyle=green;
-    ctx.font='800 25px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-    ctx.fillText(money(row.paid),470,y);
+    ctx.fillText(money(row.paid),555,y);
 
     ctx.fillStyle=row.pending>0.004?amber:green;
-    ctx.fillText(money(row.pending),665,y);
+    ctx.fillText(money(row.pending),720,y);
 
     ctx.fillStyle=row.carryNext>0.004?navy:muted;
-    ctx.fillText(money(row.carryNext),820,y);
+    ctx.fillText(money(row.carryNext),855,y);
   });
 
   ctx.fillStyle=muted;
