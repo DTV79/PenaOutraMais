@@ -5,9 +5,17 @@ import {
   createQuotaMovement,
   updateQuotaMovement,
   cancelQuotaMovement
-} from './service.js?v=20261022-21';
+} from './service.js?v=20261028-1';
 import { renderQuotaSnapshot } from './list.js?v=20261022-35';
 import { openQuotaForm } from './form.js?v=20261021-15';
+import {
+  buildQuotaShareData,
+  buildIndividualWhatsApp,
+  buildGeneralWhatsApp,
+  shareWhatsApp,
+  shareIndividualCard,
+  shareGeneralCard
+} from './share.js?v=20261028-1';
 
 let snapshot = null;
 const container = document.querySelector('#feesAdmin');
@@ -32,6 +40,7 @@ async function refresh() {
   try {
     snapshot = await getQuotaSnapshot();
     renderQuotaSnapshot(snapshot);
+    renderSharePanel();
   } catch (error) {
     container.innerHTML = `<div class="admin-error visible">${error.message}</div>`;
   }
@@ -94,6 +103,76 @@ async function cancelMovement(id) {
   }
 }
 
+
+function renderSharePanel() {
+  const box=document.querySelector('#feesShare');
+  if (!box || !snapshot?.season) return;
+
+  const data=buildQuotaShareData(snapshot);
+  box.innerHTML=`
+    <div class="quota-share-grid">
+      <article class="quota-share-card">
+        <div>
+          <p class="eyebrow">TODOS LOS SOCIOS</p>
+          <h3>Resumen general ${data.season.anio}</h3>
+          <p>${data.currentCount} de ${data.rows.length} socios al corriente · Cuota anual ${data.quota.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})} €</p>
+        </div>
+        <div class="quota-share-actions">
+          <button class="admin-action whatsapp" type="button" data-quota-share-general-whatsapp>WhatsApp</button>
+          <button class="admin-action secondary" type="button" data-quota-share-general-card>Compartir tarjeta</button>
+        </div>
+      </article>
+
+      <article class="quota-share-card">
+        <div>
+          <p class="eyebrow">UN SOCIO</p>
+          <h3>Estado individual</h3>
+          <label class="quota-share-label" for="quotaShareMember">Selecciona socio</label>
+          <select id="quotaShareMember" class="quota-share-select">
+            ${data.rows.map((row)=>`<option value="${row.id}">${row.alias}</option>`).join('')}
+          </select>
+        </div>
+        <div class="quota-share-actions">
+          <button class="admin-action whatsapp" type="button" data-quota-share-member-whatsapp>WhatsApp</button>
+          <button class="admin-action secondary" type="button" data-quota-share-member-card>Compartir tarjeta</button>
+        </div>
+      </article>
+    </div>
+  `;
+}
+
+async function handleShareAction(event) {
+  if (!snapshot?.season) return;
+  const data=buildQuotaShareData(snapshot);
+  const select=document.querySelector('#quotaShareMember');
+  const selected=data.rows.find((row)=>String(row.id)===String(select?.value)) || data.rows[0];
+
+  try {
+    if (event.target.closest('[data-quota-share-general-whatsapp]')) {
+      shareWhatsApp(buildGeneralWhatsApp(data));
+      return;
+    }
+    if (event.target.closest('[data-quota-share-general-card]')) {
+      await shareGeneralCard(data);
+      return;
+    }
+    if (event.target.closest('[data-quota-share-member-whatsapp]')) {
+      if (selected) shareWhatsApp(buildIndividualWhatsApp(data,selected));
+      return;
+    }
+    if (event.target.closest('[data-quota-share-member-card]')) {
+      if (selected) await shareIndividualCard(data,selected);
+    }
+  } catch (error) {
+    if (error?.name==='AbortError') return;
+    openModal({
+      title:'No se pudo compartir',
+      content:`<div class="admin-error visible">${error?.message || error}</div>`,
+      actions:'<button class="admin-action" type="button" data-modal-close>Cerrar</button>'
+    });
+  }
+}
+
 async function init() {
   if (!await bootstrapAdmin()) return;
 
@@ -114,6 +193,8 @@ async function init() {
       cancelMovement(cancel.dataset.quotaCancel);
     }
   });
+
+  document.querySelector('#feesShare')?.addEventListener('click', handleShareAction);
 
   await refresh();
 }
