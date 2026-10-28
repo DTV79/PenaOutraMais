@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-admin-v5.png" />
   <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-admin-v5.png" />
 <link rel="stylesheet" href="css/styles.css?v=20261023-13" />
-  <link rel="stylesheet" href="css/forms.css?v=20261022-34" />
+  <link rel="stylesheet" href="css/forms.css?v=20261028-1" />
 </head>
 <body data-admin-page="cuotas">
   <div class="admin-fixed-shell">
@@ -46,6 +46,9 @@
         <button class="draw-tab" type="button" data-quota-tab="adelantos">
           <span>Pagos adelantados</span>
           <small data-quota-tab-count="adelantos">0</small>
+        </button>
+        <button class="draw-tab" type="button" data-quota-tab="compartir">
+          <span>Compartir</span>
         </button>
       </nav>
 
@@ -102,10 +105,23 @@
             <div id="feesFuture" class="admin-loading">Calculando pagos adelantados…</div>
           </section>
         </section>
+
+        <section class="draw-tab-panel" data-quota-panel="compartir">
+          <section class="admin-section quota-share-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">ESTADO DE CUENTAS</p>
+                <h2>Compartir cuotas</h2>
+                <p class="admin-form-help">Envía al grupo el resumen completo o prepara el estado individual de cualquier socio.</p>
+              </div>
+            </div>
+            <div id="feesShare" class="admin-loading">Preparando estados de cuotas…</div>
+          </section>
+        </section>
       </div>
     </main>
   </div>
 
-  <script type="module" src="js/modules/cuotas/index.js?v=20261023-13"></script>
+  <script type="module" src="js/modules/cuotas/index.js?v=20261028-1"></script>
 </body>
 </html>
