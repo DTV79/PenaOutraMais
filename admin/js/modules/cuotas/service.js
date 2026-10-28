@@ -35,6 +35,7 @@ export async function getQuotaSnapshot() {
       season:null,
       members:[],
       movements:[],
+      allMovements:[],
       quotaSpent:0,
       elapsedWeeks:0
     };
@@ -51,6 +52,7 @@ export async function getQuotaSnapshot() {
     season,
     members:activeMembers,
     movements:movements.filter((movement)=>movement.temporada_id===season.id),
+    allMovements:movements,
     quotaSpent,
     elapsedWeeks
   };
