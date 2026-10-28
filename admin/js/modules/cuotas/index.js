@@ -15,7 +15,7 @@ import {
   shareWhatsApp,
   shareIndividualCard,
   shareGeneralCard
-} from './share.js?v=20261028-1';
+} from './share.js?v=20261028-2';
 
 let snapshot = null;
 const container = document.querySelector('#feesAdmin');
