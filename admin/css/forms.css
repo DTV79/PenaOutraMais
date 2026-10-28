@@ -1137,3 +1137,14 @@
   border-color:#ad96f4;
   color:#4c1d95
 }
+
+
+/* Compartir estado de cuotas */
+.quota-share-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.quota-share-card{display:flex;flex-direction:column;justify-content:space-between;gap:20px;min-height:245px;padding:22px;border:1px solid #dfe7ed;border-radius:22px;background:linear-gradient(145deg,#fff,#f7fafc);box-shadow:0 8px 26px #071a2d0b}
+.quota-share-card h3{margin:4px 0 8px;font-size:24px;color:#071a2d}
+.quota-share-card p{margin:0;color:#6b7b8b;line-height:1.5}
+.quota-share-actions{display:flex;gap:10px;flex-wrap:wrap}
+.quota-share-label{display:block;margin:16px 0 7px;font-size:13px;font-weight:800;color:#526374}
+.quota-share-select{width:100%;padding:12px 13px;border:1px solid #d6e0e7;border-radius:12px;background:#fff;font:inherit;color:#071a2d}
+@media(max-width:720px){.quota-share-grid{grid-template-columns:1fr}.quota-share-card{min-height:0;padding:18px}.quota-share-actions .admin-action{flex:1 1 150px}}
