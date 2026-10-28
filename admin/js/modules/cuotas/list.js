@@ -22,14 +22,19 @@ function escapeHtml(value = '') {
     .replaceAll("'", '&#039;');
 }
 
-function movementEffect(movement, currentYear) {
+function movementEffect(movement, season) {
   if (movement.anulado_at) return 0;
 
+  const currentYear=Number(season.anio);
+
   if (movement.tipo === 'saldo_a_favor') {
-    return movement.aplicar_anio === currentYear ? Number(movement.importe) : 0;
+    return Number(movement.aplicar_anio) === currentYear
+      ? Number(movement.importe)
+      : 0;
   }
 
-  if (movement.aplicar_anio && movement.aplicar_anio !== currentYear) return 0;
+  if (Number(movement.temporada_id) !== Number(season.id)) return 0;
+  if (movement.aplicar_anio && Number(movement.aplicar_anio) !== currentYear) return 0;
   return Number(movement.importe);
 }
 
@@ -48,7 +53,7 @@ function setTabCount(name,value) {
   if (badge) badge.textContent=String(value);
 }
 
-export function renderQuotaSnapshot({ season, members, movements, quotaSpent, elapsedWeeks }) {
+export function renderQuotaSnapshot({ season, members, movements, allMovements=[], quotaSpent, elapsedWeeks }) {
   const summary = document.querySelector('#feesSummary');
   const container = document.querySelector('#feesAdmin');
   const pendingBox = document.querySelector('#feesPending');
@@ -62,7 +67,7 @@ export function renderQuotaSnapshot({ season, members, movements, quotaSpent, el
   }
 
   const aliasById = new Map(members.map((member) => [member.id, member.alias]));
-  const validMovements = movements.filter((movement) => !movement.anulado_at);
+  const validMovements = allMovements.filter((movement) => !movement.anulado_at);
 
   const totalsByMember = new Map(
     members.map((member) => [member.id, 0])
@@ -72,7 +77,7 @@ export function renderQuotaSnapshot({ season, members, movements, quotaSpent, el
     if (!totalsByMember.has(movement.socio_id)) return;
     totalsByMember.set(
       movement.socio_id,
-      totalsByMember.get(movement.socio_id) + movementEffect(movement, season.anio)
+      totalsByMember.get(movement.socio_id) + movementEffect(movement, season)
     );
   });
 
