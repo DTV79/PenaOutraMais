@@ -6,7 +6,7 @@ import {
   updateQuotaMovement,
   cancelQuotaMovement
 } from './service.js?v=20261028-1';
-import { renderQuotaSnapshot } from './list.js?v=20261022-35';
+import { renderQuotaSnapshot } from './list.js?v=20261028-1';
 import { openQuotaForm } from './form.js?v=20261021-15';
 import {
   buildQuotaShareData,
