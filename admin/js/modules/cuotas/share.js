@@ -10,6 +10,19 @@ function cleanAlias(value='') {
   return String(value || '').trim();
 }
 
+function formatDate(value) {
+  if (!value) return '';
+  const [y,m,d]=String(value).split('-');
+  return y && m && d ? `${d}/${m}/${y}` : String(value);
+}
+
+function isCurrentPayment(row,season) {
+  return valid(row) &&
+    row.tipo==='pago' &&
+    Number(row.temporada_id)===Number(season.id) &&
+    (!row.aplicar_anio || Number(row.aplicar_anio)===Number(season.anio));
+}
+
 function valid(row) {
   return !row.anulado_at;
 }
@@ -48,6 +61,11 @@ export function buildQuotaShareData(snapshot) {
       const carryNext=memberMovements.reduce(
         (sum,row)=>sum+carryForYear(row,Number(season.anio)+1),0
       );
+      const paymentDate=memberMovements
+        .filter((row)=>isCurrentPayment(row,season) && row.fecha)
+        .map((row)=>row.fecha)
+        .sort()
+        .at(-1) || '';
 
       return {
         id:member.id,
@@ -58,6 +76,8 @@ export function buildQuotaShareData(snapshot) {
         applied,
         pending,
         carryNext,
+        paymentDate,
+        paymentDateText:formatDate(paymentDate),
         current:pending<0.005
       };
     })
@@ -79,6 +99,10 @@ export function buildIndividualWhatsApp(data,row) {
     `*Estado de cuotas ${data.season.anio} · ${row.alias}*`,
     `• Cuota anual: *${money(row.quota)}*`
   ];
+
+  if (row.paymentDateText) {
+    lines.push(`• Fecha pago: ${row.paymentDateText}`);
+  }
 
   if (row.carryIn>0.004) {
     lines.push(`• Acumulado anterior: *${money(row.carryIn)}*`);
@@ -104,11 +128,16 @@ export function buildGeneralWhatsApp(data) {
     ''
   ];
 
-  data.rows.forEach((row)=>{
-    let line=`• *${row.alias}* — Pagado: ${money(row.paid)} · Deuda: ${money(row.pending)}`;
-    if (row.carryIn>0.004) line+=` · Acum. anterior: ${money(row.carryIn)}`;
-    if (row.carryNext>0.004) line+=` · Acum. ${nextYear}: ${money(row.carryNext)}`;
-    lines.push(line);
+  data.rows.forEach((row,index)=>{
+    lines.push(`• *${row.alias}*`);
+    if (row.paymentDateText) lines.push(`    • Fecha pago: ${row.paymentDateText}`);
+    if (row.carryIn>0.004) lines.push(`    • Acum. anterior: ${money(row.carryIn)}`);
+    lines.push(
+      `    • Pagado: *${money(row.paid)}*`,
+      `    • Deuda: *${money(row.pending)}*`
+    );
+    if (row.carryNext>0.004) lines.push(`    • Acum. ${nextYear}: *${money(row.carryNext)}*`);
+    if (index<data.rows.length-1) lines.push('');
   });
 
   return lines.join('\n');
@@ -199,14 +228,20 @@ export async function createIndividualCard(data,row) {
 
   ctx.fillStyle=navy;
   fitText(ctx,row.alias,800,66,42,900);
-  ctx.fillText(row.alias,125,520);
+  ctx.fillText(row.alias,125,510);
 
-  roundedRect(ctx,125,560,260,58,29);
+  if (row.paymentDateText) {
+    ctx.fillStyle=muted;
+    ctx.font='italic 600 24px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+    ctx.fillText(`Pago: ${row.paymentDateText}`,125,552);
+  }
+
+  roundedRect(ctx,125,575,260,58,29);
   ctx.fillStyle=row.current ? '#e7f5ec' : '#fff1da';
   ctx.fill();
   ctx.fillStyle=row.current ? green : '#8a5f0d';
   ctx.font='800 25px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
-  ctx.fillText(row.current?'AL CORRIENTE':'PENDIENTE',154,598);
+  ctx.fillText(row.current?'AL CORRIENTE':'PENDIENTE',154,613);
 
   drawMetric(ctx,{x:125,y:665,w:390,label:'CUOTA ANUAL',value:money(row.quota)});
   drawMetric(ctx,{x:565,y:665,w:390,label:'ACUM. ANTERIOR',value:money(row.carryIn),valueColor:row.carryIn>0?green:navy});
@@ -232,7 +267,7 @@ export async function createIndividualCard(data,row) {
 }
 
 export async function createGeneralCard(data) {
-  const rowH=82;
+  const rowH=96;
   const startY=565;
   const height=Math.max(1550,startY+(data.rows.length*rowH)+190);
   const canvas=document.createElement('canvas');
@@ -289,20 +324,26 @@ export async function createGeneralCard(data) {
 
     ctx.fillStyle=navy;
     fitText(ctx,row.alias,275,26,20,800);
-    ctx.fillText(row.alias,85,y);
+    ctx.fillText(row.alias,85,y-7);
+
+    if (row.paymentDateText) {
+      ctx.fillStyle=muted;
+      ctx.font='italic 600 17px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+      ctx.fillText(`Pago: ${row.paymentDateText}`,85,y+20);
+    }
 
     ctx.font='800 22px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
     ctx.fillStyle=row.carryIn>0.004?navy:muted;
-    ctx.fillText(money(row.carryIn),385,y);
+    ctx.fillText(money(row.carryIn),385,y+5);
 
     ctx.fillStyle=green;
-    ctx.fillText(money(row.paid),555,y);
+    ctx.fillText(money(row.paid),555,y+5);
 
     ctx.fillStyle=row.pending>0.004?amber:green;
-    ctx.fillText(money(row.pending),720,y);
+    ctx.fillText(money(row.pending),720,y+5);
 
     ctx.fillStyle=row.carryNext>0.004?navy:muted;
-    ctx.fillText(money(row.carryNext),855,y);
+    ctx.fillText(money(row.carryNext),855,y+5);
   });
 
   ctx.fillStyle=muted;
