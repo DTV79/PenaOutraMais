@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-admin-v5.png" />
   <link rel="apple-touch-icon-precomposed" sizes="120x120" href="apple-touch-icon-admin-v5.png" />
 <link rel="stylesheet" href="css/styles.css?v=20261023-13" />
-  <link rel="stylesheet" href="css/forms.css?v=20261023-44" />
+  <link rel="stylesheet" href="css/forms.css?v=20261029-1" />
 </head>
 <body data-admin-page="sorteos">
   <div class="admin-fixed-shell">
@@ -35,6 +35,10 @@
         <button class="draw-tab active" type="button" data-draw-tab="enjuego">
           <span>En Juego</span>
           <small data-tab-count="enjuego">0</small>
+        </button>
+        <button class="draw-tab" type="button" data-draw-tab="recientes">
+          <span>Resultados recientes</span>
+          <small data-tab-count="recientes">0</small>
         </button>
         <button class="draw-tab" type="button" data-draw-tab="programadas">
           <span>Apuestas Programadas</span>
@@ -61,6 +65,21 @@
             <div id="drawsActive" class="admin-loading">Cargando apuestas en juego…</div>
           </section>
         </section>
+        <section class="draw-tab-panel" data-draw-panel="recientes">
+          <section class="admin-section">
+            <div class="admin-section-head">
+              <div>
+                <p class="eyebrow">ÚLTIMOS RESULTADOS</p>
+                <h2>Resultados recientes</h2>
+              </div>
+            </div>
+            <p class="admin-form-help recent-results-help">
+              Los sorteos comprobados permanecen aquí hasta el miércoles de la semana siguiente. El jueves pasan automáticamente al histórico.
+            </p>
+            <div id="drawsRecent" class="admin-loading">Cargando resultados recientes…</div>
+          </section>
+        </section>
+
         <section class="draw-tab-panel" data-draw-panel="programadas">
           <section class="admin-section">
             <div class="admin-section-head">
@@ -105,6 +124,6 @@
     </main>
   </div>
 
-  <script type="module" src="js/modules/sorteos/index.js?v=20261025-1"></script>
+  <script type="module" src="js/modules/sorteos/index.js?v=20261029-1"></script>
 </body>
 </html>
