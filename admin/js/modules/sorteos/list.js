@@ -42,6 +42,22 @@ function todayIso() {
   return local.toISOString().slice(0,10);
 }
 
+function recentUntilIso(drawDate) {
+  if (!drawDate) return '';
+  const [y,m,d]=String(drawDate).split('-').map(Number);
+  const date=new Date(Date.UTC(y,m-1,d));
+  const isoDay=date.getUTCDay() || 7;
+  const monday=new Date(date.getTime());
+  monday.setUTCDate(monday.getUTCDate()-(isoDay-1));
+  const nextThursday=new Date(monday.getTime());
+  nextThursday.setUTCDate(nextThursday.getUTCDate()+10);
+  return nextThursday.toISOString().slice(0,10);
+}
+
+function isRecentCompleted(draw) {
+  return draw.estado==='comprobado' && todayIso() < recentUntilIso(draw.fecha);
+}
+
 function statusLabel(draw) {
   if (draw.estado === 'pendiente' && draw.fecha > todayIso()) return ['Programado','scheduled'];
   if (draw.estado === 'comprobado' && draw.resultado?.revision_manual) return ['Revisar','review'];
@@ -191,6 +207,7 @@ function renderCard(draw, drawBets, game, program=null, fixedPlay=null) {
 export function renderDraws({ season, games, draws, bets, programs=[], fixedPlays=[], prizeMovements=[] }) {
   const summary=document.querySelector('#drawsSummary');
   const activeBox=document.querySelector('#drawsActive');
+  const recentBox=document.querySelector('#drawsRecent');
   const historyBox=document.querySelector('#drawsHistory');
   const gameMap=new Map(games.map((game)=>[game.codigo,game]));
   const programMap=new Map(programs.map((program)=>[String(program.id),program]));
@@ -206,12 +223,19 @@ export function renderDraws({ season, games, draws, bets, programs=[], fixedPlay
     .filter((draw)=>draw.estado!=='comprobado')
     .sort((a,b)=>dateSortValue(a.fecha)-dateSortValue(b.fecha) || Number(a.id)-Number(b.id));
 
-  const history=draws
-    .filter((draw)=>draw.estado==='comprobado')
+  const recent=draws
+    .filter((draw)=>isRecentCompleted(draw))
     .sort((a,b)=>dateSortValue(b.fecha)-dateSortValue(a.fecha) || Number(b.id)-Number(a.id));
+
+  const history=draws
+    .filter((draw)=>draw.estado==='comprobado' && !isRecentCompleted(draw))
+    .sort((a,b)=>dateSortValue(b.fecha)-dateSortValue(a.fecha) || Number(b.id)-Number(a.id));
+
   const activeBadge=document.querySelector('[data-tab-count="enjuego"]');
+  const recentBadge=document.querySelector('[data-tab-count="recientes"]');
   const historyBadge=document.querySelector('[data-tab-count="historico"]');
   if (activeBadge) activeBadge.textContent=active.length;
+  if (recentBadge) recentBadge.textContent=recent.length;
   if (historyBadge) historyBadge.textContent=history.length;
 
   const totalPrize=prizeMovements.reduce((sum,movement)=>sum+Number(movement.importe || 0),0);
@@ -242,6 +266,29 @@ export function renderDraws({ season, games, draws, bets, programs=[], fixedPlay
       </div>
     `;
 
+  if (recentBox) {
+    recentBox.innerHTML=recent.length
+      ? recent.map((draw)=>{
+          const program=programMap.get(String(draw.programacion_id));
+          const fixedPlay=program?.jugada_fija_id
+            ? fixedPlayMap.get(String(program.jugada_fija_id))
+            : null;
+          return renderCard(
+            draw,
+            betsByDraw.get(draw.id)||[],
+            gameMap.get(draw.juego_codigo),
+            program,
+            fixedPlay
+          );
+        }).join('')
+      : `
+        <div class="admin-empty">
+          <span>✓</span><strong>No hay resultados recientes</strong>
+          <p>Los sorteos comprobados aparecerán aquí hasta el miércoles siguiente.</p>
+        </div>
+      `;
+  }
+
   historyBox.innerHTML=history.length
     ? history.map((draw)=>{
         const program=programMap.get(String(draw.programacion_id));
@@ -258,8 +305,8 @@ export function renderDraws({ season, games, draws, bets, programs=[], fixedPlay
       }).join('')
     : `
       <div class="admin-empty">
-        <span>✓</span><strong>Todavía no hay sorteos comprobados</strong>
-        <p>Cuando se comprueben pasarán automáticamente al histórico.</p>
+        <span>⌛</span><strong>Todavía no hay sorteos antiguos</strong>
+        <p>Los resultados recientes pasan aquí automáticamente cada jueves.</p>
       </div>
     `;
 }
