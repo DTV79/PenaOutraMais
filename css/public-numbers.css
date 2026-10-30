@@ -1,0 +1,250 @@
+/* Peña Outra Máis · Números públicos, presentación de solo lectura.
+   Inspirado en las tarjetas de administración, sin acciones ni estados. */
+.app-shell:has(#numeros.active) { max-width:1060px; }
+.app-shell:has(#numeros.active) main { max-width:1010px; }
+
+#numeros .public-numbers-heading{
+  padding:9px 0 16px;
+  margin:0;
+}
+#numeros .public-numbers-heading h2{
+  margin:2px 0 4px;
+  color:#0b253d;
+  font-size:clamp(27px,3.5vw,33px);
+  font-weight:900;
+  letter-spacing:-.9px;
+}
+#numeros .public-numbers-heading p:last-child{
+  margin:5px 0 0;
+  font-size:12px;
+  color:#657586;
+}
+#numeros .public-numbers-summary{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:0 0 12px;
+}
+#numeros .public-numbers-kpi{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+  padding:15px 14px 14px;
+  border:1px solid #dfe5ea;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,#fdfefe);
+  box-shadow:0 7px 22px rgba(7,26,45,.045);
+}
+#numeros .public-numbers-kpi::before{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  width:3px;
+  background:linear-gradient(#f0ce70,#d4a52f);
+}
+#numeros .public-numbers-kpi small,
+#numeros .public-numbers-kpi strong{
+  display:block;
+}
+#numeros .public-numbers-kpi small{
+  color:#6c7886;
+  font-size:10px;
+  font-weight:750;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+#numeros .public-numbers-kpi strong{
+  margin-top:6px;
+  color:#102c45;
+  font-size:23px;
+  font-weight:900;
+  line-height:1.2;
+}
+#numeros .public-numbers-panel{
+  padding:18px 16px;
+  border:1px solid #dfe5ea;
+  border-radius:19px;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 10px 30px rgba(7,26,45,.05);
+}
+#numeros .public-numbers-panel-head{
+  margin-bottom:16px;
+}
+#numeros .public-numbers-panel-head .public-kicker{
+  margin:0 0 6px;
+  letter-spacing:.5px;
+  font-size:11px;
+}
+#numeros .public-numbers-panel-head .public-kicker::before{
+  display:none;
+}
+#numeros .public-numbers-panel-head h2{
+  margin:0;
+  color:#0b253d;
+  font-size:20px;
+  font-weight:900;
+  line-height:1.25;
+}
+#numeros .public-numbers-list{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:13px;
+}
+#numeros .public-fixed-play{
+  display:block;
+  min-width:0;
+  padding:15px;
+  border:1px solid #dfe5ea;
+  border-radius:18px;
+  background:#fff;
+  box-shadow:none;
+}
+#numeros .public-fixed-play-head{
+  display:block;
+  margin:0;
+}
+#numeros .public-fixed-game{
+  margin:0 0 8px;
+  font-size:12px;
+  line-height:1.3;
+  font-weight:650;
+  color:#233b51;
+}
+#numeros .public-fixed-play-head h3{
+  margin:0;
+  color:#0b253d;
+  font-size:17px;
+  font-weight:850;
+  line-height:1.3;
+}
+#numeros .public-fixed-play-head small{
+  display:block;
+  margin:4px 0 0;
+  color:#718091;
+  font-size:11px;
+}
+#numeros .public-fixed-combinations{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:15px;
+  padding-top:14px;
+  border-top:1px solid #dfe6ec;
+}
+#numeros .public-number-card{
+  min-width:0;
+  padding:13px 12px 15px;
+  border:1px solid #dfe5ea;
+  border-radius:17px;
+  background:#fff;
+  box-shadow:none;
+}
+#numeros .public-number-card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+#numeros .public-number-order{
+  flex:0 0 34px;
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  border-radius:11px;
+  background:#071a2d;
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+}
+#numeros .public-number-card-head > div{min-width:0}
+#numeros .public-number-card-head strong,
+#numeros .public-number-card-head small{
+  display:block;
+}
+#numeros .public-number-card-head strong{
+  color:#172d40;
+  font-size:14px;
+  font-weight:850;
+  line-height:1.25;
+}
+#numeros .public-number-card-head small{
+  margin-top:3px;
+  color:#778694;
+  font-size:10px;
+}
+#numeros .public-number-balls{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:8px;
+  margin-top:14px;
+}
+#numeros .public-number-ball{
+  display:grid;
+  place-items:center;
+  min-width:0;
+  width:100%;
+  aspect-ratio:1;
+  border-radius:50%;
+  border:1px solid #ddbd61;
+  background:radial-gradient(circle at 34% 27%,#fff 0 15%,#f9f3df 18%,#edce78 58%,#d5aa37 100%);
+  box-shadow:inset -3px -5px 9px rgba(117,80,0,.11),0 3px 8px rgba(7,26,45,.07);
+  color:#13273b;
+  font-size:clamp(11px,2vw,16px);
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
+#numeros .public-number-stars-label{
+  display:grid;
+  place-items:center;
+  color:#98752c;
+  font-size:18px;
+}
+#numeros .public-star-ball{
+  background:radial-gradient(circle at 34% 27%,#fff 0 15%,#e8f3ff 18%,#b4d3f1 60%,#7ba9d2 100%);
+  border-color:#91badb;
+}
+#numeros .public-numbers-empty{
+  margin:0;
+  padding:16px 0;
+  font-size:13px;
+  color:#697c8c;
+}
+
+@media(max-width:650px){
+  #numeros .public-fixed-combinations{
+    grid-template-columns:minmax(0,1fr);
+    gap:9px;
+  }
+  #numeros .public-numbers-kpi{
+    padding:12px 10px;
+  }
+  #numeros .public-numbers-kpi small{font-size:9px}
+  #numeros .public-numbers-kpi strong{font-size:20px}
+}
+@media(max-width:470px){
+  #numeros .public-numbers-heading{padding-top:5px}
+  #numeros .public-numbers-summary{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  #numeros .public-numbers-kpi{
+    min-height:73px;
+    padding:12px;
+    border-radius:14px;
+  }
+  #numeros .public-numbers-panel{
+    padding:13px 10px;
+    border-radius:17px;
+  }
+  #numeros .public-fixed-play{padding:12px 10px;border-radius:15px}
+  #numeros .public-number-card{padding:12px 9px;border-radius:14px}
+  #numeros .public-number-balls{gap:6px;margin-top:13px}
+  #numeros .public-number-ball{font-size:clamp(12px,3.7vw,16px)}
+  #numeros .public-number-order{width:32px;height:32px;flex-basis:32px}
+}
+@media(max-width:340px){
+  #numeros .public-number-balls{gap:4px}
+  #numeros .public-number-card{padding:10px 7px}
+}
