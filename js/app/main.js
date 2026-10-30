@@ -1,53 +1,36 @@
 import { getPublicSnapshot } from '../services/public-data.js?v=20261022-06';
-import { initNavigation } from '../ui/navigation.js?v=20261022-06';
+import { initNavigation } from '../ui/navigation.js?v=20261030-01';
 import { renderCombinations } from '../modules/numeros.js?v=20261022-06';
-import { renderMembers, initQuotaFilters, applyQuotaSummary } from '../modules/cuotas.js?v=20261022-06';
-import {
-  renderMonthlyAwards,
-  monthlyAwardsFromMovements,
-  applyBalanceSummary,
-  renderPublicMovements
-} from '../modules/premios.js?v=20261022-06';
-import { renderPublicPrograms, renderPublicDraws } from '../modules/sorteos.js?v=20261022-06';
+import { renderMonthlyAwards,monthlyAwardsFromMovements,applyBalanceSummary } from '../modules/premios.js?v=20261022-06';
+import { renderPublicPrograms,renderPublicDraws } from '../modules/sorteos.js?v=20261022-06';
 import { renderHistory } from '../modules/historico.js?v=20261022-06';
-import { renderRules } from '../modules/normas.js?v=20261023-12';
+import { renderRules } from '../modules/normas.js?v=20261030-01';
 import { applySeason } from '../modules/temporada.js?v=20261022-06';
+import { renderWeekHeading,renderPortada } from '../modules/portada.js?v=20261030-01';
 
-function renderFallbacks() {
-  renderCombinations();
-  renderMembers();
-  renderMonthlyAwards();
-  renderHistory();
-  renderRules();
+function showError(){
+  document.querySelectorAll('#publicPrograms,#homeNumbers,#homeUpcoming,#homeLatest,#combinations,#publicDrawHistory,#historyList,#monthlyAwards').forEach(el=>{
+    el.innerHTML='<p class="latest-empty">No se pudieron cargar los datos. Comprueba tu conexión y vuelve a abrir la web.</p>';
+  });
 }
-
-async function hydrateFromSupabase() {
-  try {
-    const snapshot = await getPublicSnapshot();
-    if (!snapshot) return;
-
-    applySeason(snapshot.season);
-    renderCombinations(snapshot.fixedPlays,snapshot.combinations,snapshot.games);
-    renderHistory(snapshot.history, snapshot.season.anio);
-    applyBalanceSummary(snapshot.currentBalance);
-    applyQuotaSummary(snapshot.quotaSummary);
-    renderPublicMovements(snapshot.movements);
-    renderPublicPrograms(snapshot.programs,snapshot.games,snapshot.fixedPlays,snapshot.combinations);
-    renderPublicDraws(snapshot);
-
-    renderMonthlyAwards(
-      monthlyAwardsFromMovements(snapshot.movements)
-    );
-  } catch (error) {
-    console.warn('Se mantienen los datos locales de respaldo.', error);
+async function hydrate(){
+  try{
+    const data=await getPublicSnapshot();
+    if(!data){showError();return;}
+    applySeason(data.season);
+    renderCombinations(data.fixedPlays,data.combinations,data.games);
+    applyBalanceSummary(data.currentBalance);
+    renderPublicPrograms(data.programs,data.games,data.fixedPlays,data.combinations);
+    renderPublicDraws(data);
+    renderPortada(data);
+    renderMonthlyAwards(monthlyAwardsFromMovements(data.movements));
+    renderHistory(data.history,data.season.anio);
+  }catch(error){
+    console.error('Error al cargar la web pública:',error);
+    showError();
   }
 }
-
-function init() {
-  renderFallbacks();
-  initNavigation();
-  initQuotaFilters();
-  hydrateFromSupabase();
-}
-
-init();
+initNavigation();
+renderWeekHeading();
+renderRules();
+hydrate();
