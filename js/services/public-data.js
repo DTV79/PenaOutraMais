@@ -13,7 +13,6 @@ export async function getPublicSnapshot() {
     history,
     balanceRows,
     movements,
-    quotaRows,
     games,
     programs,
     draws
@@ -32,9 +31,6 @@ export async function getPublicSnapshot() {
     ),
     supabaseSelect(
       `movimientos_bote?select=id,fecha,mes,tipo,concepto,importe,observaciones&anio=eq.${season.anio}&order=fecha.desc.nullslast,id.desc`
-    ),
-    supabaseSelect(
-      `resumen_cuotas_publico?select=temporada_id,socios_activos,socios_al_corriente,socios_pendientes,previsto,cobrado,pendiente,adelantado_futuro,jugado_con_cuotas,disponible&temporada_id=eq.${season.id}&limit=1`
     ),
     supabaseSelect(
       'juegos?select=codigo,nombre,formato&activo=eq.true&order=nombre.asc'
@@ -62,7 +58,6 @@ export async function getPublicSnapshot() {
     history,
     currentBalance:balanceRows?.[0] ?? null,
     movements,
-    quotaSummary:quotaRows?.[0] ?? null,
     games,
     programs,
     draws,
