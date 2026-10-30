@@ -1,54 +1,45 @@
-import { fallbackCombinations, romans } from '../data/fallback.js';
+import { romans } from '../data/fallback.js';
 
 function esc(value='') {
   return String(value ?? '')
     .replaceAll('&','&amp;')
     .replaceAll('<','&lt;')
     .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;');
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#039;');
 }
 
-function fallbackData() {
-  return {
-    fixedPlays:[{
-      id:'fallback',
-      nombre:'Combinaciones Fijas Peña Outra Máis',
-      juego_codigo:'primitiva',
-      activa:true
-    }],
-    combinations:fallbackCombinations.map((numeros,index)=>({
-      id:`fallback-${index+1}`,
-      jugada_fija_id:'fallback',
-      numero_orden:index+1,
-      nombre:`Combinación ${romans[index]}`,
-      numeros,
-      estrellas:[],
-      juego_codigo:'primitiva'
-    })),
-    games:[{codigo:'primitiva',nombre:'La Primitiva',formato:'6_numeros'}]
-  };
+function renderBalls(combination,game) {
+  const balls=(combination.numeros || [])
+    .map((number)=>`<span class="public-number-ball">${esc(number)}</span>`)
+    .join('');
+
+  if (game?.formato !== '5_estrellas' || !(combination.estrellas || []).length) {
+    return balls;
+  }
+  return balls + '<span class="public-number-stars-label">★</span>' +
+    combination.estrellas.map((star)=>`<span class="public-number-ball public-star-ball">${esc(star)}</span>`).join('');
 }
 
-export function renderCombinations(fixedPlays,rows,games) {
+export function renderCombinations(fixedPlays=[],rows=[],games=[]) {
   const container=document.querySelector('#combinations');
   if (!container) return;
 
-  const data=Array.isArray(fixedPlays)
-    ? {fixedPlays,combinations:rows || [],games:games || []}
-    : fallbackData();
+  const combinations=Array.isArray(rows)?rows:[];
+  const playRows=Array.isArray(fixedPlays)?fixedPlays:[];
+  const gameMap=new Map((Array.isArray(games)?games:[]).map((game)=>[game.codigo,game]));
 
-  const gameMap=new Map(data.games.map((game)=>[game.codigo,game]));
-  const combinations=data.combinations || [];
-  const activePlays=(data.fixedPlays || []).filter((play)=>
-    combinations.some((row)=>String(row.jugada_fija_id)===String(play.id))
-  );
+  const activePlays=playRows
+    .filter((play)=>play.activa!==false && combinations.some((row)=>String(row.jugada_fija_id)===String(play.id)));
+  const activeIds=new Set(activePlays.map((play)=>String(play.id)));
+  const activeCombinations=combinations.filter((row)=>activeIds.has(String(row.jugada_fija_id)));
   const activeGames=new Set(activePlays.map((play)=>play.juego_codigo));
 
   document.querySelectorAll('[data-fixed-play-count]').forEach((el)=>{
     el.textContent=String(activePlays.length);
   });
   document.querySelectorAll('[data-fixed-combination-count]').forEach((el)=>{
-    el.textContent=String(combinations.length);
+    el.textContent=String(activeCombinations.length);
   });
   document.querySelectorAll('[data-fixed-game-count]').forEach((el)=>{
     el.textContent=String(activeGames.size);
@@ -56,39 +47,38 @@ export function renderCombinations(fixedPlays,rows,games) {
 
   container.innerHTML=activePlays.length ? activePlays.map((play)=>{
     const game=gameMap.get(play.juego_codigo);
-    const playRows=combinations.filter(
-      (row)=>String(row.jugada_fija_id)===String(play.id)
-    );
+    const matches=activeCombinations
+      .filter((row)=>String(row.jugada_fija_id)===String(play.id))
+      .sort((a,b)=>Number(a.numero_orden)-Number(b.numero_orden));
 
     return `
-      <section class="public-fixed-play">
-        <div class="public-fixed-play-head">
-          <div>
-            <small>${esc(game?.nombre || play.juego_codigo)}</small>
-            <strong>${esc(play.nombre)}</strong>
-            <span>${playRows.length} combinación${playRows.length===1?'':'es'}</span>
-          </div>
-          <span class="pill">Fija</span>
-        </div>
+      <article class="public-fixed-play">
+        <header class="public-fixed-play-head">
+          <p class="public-fixed-game">${esc(game?.nombre || play.juego_codigo)}</p>
+          <h3>${esc(play.nombre)}</h3>
+          <small>${matches.length} combinación${matches.length===1?'':'es'}</small>
+        </header>
 
         <div class="public-fixed-combinations">
-          ${playRows.map((row,index)=>`
-            <article class="combination-card">
-              <div class="combination-header">
-                <strong>${esc(row.nombre || `Combinación ${romans[index] || row.numero_orden}`)}</strong>
-                <span>${row.numero_orden}</span>
-              </div>
-              <div class="balls">
-                ${(row.numeros || []).map((number)=>`<span class="ball">${number}</span>`).join('')}
-                ${game?.formato==='5_estrellas' && (row.estrellas || []).length
-                  ? '<em class="public-star-separator">★</em>' +
-                    row.estrellas.map((star)=>`<span class="ball star-ball">${star}</span>`).join('')
-                  : ''}
-              </div>
-            </article>
-          `).join('')}
+          ${matches.map((row,index)=>{
+            const order=Number(row.numero_orden) || index + 1;
+            return `
+              <article class="public-number-card">
+                <div class="public-number-card-head">
+                  <span class="public-number-order">${esc(order)}</span>
+                  <div>
+                    <strong>${esc(row.nombre || `Combinación ${romans[index] || order}`)}</strong>
+                    <small>Orden ${esc(order)}</small>
+                  </div>
+                </div>
+                <div class="public-number-balls">
+                  ${renderBalls(row,game)}
+                </div>
+              </article>
+            `;
+          }).join('')}
         </div>
-      </section>
+      </article>
     `;
-  }).join('') : '<p class="latest-empty">No hay combinaciones fijas publicadas.</p>';
+  }).join('') : '<p class="public-numbers-empty">No hay jugadas fijas publicadas en esta temporada.</p>';
 }
