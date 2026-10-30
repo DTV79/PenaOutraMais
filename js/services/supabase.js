@@ -8,6 +8,7 @@ export async function supabaseSelect(path) {
   }
 
   const response = await fetch(`${url}/rest/v1/${path}`, {
+    cache: 'no-store',
     headers: {
       apikey: publishableKey,
       Authorization: `Bearer ${publishableKey}`
