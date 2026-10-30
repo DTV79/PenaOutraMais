@@ -12,7 +12,7 @@
   <link rel="icon" href="icon-public.png" type="image/png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Outra Máis" />
-  <link rel="stylesheet" href="css/styles.css?v=20261030-03" />
+  <link rel="stylesheet" href="css/styles.css?v=20261030-04" />
 </head>
 <body>
 <div class="app-shell">
@@ -26,59 +26,41 @@
 
   <main>
     <section class="view active" id="inicio" aria-label="Inicio">
-      <section class="public-brand-banner" aria-label="Logotipo y cabecera oficial de Peña Outra Máis">
-        <img src="admin/assets/pena-banner-final-crisp.webp?v=20261023-10"
-             alt="Peña Outra Máis · La suerte se comparte"
-             width="928" height="238" decoding="async" fetchpriority="high" />
+      <h1 class="home-screen-reader">Peña Outra Máis · Resumen de la semana</h1>
+
+      <section class="home-finance" aria-label="Resumen de la peña">
+        <div class="home-finance-grid">
+          <article class="home-finance-card">
+            <span class="home-finance-label">Arrastre <span data-prev-season-year>—</span></span>
+            <strong data-carryover>— €</strong>
+          </article>
+          <article class="home-finance-card">
+            <span class="home-finance-label">Premios <span data-season-year>—</span></span>
+            <strong data-year-awards>— €</strong>
+          </article>
+          <article class="home-finance-card home-finance-bote">
+            <span class="home-finance-label">Bote actual</span>
+            <strong><span data-current-balance>—</span> €</strong>
+          </article>
+        </div>
       </section>
-      <p class="public-lead public-lead-compact">Nuestros sorteos, números y premios. Todo a la vista, sin complicaciones.</p>
 
-      <article class="week-card">
-        <div class="week-heading">
-          <div><small>QUÉ JUGAMOS</small><strong>Semana del <span data-week-range>…</span></strong></div>
-          <span class="week-state">Temporada activa</span>
+      <section class="home-week" aria-labelledby="homeWeekTitle">
+        <div class="home-week-head">
+          <div>
+            <h2 id="homeWeekTitle">Esta semana</h2>
+            <p><span data-week-range>…</span></p>
+          </div>
         </div>
-        <div id="publicPrograms" class="public-program-list" aria-live="polite"><p class="public-note">Cargando jugadas de la semana…</p></div>
-        <div id="homeSpecial" class="public-note" hidden></div>
-        <div class="week-number"><span aria-hidden="true">✦</span> Nuestros números habituales</div>
-        <div id="homeNumbers" class="home-numbers" aria-live="polite"><p class="public-note" style="color:#c7d4de">Cargando combinaciones…</p></div>
-        <div class="week-footer">
-          <span id="homeCombinationCount">Combinaciones de la peña</span>
-          <button class="week-link" data-go="numeros">Ver todos los números →</button>
+        <p id="homeActivePrograms" class="home-programs-summary" aria-live="polite">Cargando programación…</p>
+        <div id="homeWeeklyDraws" class="home-weekly-draws" aria-live="polite">
+          <p class="home-week-empty">Cargando sorteos de esta semana…</p>
         </div>
-      </article>
+      </section>
 
-      <div class="public-metrics" aria-label="Premios y bote">
-        <article class="metric-card">
-          <div class="metric-icon" aria-hidden="true">◉</div>
-          <small>Bote disponible</small>
-          <strong><span data-current-balance>—</span> €</strong>
-          <span>Acumulado de la peña</span>
-        </article>
-        <article class="metric-card">
-          <div class="metric-icon" aria-hidden="true">★</div>
-          <small>Premios en <span data-season-year>—</span></small>
-          <strong data-year-awards>— €</strong>
-          <span>Total de esta temporada</span>
-        </article>
-      </div>
-
-      <div class="public-section-head">
-        <div><p>SORTEOS</p><h2 id="homeUpcomingTitle">Esta semana</h2></div>
-      </div>
-      <div class="latest-card" id="homeUpcoming" aria-live="polite"><p class="latest-empty">Cargando sorteos…</p></div>
-
-      <div class="public-section-head" style="margin-top:23px">
-        <div><p>RESULTADOS</p><h2>Últimos premios</h2></div>
-        <button class="public-more" data-go="premios">Ver premios →</button>
-      </div>
-      <div class="latest-card" id="homeLatest" aria-live="polite"><p class="latest-empty">Cargando resultados…</p></div>
-
-      <div class="shortcuts">
-        <button class="shortcut" data-go="historico"><span class="shortcut-icon" aria-hidden="true">↗</span><span><strong>Histórico</strong><small>Premios por año</small></span></button>
-        <button class="shortcut" data-go="normas"><span class="shortcut-icon" aria-hidden="true">§</span><span><strong>Estatutos</strong><small>Documento oficial</small></span></button>
-      </div>
-      <p class="public-note">La información se actualiza con los datos de la administración de la peña.</p>
+      <button class="home-statutes-link" data-go="normas" type="button">
+        Consultar estatutos <span aria-hidden="true">›</span>
+      </button>
     </section>
 
     <section class="view" id="numeros">
@@ -139,7 +121,7 @@
     <button class="nav-item" data-go="historico"><span aria-hidden="true">↗</span><small>Histórico</small></button>
   </nav>
 </div>
-<script type="module" src="js/app/main.js?v=20261030-01"></script>
+<script type="module" src="js/app/main.js?v=20261030-02"></script>
 <script src="js/pwa.js" defer></script>
 </body>
 </html>
