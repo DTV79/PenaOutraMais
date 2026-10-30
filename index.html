@@ -3,224 +3,140 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#071a2d" />
+  <meta name="theme-color" content="#10283c" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Peña Outra Máis · cuotas, apuestas, premios, bote e histórico" />
-  <title>Peña Outra Máis</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="description" content="Peña Outra Máis · consulta los sorteos de la semana, nuestras combinaciones, premios, bote e histórico." />
+  <title>Peña Outra Máis · Lotería</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon-public.png" type="image/png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Outra Máis" />
-  <link rel="stylesheet" href="css/styles.css?v=20261023-12" />
+  <link rel="stylesheet" href="css/styles.css?v=20261030-01" />
 </head>
 <body>
 <div class="app-shell">
   <header class="topbar">
-    <button class="brand" data-go="inicio" aria-label="Ir a inicio">
-      <span class="brand-mark" aria-hidden="true">
-        <span class="brand-ball">O</span><span class="brand-ball">M</span>
-      </span>
-      <span class="brand-copy"><small>PEÑA DE LOTERÍA · DESDE 2012</small><strong>Outra Máis</strong></span>
+    <button class="brand" data-go="inicio" aria-label="Ir al inicio">
+      <span class="brand-mark" aria-hidden="true"><span class="brand-ball">O</span><span class="brand-ball">M</span></span>
+      <span class="brand-copy"><small>PEÑA DE LOTERÍA · TUI</small><strong>Outra Máis</strong></span>
     </button>
-    <button class="season-button" data-go="historico"><span data-season-year>2026</span><small>Temporada</small></button>
+    <button class="season-button" data-go="historico" aria-label="Ver histórico de temporadas"><span data-season-year>—</span><small>Temporada</small></button>
   </header>
 
   <main>
-    <section class="view active" id="inicio">
-      <article class="hero-card">
-        <div class="hero-glow hero-glow-one"></div>
-        <div class="hero-glow hero-glow-two"></div>
-        <div class="hero-balls" aria-hidden="true"><i>2</i><i>5</i><i>12</i></div>
-        <div class="hero-topline"><span class="status-dot"></span><span>Temporada <span data-season-year>2026</span> · En curso</span></div>
-        <p class="hero-label">Bote disponible</p>
-        <div class="hero-amount"><span data-current-balance>473,84</span> <span>€</span></div>
-        <p class="hero-caption">Nuestro saldo acumulado para premios, jugadas especiales y futuros repartos.</p>
-        <div class="hero-breakdown">
-          <div><small>Arrastre anterior</small><strong data-carryover>213,57 €</strong></div>
-          <div><small>Premios del año</small><strong data-year-awards>260,27 €</strong></div>
+    <section class="view active" id="inicio" aria-label="Inicio">
+      <p class="public-kicker">PEÑA OUTRA MÁIS</p>
+      <h1 class="public-title">La suerte se comparte.</h1>
+      <p class="public-lead">Nuestros sorteos, números y premios. Todo a la vista, sin complicaciones.</p>
+
+      <article class="week-card">
+        <div class="week-heading">
+          <div><small>QUÉ JUGAMOS</small><strong>Semana del <span data-week-range>…</span></strong></div>
+          <span class="week-state">Temporada activa</span>
         </div>
-        <div class="hero-meta">
-          <span><b data-active-members>20</b> socios</span><span><b data-fixed-combination-count>10</b> combinaciones</span><span><b data-weekly-fee>1 €</b>/semana</span>
+        <div id="publicPrograms" class="public-program-list" aria-live="polite"><p class="public-note">Cargando jugadas de la semana…</p></div>
+        <div id="homeSpecial" class="public-note" hidden></div>
+        <div class="week-number"><span aria-hidden="true">✦</span> Nuestros números habituales</div>
+        <div id="homeNumbers" class="home-numbers" aria-live="polite"><p class="public-note" style="color:#c7d4de">Cargando combinaciones…</p></div>
+        <div class="week-footer">
+          <span id="homeCombinationCount">Combinaciones de la peña</span>
+          <button class="week-link" data-go="numeros">Ver todos los números →</button>
         </div>
       </article>
 
-      <div class="kpi-grid">
-        <button class="kpi-card" data-go="numeros"><span class="kpi-icon">⑩</span><strong data-fixed-play-count>1</strong><small>jugadas fijas</small></button>
-        <button class="kpi-card" data-go="cuotas"><span class="kpi-icon">✓</span><strong data-members-current>20/20</strong><small>socios al corriente</small></button>
-        <button class="kpi-card" data-go="premios"><span class="kpi-icon">★</span><strong data-year-awards-short>260,27 €</strong><small>premios en <span data-season-year>2026</span></small></button>
-        <button class="kpi-card" data-go="mas"><span class="kpi-icon">1€</span><strong data-annual-fee>52 €</strong><small>cuota anual</small></button>
+      <div class="public-metrics" aria-label="Premios y bote">
+        <article class="metric-card">
+          <div class="metric-icon" aria-hidden="true">◉</div>
+          <small>Bote disponible</small>
+          <strong><span data-current-balance>—</span> €</strong>
+          <span>Acumulado de la peña</span>
+        </article>
+        <article class="metric-card">
+          <div class="metric-icon" aria-hidden="true">★</div>
+          <small>Premios en <span data-season-year>—</span></small>
+          <strong data-year-awards>— €</strong>
+          <span>Total de esta temporada</span>
+        </article>
       </div>
 
-      <article class="section-card play-card">
-        <div class="section-heading">
-          <div><p class="eyebrow">APUESTAS PROGRAMADAS</p><h2>Nuestra jugada habitual</h2></div>
-          <span class="pill gold">Automático</span>
-        </div>
-        <div id="publicPrograms" class="public-program-list">
-          <div class="empty-state"><span>◷</span><p>Cargando programaciones…</p></div>
-        </div>
-        <button class="primary-button" data-go="numeros">Ver las combinaciones</button>
-      </article>
+      <div class="public-section-head">
+        <div><p>SORTEOS</p><h2 id="homeUpcomingTitle">Esta semana</h2></div>
+      </div>
+      <div class="latest-card" id="homeUpcoming" aria-live="polite"><p class="latest-empty">Cargando sorteos…</p></div>
 
-      <article class="section-card">
-        <div class="section-heading">
-          <div><p class="eyebrow">EN JUEGO</p><h2>Próximos sorteos</h2></div>
-          <span class="pill"><span data-active-draw-count>0</span> activos</span>
-        </div>
-        <div id="publicActiveDraws" class="public-draw-list">
-          <div class="empty-state"><span>◇</span><p>Cargando sorteos…</p></div>
-        </div>
-      </article>
+      <div class="public-section-head" style="margin-top:23px">
+        <div><p>RESULTADOS</p><h2>Últimos premios</h2></div>
+        <button class="public-more" data-go="premios">Ver premios →</button>
+      </div>
+      <div class="latest-card" id="homeLatest" aria-live="polite"><p class="latest-empty">Cargando resultados…</p></div>
 
-      <article class="section-card">
-        <div class="section-heading">
-          <div><p class="eyebrow">CUOTAS <span data-season-year>2026</span></p><h2>Prácticamente cerradas</h2></div>
-          <span class="pill success" data-quota-percent>100%</span>
-        </div>
-        <div class="progress"><span data-quota-progress style="width:100%"></span></div>
-        <div class="split-note"><span><b data-quota-paid>1.040,00 €</b> abonados</span><span><b data-quota-pending>0,00 €</b> pendientes</span></div>
-        <div class="notice warning"><span>!</span><p><strong data-quota-status-text>Todos los socios están al corriente.</strong> <span data-quota-future-note>Hay 4,00 € adelantados para la próxima temporada.</span></p></div>
-        <button class="secondary-button" data-go="cuotas">Ver estado de cuotas</button>
-      </article>
-
-      <article class="section-card">
-        <div class="section-heading">
-          <div><p class="eyebrow">PREMIOS <span data-season-year>2026</span></p><h2><span data-year-awards>260,27 €</span> acumulados</h2></div>
-          <button class="text-link" data-go="premios">Ver detalle</button>
-        </div>
-        <div class="month-bars" id="homeMonthBars">
-          <div><span>Ene</span><i><b style="height:100%"></b></i><strong>21 €</strong></div>
-          <div><span>Feb</span><i><b style="height:100%"></b></i><strong>21 €</strong></div>
-          <div><span>Mar</span><i><b></b></i><strong>0 €</strong></div>
-          <div><span>Abr</span><i><b></b></i><strong>0 €</strong></div>
-          <div><span>May</span><i><b></b></i><strong>0 €</strong></div>
-          <div><span>Jun</span><i><b></b></i><strong>0 €</strong></div>
-        </div>
-      </article>
-
-      <article class="history-teaser" data-go="historico">
-        <div><p class="eyebrow light">HISTÓRICO</p><strong>Más de una década jugando juntos</strong><small>Consulta premios, gastos y arrastres por año</small></div>
-        <span>›</span>
-      </article>
+      <div class="shortcuts">
+        <button class="shortcut" data-go="historico"><span class="shortcut-icon" aria-hidden="true">↗</span><span><strong>Histórico</strong><small>Premios por año</small></span></button>
+        <button class="shortcut" data-go="normas"><span class="shortcut-icon" aria-hidden="true">§</span><span><strong>Estatutos</strong><small>Documento oficial</small></span></button>
+      </div>
+      <p class="public-note">La información se actualiza con los datos de la administración de la peña.</p>
     </section>
 
     <section class="view" id="numeros">
-      <div class="page-title"><p class="eyebrow">APUESTAS FIJAS</p><h2>Nuestras jugadas</h2><p>Grupos de combinaciones por juego. Cada jugada puede tener su propia programación y días de juego.</p></div>
-      <article class="mini-summary"><div><strong data-fixed-play-count>1</strong><span>jugadas fijas</span></div><div><strong data-fixed-combination-count>10</strong><span>combinaciones</span></div><div><strong data-fixed-game-count>1</strong><span>juegos</span></div></article>
-      <div id="combinations" class="combination-list"></div>
-      <article class="section-card compact"><p class="muted no-margin">Cuando haya una jugada especial (décimo, apuesta extraordinaria, etc.), aparecerá aquí separada de las combinaciones fijas.</p></article>
+      <div class="page-title">
+        <p class="public-kicker">NUESTRAS APUESTAS</p>
+        <h2>Todos nuestros números</h2>
+        <p>Las combinaciones fijas de la peña, organizadas por juego.</p>
+      </div>
+      <article class="mini-summary">
+        <div><strong data-fixed-play-count>—</strong><span>jugadas fijas</span></div>
+        <div><strong data-fixed-combination-count>—</strong><span>combinaciones</span></div>
+        <div><strong data-fixed-game-count>—</strong><span>juegos</span></div>
+      </article>
+      <div id="combinations" class="combination-list"><p class="latest-empty">Cargando combinaciones…</p></div>
     </section>
 
     <section class="view" id="premios">
-      <div class="page-title"><p class="eyebrow">TEMPORADA <span data-season-year>2026</span></p><h2>Premios y bote</h2><p>Todo lo que entra y sale del premio acumulado.</p></div>
-      <div class="stats-row three">
-        <article class="stat-card"><small>Arrastre</small><strong data-carryover>213,57 €</strong></article>
-        <article class="stat-card"><small>Premios</small><strong class="positive-text" data-year-awards>260,27 €</strong></article>
-        <article class="stat-card"><small>Gastos (Bote)</small><strong data-year-expenses>0,00 €</strong></article>
+      <div class="page-title">
+        <p class="public-kicker">TEMPORADA <span data-season-year>—</span></p>
+        <h2>Premios y bote</h2>
+        <p>Resultados de la temporada y saldo de la peña, sin cuentas individuales.</p>
       </div>
-      <article class="balance-card"><div><small>SALDO ACTUAL</small><span>Bote disponible</span></div><strong><span data-current-balance>473,84</span> €</strong></article>
-
-      <article class="section-card">
-        <div class="section-heading"><div><p class="eyebrow">POR MESES</p><h2>Premios <span data-season-year>2026</span></h2></div><span class="pill" data-year-awards>260,27 €</span></div>
-        <div class="monthly-list" id="monthlyAwards"></div>
-      </article>
-
-      <article class="section-card">
-        <div class="section-heading"><div><p class="eyebrow">MOVIMIENTOS DEL BOTE</p><h2><span data-season-year>2026</span></h2></div></div>
-        <div id="publicBoteMovements">
-          <div class="empty-state"><span>◎</span><p>Cargando movimientos…</p></div>
-        </div>
-      </article>
-
-      <article class="section-card">
-        <div class="section-heading"><div><p class="eyebrow">ÚLTIMOS SORTEOS</p><h2>Resultados comprobados</h2></div></div>
-        <div id="publicDrawHistory" class="public-draw-list">
-          <div class="empty-state"><span>✓</span><p>Cargando histórico…</p></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="view" id="cuotas">
-      <div class="page-title"><p class="eyebrow">APORTACIONES</p><h2>Cuotas <span data-season-year>2026</span></h2><p><span data-weekly-fee>1 €</span> por semana · <span data-annual-fee>52 €</span> por socio al año.</p></div>
-      <div class="stats-row three">
-        <article class="stat-card"><small>Previsto</small><strong data-quota-expected>1.040,00 €</strong></article>
-        <article class="stat-card"><small>Pagado</small><strong class="positive-text" data-quota-paid>1.040,00 €</strong></article>
-        <article class="stat-card"><small>Pendiente</small><strong class="danger-text" data-quota-pending>0,00 €</strong></article>
+      <div class="public-metrics">
+        <article class="metric-card"><div class="metric-icon" aria-hidden="true">◉</div><small>Bote disponible</small><strong><span data-current-balance>—</span> €</strong><span>Saldo acumulado</span></article>
+        <article class="metric-card"><div class="metric-icon" aria-hidden="true">★</div><small>Premios del año</small><strong data-year-awards>— €</strong><span>Temporada <span data-season-year>—</span></span></article>
       </div>
-      <article class="section-card compact">
-        <div class="section-heading"><div><p class="eyebrow">SALDOS A FAVOR</p><h2>Próxima temporada</h2></div><span class="pill success" data-quota-future>4,00 €</span></div>
-        <p class="muted"><span data-quota-future-note>Hay 4,00 € adelantados para la próxima temporada.</span> El detalle individual es privado.</p>
+      <article class="section-card">
+        <div class="section-heading"><div><p class="eyebrow">RESULTADOS COMPROBADOS</p><h2>Últimos sorteos</h2></div></div>
+        <div id="publicDrawHistory" class="public-draw-list"><p class="muted">Cargando resultados…</p></div>
       </article>
-      <article class="section-card compact quota-fund-public">
-        <div class="section-heading"><div><p class="eyebrow">FONDO DE CUOTAS</p><h2>Disponible para jugar</h2></div></div>
-        <div class="public-fund-grid">
-          <div><small>Cobrado</small><strong data-quota-paid>1.040,00 €</strong></div>
-          <div><small>Jugado</small><strong data-quota-spent>20,00 €</strong></div>
-          <div><small>Disponible</small><strong data-quota-available>1.020,00 €</strong></div>
-        </div>
+      <article class="section-card">
+        <div class="section-heading"><div><p class="eyebrow">PREMIOS POR MES</p><h2>Temporada <span data-season-year>—</span></h2></div></div>
+        <div id="monthlyAwards" class="monthly-list"><p class="muted">Cargando premios…</p></div>
       </article>
-      <div id="members" class="member-list"></div>
-      <p class="privacy-note">En la web real se mostraría solo la información acordada por la peña. DNI, teléfono y correo quedarían siempre en la zona privada de administración.</p>
     </section>
 
     <section class="view" id="historico">
-      <div class="page-title"><p class="eyebrow">DESDE 2012</p><h2>Histórico económico</h2><p>Resumen anual simplificado a partir de las hojas históricas del Excel.</p></div>
-      <article class="history-hero"><small>Saldo actual</small><strong><span data-current-balance>473,84</span> €</strong><span>Temporada <span data-season-year>2026</span></span></article>
-      <div id="historyList" class="history-list"></div>
-      <article class="section-card compact"><p class="muted no-margin"><strong>Nota:</strong> en los años antiguos conservamos un resumen de premios, salidas/gastos y saldo final; no necesitamos migrar todos los calendarios semanales.</p></article>
+      <div class="page-title"><p class="public-kicker">NUESTRA HISTORIA</p><h2>Temporada a temporada</h2><p>Resumen de premios, gastos del bote y saldo final por año.</p></div>
+      <div id="historyList" class="history-list"><p class="latest-empty">Cargando histórico…</p></div>
     </section>
 
     <section class="view" id="normas">
-      <div class="page-title"><p class="eyebrow">FUNCIONAMIENTO</p><h2>Estatutos de la peña</h2><p>Consulta el PDF vigente y el resumen de funcionamiento.</p></div>
-      <article class="section-card compact" id="statutesPdfCard" hidden>
-        <div class="section-heading">
-          <div><p class="eyebrow">DOCUMENTO VIGENTE</p><h2>Estatutos en PDF</h2></div>
-        </div>
-        <p class="muted">Versión publicada por la administración de la peña.</p>
-        <a class="primary-button statutes-pdf-link" id="statutesPdfLink" href="#" target="_blank" rel="noopener">Abrir estatutos PDF</a>
+      <div class="page-title"><p class="public-kicker">DOCUMENTO OFICIAL</p><h2>Estatutos de la peña</h2><p>Aquí podrás consultar el documento vigente cuando esté publicado.</p></div>
+      <article class="section-card statutes-pdf-box" id="statutesPdfCard" hidden>
+        <div style="font-size:32px" aria-hidden="true">§</div>
+        <div><h2 style="margin:0 0 5px;font-size:20px">Estatutos oficiales</h2><p class="muted" style="margin:0;font-size:12px">Documento publicado por la administración de Peña Outra Máis.</p></div>
+        <a class="primary-button" id="statutesPdfLink" href="#" target="_blank" rel="noopener noreferrer">Abrir estatutos en PDF ↗</a>
       </article>
-      <div id="rules" class="rules-list"></div>
+      <article class="section-card" id="statutesPending"><p class="muted no-margin">Los estatutos todavía no están publicados. Aparecerán aquí automáticamente cuando se suba el PDF oficial.</p></article>
     </section>
-
-    <section class="view" id="mas">
-      <div class="page-title"><p class="eyebrow">PEÑA OUTRA MÁIS</p><h2>Todo a mano</h2><p>Información general y accesos secundarios.</p></div>
-      <article class="menu-card" data-go="historico"><span class="menu-icon">↗</span><div><strong>Histórico</strong><small>Premios, gastos y saldo por año</small></div><b>›</b></article>
-      <article class="menu-card" data-go="normas"><span class="menu-icon">§</span><div><strong>Estatutos</strong><small>PDF vigente y funcionamiento</small></div><b>›</b></article>
-      <article class="section-card compact">
-        <div class="section-heading">
-          <div><p class="eyebrow">JUGADAS ESPECIALES</p><h2>Décimos y apuestas extraordinarias</h2></div>
-          <span class="tag" id="publicSpecialTag">Sin activas</span>
-        </div>
-        <div id="publicSpecialPlays" class="special-play-list">
-          <p class="muted no-margin">Cargando jugadas especiales…</p>
-        </div>
-      </article>
-      <article class="section-card info-list">
-        <div><span>Socios temporada <span data-season-year>2026</span></span><strong data-active-members>20</strong></div>
-        <div><span>Cuota semanal</span><strong data-weekly-fee>1 €</strong></div>
-        <div><span>Cuota anual</span><strong data-annual-fee>52 €</strong></div>
-        <div><span>Jugadas fijas</span><strong data-fixed-play-count>1</strong></div>
-        <div><span>Coste semanal</span><strong>20 €</strong></div>
-        <div><span>Días de juego</span><strong>Jueves · Sábado</strong></div>
-        <div><span>Reparto de premios</span><strong>Equitativo</strong></div>
-      </article>
-      <article class="admin-card">
-        <div><p class="eyebrow light">GESTIÓN</p><h2>Zona de administración</h2><p>Socios, pagos, sorteos, premios, bote, jugadas especiales y temporadas.</p></div>
-        <a class="admin-access-link" href="admin/acceso.html">Entrar en administración</a>
-      </article>
-    </section>
+    <footer class="public-footer">Peña Outra Máis · Tui · <a href="admin/acceso.html">Administración</a></footer>
   </main>
 
   <nav class="bottom-nav" aria-label="Navegación principal">
-    <button class="nav-item active" data-go="inicio"><span>⌂</span><small>Inicio</small></button>
-    <button class="nav-item" data-go="numeros"><span>⑩</span><small>Números</small></button>
-    <button class="nav-item" data-go="premios"><span>★</span><small>Premios</small></button>
-    <button class="nav-item" data-go="cuotas"><span>€</span><small>Cuotas</small></button>
-    <button class="nav-item" data-go="mas"><span>•••</span><small>Más</small></button>
+    <button class="nav-item active" data-go="inicio"><span aria-hidden="true">⌂</span><small>Inicio</small></button>
+    <button class="nav-item" data-go="numeros"><span aria-hidden="true">⑩</span><small>Números</small></button>
+    <button class="nav-item" data-go="premios"><span aria-hidden="true">★</span><small>Premios</small></button>
+    <button class="nav-item" data-go="historico"><span aria-hidden="true">↗</span><small>Histórico</small></button>
   </nav>
 </div>
-<script type="module" src="js/app/main.js?v=20261023-12"></script>
+<script type="module" src="js/app/main.js?v=20261030-01"></script>
 <script src="js/pwa.js" defer></script>
 </body>
 </html>
