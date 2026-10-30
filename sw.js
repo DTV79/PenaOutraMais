@@ -1,4 +1,4 @@
-const CACHE='pena-outra-mais-v26';
+const CACHE='pena-outra-mais-v27';
 const ASSETS=[
  './','./index.html',
  './admin/assets/pena-banner-final-crisp.webp','./css/styles.css','./css/base.css','./css/layout.css','./css/components.css','./css/pages.css','./css/theme.css','./css/public-redesign.css','./css/public-numbers.css',
