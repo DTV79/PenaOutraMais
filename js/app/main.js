@@ -13,7 +13,10 @@ function showError(){
     el.innerHTML='<p class="latest-empty">No se pudieron cargar los datos. Comprueba tu conexión y vuelve a abrir la web.</p>';
   });
 }
+let refreshing=false;
 async function hydrate(){
+  if(refreshing)return;
+  refreshing=true;
   try{
     const data=await getPublicSnapshot();
     if(!data){showError();return;}
@@ -27,9 +30,19 @@ async function hydrate(){
   }catch(error){
     console.error('Error al cargar la web pública:',error);
     showError();
+  }finally{
+    refreshing=false;
   }
 }
 initNavigation();
 renderWeekHeading();
 renderRules();
 hydrate();
+
+document.addEventListener('visibilitychange',()=>{
+  // Al volver de administración, mostrar de inmediato los reintegros y premios recién guardados.
+  if(!document.hidden)hydrate();
+});
+window.addEventListener('pageshow',event=>{
+  if(event.persisted)hydrate();
+});
