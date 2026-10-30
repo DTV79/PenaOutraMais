@@ -2,7 +2,7 @@ const MAIN_VIEWS=['inicio','numeros','premios','historico','normas'];
 export function navigate(target){
   if(!MAIN_VIEWS.includes(target))target='inicio';
   document.querySelectorAll('.view').forEach(view=>view.classList.toggle('active',view.id===target));
-  const navTarget=target==='normas'?'inicio':target;
+  const navTarget=target;
   document.querySelectorAll('.nav-item').forEach(item=>{
     const active=item.dataset.go===navTarget;
     item.classList.toggle('active',active);
