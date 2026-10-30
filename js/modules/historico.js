@@ -2,7 +2,7 @@ import { fallbackHistory } from '../data/fallback.js';
 import { money } from '../utils/format.js?v=20261022-02';
 
 function normalizeHistory(rows) {
-  if (!rows?.length) {
+  if (!Array.isArray(rows)) {
     return fallbackHistory.map((row) => ({
       anio: row.year,
       arrastre_inicial: row.start,
@@ -22,7 +22,8 @@ export function renderHistory(rows, currentYear = 2026) {
   const container = document.querySelector('#historyList');
   if (!container) return;
 
-  container.innerHTML = normalizeHistory(rows).map((row, index) => `
+  const history=normalizeHistory(rows);
+  container.innerHTML = history.length ? history.map((row, index) => `
     <details class="history-year" ${index === 0 ? 'open' : ''}>
       <summary>
         <span class="year-badge">${row.anio}</span>
@@ -46,5 +47,5 @@ export function renderHistory(rows, currentYear = 2026) {
         ${row.observaciones ? `<div class="wide"><span>Observación</span><strong>${row.observaciones}</strong></div>` : ''}
       </div>
     </details>
-  `).join('');
+  `).join('') : '<p class="latest-empty">No hay temporadas históricas publicadas.</p>';
 }
