@@ -1,7 +1,7 @@
-const CACHE='pena-outra-mais-v25';
+const CACHE='pena-outra-mais-v26';
 const ASSETS=[
  './','./index.html',
- './admin/assets/pena-banner-final-crisp.webp','./css/styles.css','./css/base.css','./css/layout.css','./css/components.css','./css/pages.css','./css/theme.css','./css/public-redesign.css',
+ './admin/assets/pena-banner-final-crisp.webp','./css/styles.css','./css/base.css','./css/layout.css','./css/components.css','./css/pages.css','./css/theme.css','./css/public-redesign.css','./css/public-numbers.css',
  './js/app/main.js','./js/config/supabase-config.js','./js/data/fallback.js',
  './js/modules/cuotas.js','./js/modules/historico.js','./js/modules/normas.js','./js/modules/numeros.js','./js/modules/premios.js','./js/modules/sorteos.js','./js/modules/portada.js','./js/modules/temporada.js',
  './js/services/public-data.js','./js/services/supabase.js','./js/ui/navigation.js','./js/utils/format.js','./js/pwa.js','./manifest.webmanifest','./icon-public.png'
