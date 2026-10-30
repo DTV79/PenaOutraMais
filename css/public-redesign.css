@@ -577,3 +577,15 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #dd
   margin:0;
   white-space:nowrap;
 }
+
+
+/* Cabecera oficial OM (opción 2): mismo monograma que administración.
+   Solo sustituimos el sello de la cabecera, no el icono del iPhone. */
+.public-brand-icon{
+  background:#071a2d url('../assets/om-cabecera-azul-v2.webp') center / cover no-repeat;
+  border:0;
+  outline:0;
+  color:transparent;
+  font-size:0;
+  overflow:hidden;
+}
