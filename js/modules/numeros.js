@@ -33,7 +33,7 @@ export function renderCombinations(fixedPlays,rows,games) {
   const container=document.querySelector('#combinations');
   if (!container) return;
 
-  const data=fixedPlays?.length
+  const data=Array.isArray(fixedPlays)
     ? {fixedPlays,combinations:rows || [],games:games || []}
     : fallbackData();
 
@@ -54,7 +54,7 @@ export function renderCombinations(fixedPlays,rows,games) {
     el.textContent=String(activeGames.size);
   });
 
-  container.innerHTML=activePlays.map((play)=>{
+  container.innerHTML=activePlays.length ? activePlays.map((play)=>{
     const game=gameMap.get(play.juego_codigo);
     const playRows=combinations.filter(
       (row)=>String(row.jugada_fija_id)===String(play.id)
@@ -90,5 +90,5 @@ export function renderCombinations(fixedPlays,rows,games) {
         </div>
       </section>
     `;
-  }).join('');
+  }).join('') : '<p class="latest-empty">No hay combinaciones fijas publicadas.</p>';
 }
