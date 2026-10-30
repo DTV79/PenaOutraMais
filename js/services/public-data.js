@@ -1,4 +1,4 @@
-import { supabaseSelect } from './supabase.js';
+import { supabaseSelect } from './supabase.js?v=20261030-03';
 
 export async function getPublicSnapshot() {
   const [season]=await supabaseSelect(
