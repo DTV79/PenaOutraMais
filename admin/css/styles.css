@@ -80,3 +80,15 @@ a.admin-home-button{
   }
   .admin-home-button strong{display:none!important}
 }
+
+
+/* Identidad OM para administración, compartida con la web pública. */
+.admin-brand-mark,
+.login-brand-mark{
+  background:#071a2d url('../../assets/om-cabecera-azul-v2.webp') center / cover no-repeat !important;
+  border:0 !important;
+  outline:0 !important;
+  color:transparent !important;
+  font-size:0 !important;
+  overflow:hidden;
+}
