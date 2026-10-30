@@ -7,10 +7,11 @@
   "theme_color": "#071a2d",
   "icons": [
     {
-      "src": "/icon-public.png",
+      "src": "./otra-mais-public-icon-v2.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
     }
-  ]
+  ],
+  "scope": "./"
 }
