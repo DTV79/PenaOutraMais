@@ -570,3 +570,10 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #dd
   #inicio .home-week-range{font-size:9px}
   .bottom-nav .nav-item small{font-size:8px}
 }
+
+/* Premios: mantener "Temporada 2026" en una única línea. */
+#premios .metric-card > span > [data-season-year]{
+  display:inline;
+  margin:0;
+  white-space:nowrap;
+}
