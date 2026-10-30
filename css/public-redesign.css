@@ -348,3 +348,225 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #dd
   .home-finance-label,.home-finance-label > span{font-size:9px}
   .home-finance-card strong{font-size:13px}
 }
+
+
+/* Portada pública v5 · Marca visible, lectura rápida y menú de cinco secciones. */
+#inicio{padding-bottom:18px}
+.home-identity-banner{
+  position:relative;
+  display:block;
+  width:100%;
+  aspect-ratio:2048 / 422;
+  margin:0 0 21px;
+  overflow:hidden;
+  border-radius:21px;
+  background:#0b233a;
+  box-shadow:0 12px 28px rgba(8,30,50,.16);
+}
+.home-identity-banner img{
+  position:absolute;
+  display:block;
+  inset:0;
+  width:100%;
+  height:100%;
+  max-width:none;
+  object-fit:cover;
+  object-position:50% 50%;
+  border:0;
+}
+#inicio .home-finance{margin:0 0 25px}
+#inicio .home-finance-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:11px;
+  overflow:visible;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+#inicio .home-finance-card{
+  position:relative;
+  display:flex;
+  min-width:0;
+  min-height:112px;
+  flex-direction:column;
+  justify-content:center;
+  padding:17px 15px;
+  overflow:hidden;
+  border:1px solid #e1e5e9;
+  border-radius:17px;
+  background:linear-gradient(180deg,#fff,#fdfcf9);
+  box-shadow:0 7px 19px rgba(13,39,61,.05);
+}
+#inicio .home-finance-card::before{
+  content:"";
+  display:block;
+  position:absolute;
+  top:0;
+  left:0;
+  height:4px;
+  width:100%;
+  background:#d4ab46;
+}
+#inicio .home-finance-card:nth-child(2)::before{background:#3388b7}
+#inicio .home-finance-label,
+#inicio .home-finance-label > span{
+  color:#637587;
+  font-weight:750;
+  font-size:11px;
+  letter-spacing:.05px;
+}
+#inicio .home-finance-card strong{
+  margin-top:11px;
+  color:#112c43;
+  font-size:clamp(17px,2.75vw,26px);
+  font-weight:900;
+  line-height:1.18;
+  letter-spacing:-.7px;
+  white-space:nowrap;
+}
+#inicio .home-finance-card.home-finance-bote{
+  border-color:#123751;
+  background:linear-gradient(138deg,#102b43 0%,#17415d 100%);
+  box-shadow:0 9px 24px rgba(8,35,56,.14);
+}
+#inicio .home-finance-bote::before{background:#e6bf5d}
+#inicio .home-finance-bote .home-finance-label{color:#dec891}
+#inicio .home-finance-bote strong,
+#inicio .home-finance-bote strong > span{color:#fff}
+#inicio .home-week{
+  padding:19px;
+  border:1px solid #dce6ed;
+  border-radius:21px;
+  background:linear-gradient(150deg,#edf4f8 0%,#f7f9f9 100%);
+}
+#inicio .home-week-head{
+  align-items:center;
+  margin:0 0 9px;
+}
+#inicio .home-week-kicker{
+  display:block;
+  margin-bottom:4px;
+  color:#94702c;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:1px;
+}
+#inicio .home-week-head h2{
+  margin:0;
+  font-size:24px;
+  letter-spacing:-.8px;
+}
+#inicio .home-week-range{
+  flex:0 0 auto;
+  margin:0;
+  padding:8px 11px;
+  border:1px solid #d9e3ea;
+  border-radius:999px;
+  background:#fff;
+  color:#36546c;
+  font-size:11px;
+  font-weight:750;
+  white-space:nowrap;
+}
+#inicio .home-programs-summary{
+  display:block;
+  margin:0 0 15px;
+  color:#5a6d7a;
+  font-size:12px;
+  font-weight:600;
+}
+#inicio .home-weekly-draws{gap:10px}
+#inicio .home-week-row{
+  position:relative;
+  overflow:hidden;
+  min-height:96px;
+  padding:17px 16px 17px 19px;
+  border:1px solid #e1e8eb;
+  border-radius:15px;
+  background:#fff;
+  box-shadow:0 5px 14px rgba(13,39,61,.035);
+}
+#inicio .home-week-row::before{
+  position:absolute;
+  content:"";
+  top:0;
+  bottom:0;
+  left:0;
+  width:4px;
+  background:#d9ab43;
+}
+#inicio .home-week-row:has(.home-draw-status.sealed)::before{background:#238665}
+#inicio .home-week-row:has(.home-draw-status.checked)::before{background:#4f8eb0}
+#inicio .home-week-row:has(.home-draw-status.unsealed)::before{background:#dca33f}
+#inicio .home-week-row-main>strong{
+  color:#122e45;
+  font-size:15px;
+  font-weight:900;
+}
+#inicio .home-week-row-main>small{font-size:12px}
+#inicio .home-week-detail{font-size:12px}
+#inicio .home-draw-status{
+  max-width:163px;
+  padding:8px 11px;
+  font-size:11px;
+}
+#inicio .home-draw-status.sealed::before{
+  content:"✓";
+  margin-right:5px;
+  font-size:12px;
+  font-weight:900;
+}
+.bottom-nav{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  max-width:920px;
+  padding:7px max(6px,env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-right));
+}
+.bottom-nav .nav-item{min-width:0;padding:2px 1px}
+.bottom-nav .nav-item span{height:30px;min-width:34px;font-size:19px}
+.bottom-nav .nav-item small{font-size:10px}
+.bottom-nav .nav-item.active span{
+  background:#0e2b43;
+  color:#f0c869;
+  box-shadow:0 4px 12px rgba(8,31,49,.13);
+}
+@media(max-width:500px){
+  .home-identity-banner{
+    margin-bottom:17px;
+    border-radius:15px;
+    box-shadow:0 8px 19px rgba(8,30,50,.14);
+  }
+  #inicio .home-finance{margin-bottom:20px}
+  #inicio .home-finance-grid{gap:7px}
+  #inicio .home-finance-card{
+    min-height:89px;
+    padding:13px 9px;
+    border-radius:13px;
+  }
+  #inicio .home-finance-label,
+  #inicio .home-finance-label>span{font-size:10px}
+  #inicio .home-finance-card strong{
+    margin-top:9px;
+    font-size:clamp(13px,3.9vw,18px);
+    letter-spacing:-.55px;
+  }
+  #inicio .home-week{padding:15px 12px;border-radius:17px}
+  #inicio .home-week-head h2{font-size:21px}
+  #inicio .home-week-kicker{font-size:9px}
+  #inicio .home-week-range{padding:7px 9px;font-size:10px}
+  #inicio .home-week-row{padding:13px 10px 13px 14px;min-height:89px}
+  #inicio .home-week-row-main>strong{font-size:14px}
+  #inicio .home-draw-status{max-width:118px;padding:7px 8px;font-size:10px}
+  .bottom-nav .nav-item span{min-width:30px;height:28px;font-size:18px}
+  .bottom-nav .nav-item small{font-size:9px}
+}
+@media(max-width:350px){
+  #inicio .home-finance-grid{gap:5px}
+  #inicio .home-finance-card{padding:11px 6px}
+  #inicio .home-finance-label,
+  #inicio .home-finance-label>span{font-size:9px}
+  #inicio .home-finance-card strong{font-size:13px}
+  #inicio .home-week-range{font-size:9px}
+  .bottom-nav .nav-item small{font-size:8px}
+}
