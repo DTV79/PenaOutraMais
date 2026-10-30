@@ -12,7 +12,7 @@
   <link rel="icon" href="icon-public.png" type="image/png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Outra Máis" />
-  <link rel="stylesheet" href="css/styles.css?v=20261030-05" />
+  <link rel="stylesheet" href="css/styles.css?v=20261030-06" />
 </head>
 <body>
 <div class="app-shell">
@@ -67,18 +67,37 @@
 
     </section>
 
-    <section class="view" id="numeros">
-      <div class="page-title">
-        <p class="public-kicker">NUESTRAS APUESTAS</p>
-        <h2>Todos nuestros números</h2>
-        <p>Las combinaciones fijas de la peña, organizadas por juego.</p>
-      </div>
-      <article class="mini-summary">
-        <div><strong data-fixed-play-count>—</strong><span>jugadas fijas</span></div>
-        <div><strong data-fixed-combination-count>—</strong><span>combinaciones</span></div>
-        <div><strong data-fixed-game-count>—</strong><span>juegos</span></div>
-      </article>
-      <div id="combinations" class="combination-list"><p class="latest-empty">Cargando combinaciones…</p></div>
+    <section class="view" id="numeros" aria-label="Jugadas fijas">
+      <header class="page-title public-numbers-heading">
+        <p class="public-kicker">APUESTAS FIJAS</p>
+        <h2>Jugadas fijas</h2>
+        <p>Nuestras combinaciones habituales de lotería.</p>
+      </header>
+
+      <section class="public-numbers-summary" aria-label="Resumen de jugadas fijas">
+        <article class="public-numbers-kpi">
+          <small>Temporada</small><strong data-season-year>—</strong>
+        </article>
+        <article class="public-numbers-kpi">
+          <small>Jugadas activas</small><strong data-fixed-play-count>—</strong>
+        </article>
+        <article class="public-numbers-kpi">
+          <small>Combinaciones</small><strong data-fixed-combination-count>—</strong>
+        </article>
+        <article class="public-numbers-kpi">
+          <small>Juegos</small><strong data-fixed-game-count>—</strong>
+        </article>
+      </section>
+
+      <section class="public-numbers-panel" aria-labelledby="publicNumbersPanelTitle">
+        <div class="public-numbers-panel-head">
+          <p class="public-kicker">TEMPORADA <span data-season-year>—</span></p>
+          <h2 id="publicNumbersPanelTitle">Jugadas configuradas</h2>
+        </div>
+        <div id="combinations" class="public-numbers-list" aria-live="polite">
+          <p class="public-numbers-empty">Cargando combinaciones…</p>
+        </div>
+      </section>
     </section>
 
     <section class="view" id="premios">
