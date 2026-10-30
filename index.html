@@ -12,7 +12,7 @@
   <link rel="icon" href="icon-public.png" type="image/png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Outra Máis" />
-  <link rel="stylesheet" href="css/styles.css?v=20261030-04" />
+  <link rel="stylesheet" href="css/styles.css?v=20261030-05" />
 </head>
 <body>
 <div class="app-shell">
@@ -27,6 +27,12 @@
   <main>
     <section class="view active" id="inicio" aria-label="Inicio">
       <h1 class="home-screen-reader">Peña Outra Máis · Resumen de la semana</h1>
+
+      <div class="home-identity-banner" aria-label="Peña Outra Máis, la suerte se comparte">
+        <img src="admin/assets/pena-banner-final-crisp.webp?v=20261023-10"
+             alt="Peña Outra Máis · La suerte se comparte · Catedral de Tui"
+             width="2048" height="683" decoding="async" fetchpriority="high" />
+      </div>
 
       <section class="home-finance" aria-label="Resumen de la peña">
         <div class="home-finance-grid">
@@ -48,9 +54,10 @@
       <section class="home-week" aria-labelledby="homeWeekTitle">
         <div class="home-week-head">
           <div>
+            <span class="home-week-kicker">SORTEOS ACTIVOS</span>
             <h2 id="homeWeekTitle">Esta semana</h2>
-            <p><span data-week-range>…</span></p>
           </div>
+          <p class="home-week-range" data-week-range>…</p>
         </div>
         <p id="homeActivePrograms" class="home-programs-summary" aria-live="polite">Cargando programación…</p>
         <div id="homeWeeklyDraws" class="home-weekly-draws" aria-live="polite">
@@ -58,9 +65,6 @@
         </div>
       </section>
 
-      <button class="home-statutes-link" data-go="normas" type="button">
-        Consultar estatutos <span aria-hidden="true">›</span>
-      </button>
     </section>
 
     <section class="view" id="numeros">
@@ -111,7 +115,6 @@
       </article>
       <article class="section-card" id="statutesPending"><p class="muted no-margin">Los estatutos todavía no están publicados. Aparecerán aquí automáticamente cuando se suba el PDF oficial.</p></article>
     </section>
-    <footer class="public-footer">Peña Outra Máis · Tui · <a href="admin/acceso.html">Administración</a></footer>
   </main>
 
   <nav class="bottom-nav" aria-label="Navegación principal">
@@ -119,6 +122,7 @@
     <button class="nav-item" data-go="numeros"><span aria-hidden="true">⑩</span><small>Números</small></button>
     <button class="nav-item" data-go="premios"><span aria-hidden="true">★</span><small>Premios</small></button>
     <button class="nav-item" data-go="historico"><span aria-hidden="true">↗</span><small>Histórico</small></button>
+    <button class="nav-item" data-go="normas"><span aria-hidden="true">§</span><small>Estatutos</small></button>
   </nav>
 </div>
 <script type="module" src="js/app/main.js?v=20261030-03"></script>
