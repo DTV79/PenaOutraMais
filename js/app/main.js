@@ -1,4 +1,4 @@
-import { getPublicSnapshot } from '../services/public-data.js?v=20261022-06';
+import { getPublicSnapshot } from '../services/public-data.js?v=20261030-03';
 import { initNavigation } from '../ui/navigation.js?v=20261030-01';
 import { renderCombinations } from '../modules/numeros.js?v=20261022-06';
 import { renderMonthlyAwards,monthlyAwardsFromMovements,applyBalanceSummary } from '../modules/premios.js?v=20261022-06';
