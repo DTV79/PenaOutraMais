@@ -53,7 +53,7 @@ function setTabCount(name,value) {
   if (badge) badge.textContent=String(value);
 }
 
-export function renderQuotaSnapshot({ season, members, movements, allMovements=[], quotaSpent, elapsedWeeks }) {
+export function renderQuotaSnapshot({ season, members, movements, allMovements=[], quotaSpent, quotaHistorical=0, quotaSealed=0, quotaUnsealed=0, fundsCollected, availableFunds }) {
   const summary = document.querySelector('#feesSummary');
   const container = document.querySelector('#feesAdmin');
   const pendingBox = document.querySelector('#feesPending');
@@ -83,6 +83,7 @@ export function renderQuotaSnapshot({ season, members, movements, allMovements=[
 
   const expected = members.length * Number(season.cuota_anual || 0);
   const paid = [...totalsByMember.values()].reduce((sum, value) => sum + value, 0);
+  const received = Number(fundsCollected ?? paid);
   const pending = members.reduce((sum, member) => {
     const contribution = totalsByMember.get(member.id) || 0;
     return sum + Math.max(Number(season.cuota_anual) - contribution, 0);
@@ -91,23 +92,28 @@ export function renderQuotaSnapshot({ season, members, movements, allMovements=[
   summary.innerHTML = `
     <article class="admin-kpi"><small>Socios activos</small><strong>${members.length}</strong></article>
     <article class="admin-kpi"><small>Previsto ${season.anio}</small><strong>${formatMoney(expected)}</strong></article>
-    <article class="admin-kpi"><small>Cobrado ${season.anio}</small><strong>${formatMoney(paid)}</strong></article>
+    <article class="admin-kpi"><small>Cobrado ${season.anio}</small><strong>${formatMoney(received)}</strong></article>
     <article class="admin-kpi"><small>Pendiente</small><strong>${formatMoney(pending)}</strong></article>
   `;
 
   const spent = Number(quotaSpent || 0);
-  const available = paid - spent;
+  const historical = Number(quotaHistorical || 0);
+  const sealed = Number(quotaSealed || 0);
+  const unsealed = Number(quotaUnsealed || 0);
+  const available = Number(availableFunds ?? (received - spent));
 
   fundBox.innerHTML = `
-    <article class="admin-kpi"><small>Cuotas cobradas</small><strong>${formatMoney(paid)}</strong></article>
+    <article class="admin-kpi"><small>Cuotas cobradas</small><strong>${formatMoney(received)}</strong></article>
     <article class="admin-kpi"><small>Gastado cuotas</small><strong>${formatMoney(spent)}</strong></article>
+    <article class="admin-kpi"><small>Programado sin sellar</small><strong>${formatMoney(unsealed)}</strong></article>
     <article class="admin-kpi"><small>Disponible para jugar</small><strong class="${available < 0 ? 'danger-text' : ''}">${formatMoney(available)}</strong></article>
   `;
 
   if (fundExplanation) {
-    const totalWeeks=Number(season.numero_semanas || 52);
     fundExplanation.innerHTML =
-      `<strong>${elapsedWeeks} de ${totalWeeks} semanas jugadas</strong>`;
+      `<strong>Gasto: ${formatMoney(historical)} de histórico + ${formatMoney(sealed)} en apuestas selladas/comprobadas.</strong> ` +
+      `Los ${formatMoney(unsealed)} programados sin sellar no se han descontado. ` +
+      'El gasto no aumenta por el simple paso de las semanas.';
   }
 
   const pendingMembers = members
