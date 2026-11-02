@@ -36,24 +36,14 @@ async function getDashboardSnapshot() {
   ]);
 
   const activeMembers=members.filter((row)=>!row.fecha_baja).length;
-  const weeklyFee=Number(season.cuota_semanal || 0);
-  const maxWeeks=Number(season.numero_semanas || 52);
-  const start=new Date(`${season.fecha_inicio}T00:00:00`);
-  const end=new Date(`${season.fecha_fin}T23:59:59`);
-  const now=new Date();
-  const effectiveDate=now<start ? null : (now>end ? end : now);
-  const elapsedWeeks=effectiveDate
-    ? Math.min(
-        maxWeeks,
-        Math.max(0,Math.ceil((effectiveDate-start+86400000)/604800000))
-      )
-    : 0;
 
+  // Una sola fuente: el resumen unificado de Supabase.
+  // No se descuentan semanas por calendario ni apuestas por programar.
   return {
     season,
     activeMembers,
     quotaCollected:Number(quotaRows?.[0]?.cobrado || 0),
-    quotaSpent:elapsedWeeks * weeklyFee * activeMembers,
+    quotaSpent:Number(quotaRows?.[0]?.jugado_con_cuotas || 0),
     pot:Number(balanceRows?.[0]?.saldo_final || 0)
   };
 }
